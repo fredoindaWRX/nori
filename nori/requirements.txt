@@ -1,0 +1,24 @@
+# Development package dependencies. The HTTP launcher uses only stdlib.
+# Use Python 3.12; this is not a fully resolved cross-platform lock file.
+-r packages/knights/apoc/requirements.txt
+-r packages/knights/oracle/requirements.txt
+-r packages/knights/tank/requirements.txt
+-r packages/knights/keymaker/requirements.txt
+pytest>=8,<9
+PyYAML>=6,<7
+PyInstaller>=6,<7
+websocket-client==1.8.0
+# asyncio is part of Python. Native HTTP integrations do not require
+# the Ollama or Letta SDKs, nor the legacy ed25519 package.
+#
+# NOTE: crewai is deliberately NOT a default requirement. The native Core path
+# never imports it: the live Architect is the Nori-native
+# shared/orchestration/architect_worker.py, and the Nori-native Architect
+# package lives in knights/architect/lib/nori-architect. CrewAI is only used by
+# two opt-in legacy adapters, which raise a clear error when it is absent.
+# Installing an alternative agent framework by default is exactly the kind of
+# claim this project is trying to stop making. If you need those adapters:
+#   pip install -r requirements-optional-frameworks.txt
+# See ../tools/nori_deps/registry.json for the full classification and evidence.
+
+websocket-client==1.8.0

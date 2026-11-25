@@ -1,0 +1,180 @@
+{
+  "schema": "nori.knight-monorepo.v1",
+  "product": "NORI Knights of the Table",
+  "runtime": "NORI Round Table service",
+  "model_runtime": "Seth (NORI-native local model service; adapters are optional, not required)",
+  "agents": [
+    {
+      "id": "neo",
+      "display_name": "Software Engineer",
+      "implementation": "NORI-native",
+      "system_role": "You are NORI Software Engineer. Work only through your declared coding contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+      "capabilities": [
+        "coding"
+      ],
+      "model_assignment": "seth-code",
+      "knowledge_source": "workspace and project source",
+      "native_implementation": "shared/orchestration/neo_worker.py",
+      "service_boundary": "shared/orchestration/knight_service.py",
+      "status": "foundation_implemented; live deployment still requires provisioning and health verification"
+    },
+    {
+      "id": "trinity",
+      "display_name": "Generalist",
+      "implementation": "NORI-native",
+      "system_role": "You are NORI Generalist. Work only through your declared plugins contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+      "capabilities": [
+        "plugins"
+      ],
+      "model_assignment": "seth-general",
+      "knowledge_source": "approved local plugins and task data",
+      "native_implementation": "shared/orchestration/trinity_worker.py",
+      "service_boundary": "shared/orchestration/knight_service.py",
+      "status": "foundation_implemented; live deployment still requires provisioning and health verification"
+    },
+    {
+      "id": "morpheus",
+      "display_name": "IDE Agent",
+      "implementation": "NORI-native",
+      "system_role": "You are NORI IDE Agent. Work only through your declared ide contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+      "capabilities": [
+        "ide"
+      ],
+      "model_assignment": "seth-code",
+      "knowledge_source": "project source and editor indexes",
+      "native_implementation": "shared/orchestration/morpheus_worker.py",
+      "service_boundary": "shared/orchestration/knight_service.py",
+      "status": "foundation_implemented; live deployment still requires provisioning and health verification"
+    },
+    {
+      "id": "apoc",
+      "display_name": "Browser Agent",
+      "implementation": "NORI-native",
+      "system_role": "You are NORI Browser Agent. Work only through your declared browser contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+      "capabilities": [
+        "browser"
+      ],
+      "model_assignment": "seth-general",
+      "knowledge_source": "public web sources only when connected",
+      "native_implementation": "shared/orchestration/apoc_worker.py",
+      "service_boundary": "shared/orchestration/knight_service.py",
+      "status": "foundation_implemented; live deployment still requires provisioning and health verification"
+    },
+    {
+      "id": "oracle",
+      "display_name": "Knowledge Agent",
+      "implementation": "NORI-native",
+      "system_role": "You are NORI Knowledge Agent. Work only through your declared knowledge contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+      "capabilities": [
+        "knowledge"
+      ],
+      "model_assignment": "seth-general",
+      "knowledge_source": "local indexed documents",
+      "native_implementation": "shared/orchestration/oracle_worker.py",
+      "service_boundary": "shared/orchestration/knight_service.py",
+      "status": "foundation_implemented; live deployment still requires provisioning and health verification"
+    },
+    {
+      "id": "merovingian",
+      "display_name": "Memory Agent",
+      "implementation": "NORI-native",
+      "system_role": "You are NORI Memory Agent. Work only through your declared memory, learning contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+      "capabilities": [
+        "memory",
+        "learning"
+      ],
+      "model_assignment": "seth-general",
+      "knowledge_source": "owner-approved local memory and learning records",
+      "native_implementation": "shared/orchestration/merovingian_worker.py",
+      "service_boundary": "shared/orchestration/knight_service.py",
+      "status": "foundation_implemented; live deployment still requires provisioning and health verification"
+    },
+    {
+      "id": "architect",
+      "display_name": "Orchestrator",
+      "implementation": "NORI-native",
+      "system_role": "You are NORI Orchestrator. Work only through your declared orchestration contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+      "capabilities": [
+        "orchestration"
+      ],
+      "model_assignment": "seth-general",
+      "knowledge_source": "task graph and Knight contracts",
+      "native_implementation": "shared/orchestration/architect_worker.py",
+      "service_boundary": "shared/orchestration/knight_service.py",
+      "status": "foundation_implemented; live deployment still requires provisioning and health verification"
+    },
+    {
+      "id": "keymaker",
+      "display_name": "Research Agent",
+      "implementation": "NORI-native",
+      "system_role": "You are NORI Research Agent. Work only through your declared research contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+      "capabilities": [
+        "research"
+      ],
+      "model_assignment": "seth-general",
+      "knowledge_source": "cited local evidence; network research only when connected",
+      "native_implementation": "shared/orchestration/keymaker_worker.py",
+      "service_boundary": "shared/orchestration/knight_service.py",
+      "status": "foundation_implemented; live deployment still requires provisioning and health verification"
+    },
+    {
+      "id": "smith",
+      "display_name": "Executor",
+      "implementation": "NORI-native",
+      "system_role": "You are NORI Executor. Work only through your declared execution contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+      "capabilities": [
+        "execution"
+      ],
+      "model_assignment": "seth-code",
+      "knowledge_source": "approved workspace operations",
+      "native_implementation": "shared/orchestration/smith_worker.py",
+      "service_boundary": "shared/orchestration/knight_service.py",
+      "status": "foundation_implemented; live deployment still requires provisioning and health verification"
+    },
+    {
+      "id": "tank",
+      "display_name": "Device Agent",
+      "implementation": "NORI-native",
+      "system_role": "You are NORI Device Agent. Work only through your declared hardware contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+      "capabilities": [
+        "hardware"
+      ],
+      "model_assignment": "seth-edge",
+      "knowledge_source": "approved local device telemetry",
+      "native_implementation": "shared/orchestration/tank_worker.py",
+      "service_boundary": "shared/orchestration/knight_service.py",
+      "status": "foundation_implemented; live deployment still requires provisioning and health verification"
+    },
+    {
+      "id": "machine",
+      "display_name": "Inference",
+      "implementation": "NORI-native",
+      "system_role": "You are NORI Inference. Work only through your declared inference contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+      "capabilities": [
+        "inference"
+      ],
+      "model_assignment": "seth-runtime",
+      "knowledge_source": "local model registry and hardware profile",
+      "native_implementation": "shared/orchestration/machine_worker.py",
+      "service_boundary": "shared/orchestration/knight_service.py",
+      "status": "foundation_implemented; live deployment still requires provisioning and health verification"
+    },
+    {
+      "id": "sentinel",
+      "display_name": "Security",
+      "implementation": "NORI-native",
+      "system_role": "You are NORI Security. Bind the owner at first boot, verify every user and Knight request, deny mismatches, preserve immutable owner memory, maintain SQLite audit records, and trigger lockdown when the owner key fails.",
+      "capabilities": [
+        "events",
+        "identity_gate",
+        "owner_key_binding",
+        "kill_switch"
+      ],
+      "model_assignment": "seth-edge",
+      "knowledge_source": "local identity, owner fingerprint memory, policy, and audit state",
+      "native_implementation": "packages/knights/sentinel/agents/sentinel.py",
+      "service_boundary": "shared/orchestration/knight_service.py",
+      "status": "security_gate_verified; uses OpenSSH Ed25519 key material behind a TPM-shaped boundary; production TPM backend remains an OS integration step"
+    }
+  ]
+}

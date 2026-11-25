@@ -1,0 +1,8 @@
+# runtime + private vehicle data, never commit
+*.log
+*.out
+*.err
+*.wav
+sample.txt
+latest-recording.txt
+*-recording.txt

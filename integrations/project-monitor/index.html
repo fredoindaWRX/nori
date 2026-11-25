@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nori · Project Watch</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#090b14;color:#eef0fc}*{box-sizing:border-box}body{margin:0;padding:24px 18px 60px;max-width:820px;margin:auto}header{padding:18px 0 24px}.eyebrow{font-size:12px;letter-spacing:.15em;color:#b8a0ff}h1{font-size:32px;margin:8px 0}h2{font-size:17px;margin:0 0 13px}p{line-height:1.6}.muted{color:#a1aac0;font-size:13px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}.card{background:#141827;border:1px solid #2c3247;border-radius:16px;padding:20px;overflow-wrap:anywhere}.badge{display:inline-block;border:1px solid #685199;color:#d5c3ff;padding:5px 10px;border-radius:20px;font-size:12px;margin:0 0 18px}.value{font-size:27px;font-weight:650;margin:4px 0 12px}ul{padding-left:19px;line-height:1.7}.wide{grid-column:1/-1}button{background:#33234c;border:1px solid #8c65b9;color:white;border-radius:10px;padding:11px 15px;cursor:pointer}#error{color:#ffcf94}footer{margin-top:24px}code{font-size:12px;color:#c4cddd}
+</style></head><body>
+<header><div class="eyebrow">N.O.R.I. / PROJECT WATCH</div><h1>Progress, wherever you are.</h1><span class="badge">Read-only · Private connection · No AI calls</span><div id="connection" class="muted">Connecting to your PC…</div></header>
+<div id="error" role="alert"></div><main class="grid">
+<section class="card wide"><h2>Current work</h2><p id="summary">Waiting for evidence…</p><div class="muted" id="worktime"></div></section>
+<section class="card"><h2>Roadmap release</h2><div class="value" id="release">Waiting…</div><div id="roadmap" class="muted"></div></section>
+<section class="card"><h2>Development coordinator</h2><div class="value" id="coordinatorhead">Checking…</div><p class="muted" id="coordinator"></p><div class="muted" id="handoff"></div></section>
+<section class="card wide"><h2>Still needs verification</h2><ul id="blockers"></ul></section>
+<section class="card"><h2>Canonical source</h2><code id="commit">—</code><p id="source" class="muted"></p></section>
+<section class="card"><h2>Evidence freshness</h2><div id="evidence" class="muted"></div></section>
+</main><footer><button id="refresh" type="button">Refresh now</button><p class="muted">Refreshes every 20 seconds while this page is visible. This page cannot start workers, edit files, deploy, or merge code. An open Cline app does not prove a task is running.</p></footer>
+<script>
+const byId=id=>document.getElementById(id),time=value=>value?new Date(value).toLocaleString():'No report yet';let busy=false;
+function render(s){
+byId('error').textContent='';byId('connection').textContent='Connected · Checked '+time(s.observedAt);
+byId('summary').textContent=s.work.summary;byId('worktime').textContent='Work note: '+time(s.work.updatedAt);
+byId('release').textContent=s.roadmap?.available?s.roadmap.releaseState:'No roadmap evidence';
+byId('roadmap').textContent=s.roadmap?.available?s.roadmap.requirementCount+' requirements · '+s.roadmap.componentCount+' components tracked. These are scope counts, not passed checks. Updated: '+time(s.roadmap.updatedAt):'Release readiness cannot be established without current roadmap evidence.';
+byId('coordinatorhead').textContent=s.coordinator.head?.slice(0,7)??'Unavailable';
+byId('coordinator').textContent=s.coordinator.available?(s.coordinator.cleanTracked?'Tracked files unchanged. ':'Tracked changes detected. ')+'Task liveness is not verified.':'Coordinator source status unavailable. Task liveness is not verified.';
+byId('handoff').textContent='Historical handoff updated: '+time(s.evidence.handoff);
+const blockers=s.work.blockers.length?s.work.blockers:['No detailed outstanding-work report is available. An empty list does not mean the system is fully functional; consult the roadmap and end-to-end evidence.'];
+byId('blockers').replaceChildren(...blockers.map(text=>{const li=document.createElement('li');li.textContent=text;return li}));
+byId('commit').textContent=s.canonical.head?.slice(0,12)??'Unavailable';byId('source').textContent=s.canonical.available?(s.canonical.cleanTracked?'No tracked changes':s.canonical.changedTrackedFiles+' tracked file(s) modified; monitor is not editing them'):'Could not read source status';
+byId('evidence').textContent='Historical runtime report: '+time(s.evidence.runtime)+' · Historical free/local report: '+time(s.evidence.freeLocal);
+}
+async function update(){if(busy)return;busy=true;try{const root=location.pathname.endsWith('/')?location.pathname:location.pathname+'/';const r=await fetch(root+'api/status',{cache:'no-store'});if(!r.ok)throw Error('PC returned '+r.status);render(await r.json());}catch(e){byId('error').textContent='Cannot refresh: '+e.message+'. Previous results may be stale.';byId('connection').textContent='Disconnected — check PC, Tailscale and network.'}finally{busy=false}}
+byId('refresh').onclick=update;setInterval(()=>{if(!document.hidden)update()},20000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)update()});update();
+</script></body></html>

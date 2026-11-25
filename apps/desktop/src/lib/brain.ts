@@ -1,0 +1,146 @@
+import * as bridge from './bridge'
+import type { AskHandlers, Msg } from './anthropic'
+import type { Blade, Panel } from '../store'
+import type { PersonalityProfile } from '../../bridge/personality/profile.mjs'
+
+export type { AskHandlers, Msg }
+export type { ConnectionState } from './bridge'
+
+/**
+ * Nori uses only the loopback bridge and native Council/local chat routes.
+ * There is no direct browser provider or paid fallback. The historical type
+ * module name is retained solely for source compatibility.
+ */
+
+export const usingBridge = true
+
+/** Conversation state lives in the bridge session, so history is only threaded
+ *  through on the direct path. */
+export async function ask(
+  prompt: string,
+  history: Msg[],
+  handlers: AskHandlers,
+  image?: { data: string; mimeType: string } | null,
+  context?: string,
+  attachment?: { filename: string; text: string },
+): Promise<{ text: string; tools: string[] }> {
+  void history
+  return bridge.ask(prompt, handlers, image, context, attachment)
+}
+
+export async function warm(): Promise<void> {
+  await bridge.warmBridge()
+}
+
+export const setScreenMonitorActive = bridge.setScreenMonitorActive
+export const scanSharedScreen = bridge.scanSharedScreen
+export const getScreenPerceptionCapability = bridge.getScreenPerceptionCapability
+export const perceiveSharedScreen = bridge.perceiveSharedScreen
+export const watchPersonality = bridge.watchPersonality
+
+/** The bridge reports its server list twice — from config on connect, then
+ *  with live status once the agent boots — so the HUD subscribes. */
+export function watchServers(fn: (servers: string[]) => void): void {
+  if (usingBridge) bridge.watchServers(fn)
+}
+
+/** Tab commands from the `tabs` tool: show, hide, close or rename by number. */
+export function watchTabs(fn: bridge.TabsHandler): void {
+  if (usingBridge) bridge.watchTabs(fn)
+}
+
+/** Model, effort and roster, as the bridge reports them on every ready. */
+export function watchBridgeInfo(fn: (info: bridge.BridgeInfo) => void): void {
+  if (usingBridge) bridge.watchBridgeInfo(fn)
+}
+
+/** Change model or effort (conversation kept), or start a fresh one. */
+export function configure(patch: { model?: string; effort?: string; fresh?: boolean; personality?: Partial<PersonalityProfile> }): Promise<void> {
+  if (usingBridge) return bridge.configure(patch)
+  return Promise.reject(new Error('Nori’s local conversation service is unavailable.'))
+}
+
+/** HUD panels are pushed mid-turn by the `display` tool, not returned by ask(). */
+export function watchPanels(fn: (panel: Panel) => void): void {
+  if (usingBridge) bridge.watchPanels(fn)
+}
+
+/** Blades — the big surface — arrive the same way, from the `blade` tool. Like
+ *  panels and the ui_* commands, this is a bridge capability: the direct path
+ *  has no channel for a server to volunteer anything mid-turn. */
+export function watchBlades(fn: (blade: Blade) => void): void {
+  if (usingBridge) bridge.watchBlades(fn)
+}
+
+/**
+ * Redressing the interface — theme, reactor, orbiting objects, effects — is a
+ * bridge capability, like panels. The `ui_*` tools live in an in-process MCP
+ * server inside the bridge and push straight down the open socket, mid-turn.
+ * The direct path has no such channel: the browser talks to the Messages API
+ * over one-shot HTTPS requests and gets back an answer, with nowhere for a
+ * server to volunteer anything. On that backend this watcher simply never
+ * fires and the interface stays exactly as it ships.
+ */
+export function watchUi(fn: (op: string, args: any) => void): void {
+  if (usingBridge) bridge.watchUi(fn)
+}
+
+/**
+ * The one thing the bridge asks US for.
+ *
+ * Every other channel here is the bridge volunteering something mid-turn. A
+ * camera frame is the exception — the hardware is in the browser and the model
+ * is in the bridge — so this handler answers a request rather than receiving a
+ * push. Bridge-only for the same reason as the rest: the direct path is one-shot
+ * HTTPS, with nowhere for a request to arrive.
+ */
+export function watchCapture(
+  fn: (req: bridge.CaptureRequest) => Promise<bridge.CaptureResult>,
+): void {
+  if (usingBridge) bridge.watchCapture(fn)
+}
+
+/**
+ * Barge-in. Stops the answer on both paths and settles whatever `ask()` call
+ * is outstanding, so the caller's await always returns — on the bridge by
+ * interrupting the agent and resolving with the text so far, on the direct
+ * path by aborting the stream so the model stops generating and billing.
+ */
+export function cancel(): void {
+  if (usingBridge) bridge.cancel()
+}
+
+/** The older name for `cancel()`. */
+export function interrupt(): void {
+  cancel()
+}
+
+/**
+ * Whether the brain is reachable right now.
+ *
+ * Only meaningful on the bridge, where a live socket is the session. The direct
+ * path holds no connection between turns — each one is its own HTTPS request —
+ * so there is nothing that can be down until you try it.
+ */
+export function isConnected(): boolean {
+  return bridge.isConnected()
+}
+
+/**
+ * Connection state, for the UI.
+ *
+ * Worth surfacing because in bridge mode the socket *is* the conversation: all
+ * of N.O.R.I.'s memory of the exchange lives in the agent session behind it, so a
+ * drop wipes the conversation while the transcript on screen still shows it.
+ * Never fires on the direct path, which has no connection to lose.
+ */
+export function watchConnection(
+  fn: (state: bridge.ConnectionState) => void,
+): void {
+  if (usingBridge) bridge.watchConnection(fn)
+}
+
+/** Labels for the HUD's SYSTEMS rail. */
+export function connectedLabels(): string[] {
+  return bridge.bridgeServers()
+}

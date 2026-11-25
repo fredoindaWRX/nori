@@ -1,0 +1,5 @@
+threat-intel-brief skill for Nori
+Written for Nori by Claude (Anthropic) at Wil's request on 2026-11-14.
+Owned by Wil. For use within Wil's own Nori installation. No warranty.
+The two sources it reads (CISA KEV, ransomware.live) keep their own terms; ransomware.live's
+free use is personal and rate-limited, which this skill respects (two page reads per brief).

@@ -1,0 +1,16 @@
+/* Lightweight looping motion, rendered directly by OBS Browser Source. */
+.hero-symbol{transform-origin:center;animation:nori-float 10s ease-in-out infinite;will-change:transform;filter:drop-shadow(0 8px 28px #6c8eac25)}
+.brand-symbol{animation:nori-light 7s ease-in-out infinite}
+.ambient{animation:nori-atmosphere 18s ease-in-out infinite alternate;will-change:transform}
+.grid{animation:nori-grid 35s linear infinite}
+.star{animation:twinkle 9s ease-in-out infinite;opacity:.4}
+.rule{position:relative;overflow:hidden;width:240px;background:#48636e}
+.rule:after{content:'';position:absolute;inset:0;width:80px;background:linear-gradient(90deg,transparent,#9be6ef,transparent);animation:nori-scan 5s linear infinite}
+.live .top:after{content:'';position:absolute;bottom:-1px;left:0;height:2px;width:180px;background:linear-gradient(90deg,transparent,#76cbd6,transparent);animation:nori-header 18s linear infinite}
+@keyframes nori-float{0%,100%{transform:perspective(1400px) rotateY(-5deg) rotateX(2deg) translateY(0)}50%{transform:perspective(1400px) rotateY(5deg) rotateX(-2deg) translateY(-14px)}}
+@keyframes nori-light{0%,100%{filter:brightness(.92)}50%{filter:brightness(1.14)}}
+@keyframes nori-atmosphere{from{transform:translateX(-20px) scale(1.02);opacity:.55}to{transform:translateX(20px) scale(1.06);opacity:1}}
+@keyframes nori-grid{from{background-position:0 0}to{background-position:80px 80px}}
+@keyframes nori-scan{from{transform:translateX(-80px)}to{transform:translateX(320px)}}
+@keyframes nori-header{from{transform:translateX(-180px)}to{transform:translateX(2100px)}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important}}

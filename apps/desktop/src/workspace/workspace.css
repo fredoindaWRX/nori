@@ -1,0 +1,20 @@
+.workspace-toolbar{position:fixed;z-index:1000;height:27px;display:flex;align-items:center;gap:5px;pointer-events:none;color:#c9bddb;font:10px/1.2 'JetBrains Mono',monospace;letter-spacing:.12em}
+.workspace-drag{flex:1;align-self:stretch;display:flex;align-items:center;-webkit-app-region:drag;pointer-events:auto;opacity:.64}
+.workspace-toolbar button{pointer-events:auto;cursor:pointer;color:inherit;background:#100e19bd;border:1px solid #74618455;padding:4px 10px;letter-spacing:.08em;-webkit-app-region:no-drag}
+.workspace-toolbar button:hover{background:#473256}
+html[data-workspace] .scene{inset:auto!important;left:var(--workspace-nori-x,0px)!important;top:var(--workspace-nori-y,0px)!important;width:var(--workspace-nori-w,100vw)!important;height:var(--workspace-nori-h,100vh)!important}
+/* Content stays in one shared DOM, so a panel drag can cross the monitor edge. */
+html[data-workspace='span'] .blades-stack{inset:auto;left:var(--workspace-work-x);top:var(--workspace-work-y);width:var(--workspace-work-w);height:var(--workspace-work-h);overflow:visible}
+html[data-workspace='span'] .bl-full{width:calc(var(--workspace-work-w) * .92);height:calc(var(--workspace-work-h) * .88)}
+html[data-workspace='span'] .bl-expanded{width:calc(var(--workspace-work-w) * .94);height:calc(var(--workspace-work-h) * .92)}
+html[data-workspace='span'] .hud-top{left:var(--workspace-home-x);right:auto;top:calc(var(--workspace-home-y) + 48px);width:var(--workspace-home-w);box-sizing:border-box}
+html[data-workspace='span'] .textbar,html[data-workspace='span'] .log,html[data-workspace='span'] .hud-bottom{left:calc(var(--workspace-home-x) + var(--workspace-home-w) / 2);max-width:calc(var(--workspace-home-w) - 120px)}
+html[data-workspace='span'] .log{left:calc(var(--workspace-home-x) + max(384px, calc(var(--workspace-home-w) / 2 - 380px)));width:min(760px, calc(var(--workspace-home-w) - 578px));max-height:min(calc(var(--workspace-home-h) * .28), 220px);bottom:auto;top:calc(var(--workspace-home-y) + var(--workspace-home-h) - 155px);transform:translateY(-100%)}
+html[data-workspace='span'] .rail{top:calc(var(--workspace-home-y) + var(--workspace-home-h) / 2)}
+html[data-workspace='span'] .rail-left{left:calc(var(--workspace-home-x) + 60px)}
+html[data-workspace='span'] .rail-right{right:auto;left:calc(var(--workspace-home-x) + var(--workspace-home-w) - 145px)}
+html[data-workspace='span'] .workspace-drag{-webkit-app-region:no-drag}
+html[data-workspace='span'] .bl-tabs{left:calc(var(--workspace-work-x) + var(--workspace-work-w) / 2);top:calc(var(--workspace-work-y) + 43px);max-width:calc(var(--workspace-work-w) - 70px)}
+html[data-workspace='span'] .textbar{top:calc(var(--workspace-home-y) + var(--workspace-home-h) - 100px);bottom:auto}
+html[data-workspace='span'] .hud-bottom{top:calc(var(--workspace-home-y) + var(--workspace-home-h) - 43px);bottom:auto;transform:translateX(-50%);width:max-content}
+html[data-workspace='span'] .boot,html[data-workspace='span'] .ignition{inset:auto;left:var(--workspace-home-x);top:var(--workspace-home-y);width:var(--workspace-home-w);height:var(--workspace-home-h)}

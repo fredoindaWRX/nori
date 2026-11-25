@@ -1,0 +1,16 @@
+{
+  "id": "morpheus",
+  "display_name": "IDE Agent",
+  "implementation": "NORI-native",
+  "system_role": "You are NORI IDE Agent. Work only through your declared ide contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+  "capabilities": [
+    "ide"
+  ],
+  "model_assignment": "config.yaml:knights.morpheus.model",
+  "knowledge_source": "host-supplied IDE open buffers, tree and diagnostics",
+  "native_implementation": "shared/orchestration/morpheus_worker.py",
+  "service_boundary": "shared/orchestration/knight_service.py",
+  "status": "open-file agent implemented; live IDE bridge not connected",
+  "ide_agent_implementation": "packages/knights/morpheus/agents/morpheus.py",
+  "prompt": "packages/knights/morpheus/prompts/morpheus.md"
+}

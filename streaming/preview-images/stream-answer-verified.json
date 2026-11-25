@@ -1,0 +1,12 @@
+{
+  "question": "Why should I keep OBS on the monitor I am not capturing?",
+  "topic": "Building Nori and setting up a two-monitor stream",
+  "answer": "Keeping OBS on the monitor you're not capturing helps avoid showing the controls and private notes in the stream, which can be distracting and unprofessional. It also helps prevent the recursive preview effect, where the preview of the stream is shown on the same monitor as the stream itself, creating a weird visual effect.",
+  "generatedAt": "2026-10-01T15:36:19.517Z",
+  "model": "llama3.2-3b-instruct",
+  "backend": "norama-independent",
+  "localOnly": true,
+  "reviewRequired": true,
+  "postedToChat": false,
+  "obsControlled": false
+}

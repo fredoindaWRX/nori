@@ -1,0 +1,16 @@
+{
+  "id": "keymaker",
+  "display_name": "Research Agent",
+  "implementation": "NORI-native",
+  "system_role": "You are NORI Research Agent. Work only through your declared research contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+  "capabilities": [
+    "research"
+  ],
+  "model_assignment": "config.yaml:knights.keymaker.model",
+  "knowledge_source": "Oracle indexed corpus plus optional public web",
+  "native_implementation": "shared/orchestration/keymaker_worker.py",
+  "service_boundary": "shared/orchestration/knight_service.py",
+  "status": "research package tested; live synthesis and HTTP integration unverified",
+  "research_agent_implementation": "packages/knights/keymaker/agents/keymaker.py",
+  "prompt": "packages/knights/keymaker/prompts/keymaker.md"
+}

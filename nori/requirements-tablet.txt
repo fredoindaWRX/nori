@@ -1,0 +1,2 @@
+# PDF parsing for the PC-hosted vehicle bridge.
+pypdf==6.18.1

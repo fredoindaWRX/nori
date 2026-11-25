@@ -1,0 +1,13 @@
+{
+  "note": "Enrollment is owner-controlled. Do not scan or activate devices by address alone. Set transport_verified only after pairing and endpoint authentication are verified.",
+  "devices": [
+    {
+      "id": "living-room-vacuum",
+      "type": "vacuum",
+      "endpoint": "http://192.168.1.50",
+      "adapter": "vendor-vacuum-bridge",
+      "transport_verified": false,
+      "enabled": false
+    }
+  ]
+}

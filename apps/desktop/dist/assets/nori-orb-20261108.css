@@ -1,0 +1,114 @@
+/* Blue theme since 2026-11-16: her face is blue, so her interface text and panels are too (was amber). */
+/* Nori's interface in the Ultron look (ultron-orb-ui, MIT). The orb fills the window at the neural scene's
+   layer (z-index 3); every rule below is scoped to body.nori-orb-on, so Ctrl+Shift+O restores her original UI. */
+#nori-orb { position: fixed; inset: 0; z-index: 3; background: #000; }
+#nori-orb canvas { display: block; width: 100% !important; height: 100% !important; }
+#nori-orb::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, 0.65) 100%);
+}
+body.nori-orb-on .scene { display: none !important; }
+body.nori-orb-on { background: #000; }
+
+/* Film scanlines over the whole window, as in the original. */
+body.nori-orb-on::after {
+  content: ''; position: fixed; inset: 0; z-index: 3000; pointer-events: none; opacity: .22;
+  background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0, 0, 0, .18) 2px 4px);
+}
+
+/* The HUD root was an opaque panel over the orb. */
+body.nori-orb-on .hud.nori-workspace {
+  background: transparent !important;
+  --accent: #5aa2ff !important; --interface: #5aa2ff; --nori-core: #5aa2ff; --nori-vision: #8fc0ff;
+  color: #b9d6ff !important;
+  font-family: "Segoe UI", system-ui, sans-serif !important;
+}
+body.nori-orb-on .nori-workspace,
+body.nori-orb-on .nori-workspace button,
+body.nori-orb-on .nori-workspace input,
+body.nori-orb-on .nori-workspace textarea,
+body.nori-orb-on .nori-workspace select { font-family: "Segoe UI", system-ui, sans-serif !important; }
+
+/* Panels: smoked amber glass so the orb shows through. */
+body.nori-orb-on .nori-workspace .rail-left,
+body.nori-orb-on .nori-workspace .rail-right,
+body.nori-orb-on .nori-workspace .hud-top {
+  background: rgba(4, 9, 22, .62) !important; border-color: rgba(90, 162, 255, .28) !important;
+  color: #b9d6ff !important; -webkit-backdrop-filter: blur(5px) !important; backdrop-filter: blur(5px) !important;
+}
+body.nori-orb-on .nori-workspace .log {
+  background: rgba(2, 5, 14, .38) !important; border-color: rgba(90, 162, 255, .16) !important;
+  -webkit-backdrop-filter: none !important; backdrop-filter: none !important; scrollbar-color: #2a4f8f transparent !important;
+}
+body.nori-orb-on .nori-workspace .log-toolbar { background: rgba(4, 9, 22, .72) !important; color: #6fb0ff !important; border-color: rgba(90, 162, 255, .22) !important; }
+body.nori-orb-on .nori-workspace .log-line,
+body.nori-orb-on .nori-workspace .log-nori,
+body.nori-orb-on .nori-workspace .log-user { color: #dcebff !important; text-shadow: 0 0 6px #000, 0 1px 2px #000; }
+body.nori-orb-on .nori-workspace .log-who { color: #5aa2ff !important; }
+body.nori-orb-on .nori-workspace .textbar {
+  background: rgba(5, 11, 26, .82) !important; border: 1px solid rgba(90, 162, 255, .5) !important;
+  box-shadow: 0 0 16px rgba(70, 140, 255, .22) !important;
+}
+body.nori-orb-on .nori-workspace .textbar-input { color: #dcebff !important; caret-color: #5aa2ff; }
+body.nori-orb-on .nori-workspace .textbar-input::placeholder { color: #5f7fb0 !important; }
+body.nori-orb-on .nori-workspace .working-panel,
+body.nori-orb-on .nori-workspace .settings { background: rgba(5, 11, 26, .9) !important; border-color: rgba(90, 162, 255, .35) !important; color: #b9d6ff !important; }
+
+/* Controls. */
+body.nori-orb-on .nori-workspace .rail-btn,
+body.nori-orb-on .nori-workspace .mute-btn,
+body.nori-orb-on .nori-workspace .nori-new-chat,
+body.nori-orb-on .nori-workspace .workspace-toolbar button,
+body.nori-orb-on .nori-workspace .log-toolbar button,
+body.nori-orb-on .workspace-start-primary,
+body.nori-orb-on .workspace-start-secondary {
+  background: rgba(5, 11, 26, .55) !important; border: 1px solid rgba(90, 162, 255, .42) !important;
+  color: #5aa2ff !important; border-radius: 4px !important; text-shadow: 0 0 6px rgba(90, 162, 255, .55);
+}
+body.nori-orb-on .nori-workspace .rail-btn:hover,
+body.nori-orb-on .nori-workspace .mute-btn:hover,
+body.nori-orb-on .nori-workspace .nori-new-chat:hover,
+body.nori-orb-on .workspace-start-primary:hover,
+body.nori-orb-on .workspace-start-secondary:hover { background: rgba(18, 44, 104, .75) !important; border-color: #8fc0ff !important; }
+body.nori-orb-on .nori-workspace .rail-btn.is-on { background: rgba(22, 62, 150, .6) !important; border-color: #8fc0ff !important; color: #8fc0ff !important; }
+body.nori-orb-on .nori-workspace .rail-item:hover { background: rgba(90, 162, 255, .1) !important; }
+body.nori-orb-on .nori-workspace .rail-item .tick { background: #5aa2ff !important; box-shadow: 0 0 8px rgba(90, 162, 255, .6) !important; }
+body.nori-orb-on .nori-workspace .rail-right .meter { background: rgba(90, 162, 255, .16) !important; }
+body.nori-orb-on .nori-workspace .rail-right .meter-fill { background: #5aa2ff !important; }
+body.nori-orb-on .nori-workspace .tool-badge { background: rgba(22, 62, 150, .6) !important; color: #8fc0ff !important; border-color: rgba(90, 162, 255, .4) !important; }
+
+/* Text and headings. */
+body.nori-orb-on .nori-workspace .brand-mark,
+body.nori-orb-on .nori-workspace .workspace-inspector-heading,
+body.nori-orb-on .nori-workspace .nori-nav-label { color: #5aa2ff !important; text-shadow: 0 0 10px rgba(90, 162, 255, .7) !important; letter-spacing: .22em !important; }
+body.nori-orb-on .nori-workspace .brand-sub,
+body.nori-orb-on .nori-workspace .status,
+body.nori-orb-on .nori-workspace .settings-note,
+body.nori-orb-on .nori-workspace .rail-count { color: #7f9cc8 !important; }
+body.nori-orb-on .workspace-welcome,
+body.nori-orb-on .workspace-start-card { color: #dcebff !important; text-shadow: 0 0 8px #000, 0 1px 3px #000; }
+body.nori-orb-on .workspace-start-card p { color: #b9d6ff !important; }
+/* The orb is her presence now; the old emblem would sit on top of it. */
+body.nori-orb-on .workspace-emblem { display: none !important; }
+
+/* Panels added by later bundles (Activity, Personality) and the starter cards. */
+body.nori-orb-on .nori-workspace :is(.rail-left, .rail-right) :is(section, details) { background: rgba(5, 11, 26, .62) !important; border-color: rgba(90, 162, 255, .3) !important; }
+body.nori-orb-on .nori-workspace :is(.rail-left, .rail-right) :is(h1, h2, h3, p, small, strong, summary, li, label, div, span) { color: #b9d6ff !important; }
+body.nori-orb-on .nori-workspace :is(.rail-left, .rail-right) button,
+body.nori-orb-on .workspace-starters button,
+body.nori-orb-on .workspace-model-card,
+body.nori-orb-on .workspace-quit,
+body.nori-orb-on .textbar-attach,
+body.nori-orb-on .workspace-send,
+body.nori-orb-on .workspace-view-button {
+  background: rgba(5, 11, 26, .72) !important; border-color: rgba(90, 162, 255, .42) !important; color: #8fc0ff !important;
+}
+body.nori-orb-on .workspace-starters button:hover,
+body.nori-orb-on .workspace-model-card:hover,
+body.nori-orb-on .nori-workspace :is(.rail-left, .rail-right) button:hover { background: rgba(18, 44, 104, .8) !important; border-color: #8fc0ff !important; }
+body.nori-orb-on .workspace-view-button:is([aria-pressed="true"], .is-active, .active) { background: rgba(30, 84, 190, .75) !important; color: #dcebff !important; }
+body.nori-orb-on .workspace-welcome p { display: inline-block; padding: 4px 10px; background: rgba(0, 0, 0, .5); border-radius: 4px; }
+body.nori-orb-on .workspace-welcome h1 { text-shadow: 0 0 14px #000, 0 2px 4px #000 !important; }
+body.nori-orb-on .nori-mode-switch { background: rgba(5, 11, 26, .7) !important; border-color: rgba(90, 162, 255, .4) !important; }
+body.nori-orb-on .nori-mode-switch button { color: #8fc0ff !important; }
+body.nori-orb-on .nori-mode-switch button[aria-pressed="true"] { background: rgba(30, 84, 190, .8) !important; color: #dcebff !important; box-shadow: 0 0 14px rgba(80, 150, 255, .4) !important; }

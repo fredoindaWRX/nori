@@ -1,0 +1,11 @@
+{
+  "note": "Device addresses are examples. Enable entries only after verifying their physical device and installed adapter. Unavailable drivers are reported degraded, never simulated.",
+  "sensors": [
+    {"id":"cam_front","type":"vision","driver":"opencv","source":"0","interval":2,"enabled":false},
+    {"id":"gps_main","type":"position","driver":"pynmea2","source":"COM4","interval":1,"enabled":false},
+    {"id":"imu_1","type":"motion","driver":"mpu6050","source":"/dev/i2c-1","interval":0.1,"enabled":false},
+    {"id":"ir_range","type":"range","driver":"vl53l1x","source":"/dev/i2c-1","interval":0.5,"enabled":false},
+    {"id":"ble_scanner","type":"network","driver":"bleak","interval":5,"enabled":false},
+    {"id":"obd_foxwell","type":"vehicle","driver":"foxwell_serial","source":"COM3","interval":2,"enabled":false}
+  ]
+}

@@ -1,0 +1,15 @@
+const test = require('node:test')
+const assert = require('node:assert/strict')
+const { installationIntent } = require('../desktop/installation-intent.cjs')
+test('modify intent survives startup until consumed by ready window', () => {
+  const intent = installationIntent([])
+  intent.request(['Nori.exe', '--manage-installation'])
+  intent.request(['Nori.exe'])
+  assert.equal(intent.pending(), true)
+  assert.equal(intent.consume(), true)
+  assert.equal(intent.consume(), false)
+})
+test('initial modify command is retained and normal launch stays closed', () => {
+  assert.equal(installationIntent(['--manage-installation']).pending(), true)
+  assert.equal(installationIntent([]).consume(), false)
+})

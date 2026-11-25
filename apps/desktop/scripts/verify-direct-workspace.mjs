@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {readFileSync,writeFileSync,rmSync,realpathSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {createHash} from 'node:crypto';
+import vm from 'node:vm';
+const req=createRequire(import.meta.url),a=req('@electron/asar'),ts=req('typescript'),hash=b=>createHash('sha256').update(b).digest('hex');
+const target='C:/Program Files/Nori/resources/app.asar',stage='C:/Nori/.work/direct-workspace',nextArchive=stage+'/app.asar.next',norm=x=>x.replaceAll('\\','/');
+const beforeNames=a.listPackage(target),afterNames=a.listPackage(nextArchive),afterMap=new Map(afterNames.map(n=>[norm(n.slice(1)),n.slice(1)]));
+const next=afterNames.map(n=>norm(n.slice(1))).find(n=>/^dist\/assets\/index-[a-f0-9]{16}\.js$/.test(n));assert.ok(next);
+const s=a.extractFile(nextArchive,afterMap.get(next)).toString();assert.equal(next,'dist/assets/index-'+hash(Buffer.from(s)).slice(0,16)+'.js');
+assert.equal(ts.createSourceFile('renderer.js',s,ts.ScriptTarget.Latest,true,ts.ScriptKind.JS).parseDiagnostics.length,0);
+const gate='function iZ({onSkip:t}){(0,m.useEffect)(()=>{t()},[]);return null}';assert.ok(s.includes(gate));assert.ok(s.includes('onSkip:()=>void ee(!0)'));assert.ok(s.includes('function HQ(){IQ=!1}'));assert.ok(!s.includes('Systems are now online.'));assert.ok(s.includes('Enable voice input'));
+let skips=0;const effects=[];const c=vm.createContext({m:{useEffect:f=>effects.push(f)},skip:()=>skips++});vm.runInContext(gate,c);assert.equal(vm.runInContext('iZ({onSkip:skip})',c),null);effects[0]();assert.equal(skips,1);
+const removed=['dist/assets/index-ari1On6a.js','dist/audio/work.mp3','dist/video/nori-entity-startup.mp4','dist/video/nori-startup.mp4'];
+const beforeSet=new Set(beforeNames.map(n=>norm(n.slice(1))));assert.deepEqual(afterNames.map(n=>norm(n.slice(1))).filter(n=>!beforeSet.has(n)),[next]);assert.deepEqual([...beforeSet].filter(n=>!afterMap.has(n)).sort(),removed.slice().sort());
+const html=a.extractFile(nextArchive,afterMap.get('dist/index.html')).toString();assert.ok(html.includes('/'+next.slice(5)));assert.ok(!html.includes('index-ari1On6a.js'));
+let checked=0;for(const n of beforeNames){const p=norm(n.slice(1));if(removed.includes(p)||p==='dist/index.html')continue;const old=a.statFile(target,n.slice(1)),fresh=a.statFile(nextArchive,afterMap.get(p));for(const k of ['unpacked','executable','link'])assert.deepEqual(old[k],fresh[k]);if(old.files)continue;assert.equal(hash(a.extractFile(target,n.slice(1))),hash(a.extractFile(nextArchive,afterMap.get(p))),p);checked++}
+const plan={target,source:nextArchive,before:hash(readFileSync(target)),after:hash(readFileSync(nextArchive)),verified:true,removed,changed:['dist/index.html',next],newRenderer:next,checks:{directWorkspaceEffect:true,noWelcomeGate:true,skipIntroCallbackPreserved:true,syntaxValid:true,unchangedFilesVerified:checked,uniqueAssetUrl:true,musicPreloadDisabled:true}};
+writeFileSync(stage+'/plan.json',JSON.stringify(plan,null,2));console.log(JSON.stringify(plan));
+const work=stage+'/code-workspace';assert.equal(realpathSync(work).toLowerCase(),resolve(work).toLowerCase());rmSync(work,{recursive:true});

@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-01",
+  "asset": "C:\\Nori\\streaming\\channel-assets\\fredo-profile-photo-v2.png",
+  "size": [
+    1254,
+    1254
+  ],
+  "bytes": 2014899,
+  "mode": "Built-in image generation, identity-preserving photo edit",
+  "reference": "C:/Users/Studio/Pictures/488924936_1977117449486040_3193506081902290240_n.jpg",
+  "prompt_summary": "Preserve owner facial identity, age, smile, cap and sunglasses; square circle-safe headshot; navy studio background, cobalt and amber light; no text or additional people.",
+  "crop_visually_reviewed": true,
+  "uploaded_to_studio": true,
+  "publish_attempted": true,
+  "published": true,
+  "blocker": null,
+  "public_picture_change_verified": true,
+  "proof": "fredo-profile-public-verified.png",
+  "verification_observed_date": "2026-10-01",
+  "verification": "Studio All changes saved, Publish disabled; fresh public channel screenshot matches prepared owner headshot and banner.",
+  "identity_verification_completed_by_agent": false,
+  "observed_channel_video_count": 53,
+  "observed_channel_subscriber_display": "1.33K",
+  "growth_measured": false
+}

@@ -1,0 +1,373 @@
+{
+  "name": "Nori Stream",
+  "current_scene": "Starting Soon",
+  "current_program_scene": "Starting Soon",
+  "scene_order": [
+    {
+      "name": "Starting Soon"
+    },
+    {
+      "name": "Coding"
+    },
+    {
+      "name": "Nori Demo"
+    },
+    {
+      "name": "Discord Community"
+    },
+    {
+      "name": "Break"
+    },
+    {
+      "name": "Ending"
+    }
+  ],
+  "sources": [
+    {
+      "name": "Graphics — Starting Soon",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "settings": {
+        "is_local_file": true,
+        "local_file": "C:/Nori/streaming/scenes/starting-soon.html",
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "fps_custom": true,
+        "shutdown": true,
+        "restart_when_active": false,
+        "css": "body { margin: 0; overflow: hidden; background: transparent; }"
+      },
+      "mixers": 0,
+      "muted": true,
+      "enabled": true
+    },
+    {
+      "name": "Starting Soon",
+      "id": "scene",
+      "versioned_id": "scene",
+      "settings": {
+        "id_counter": 1,
+        "items": [
+          {
+            "name": "Graphics — Starting Soon",
+            "id": 1,
+            "visible": true,
+            "locked": true,
+            "rot": 0,
+            "pos": {
+              "x": 0,
+              "y": 0
+            },
+            "scale": {
+              "x": 1,
+              "y": 1
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds": {
+              "x": 0,
+              "y": 0
+            },
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "Graphics — Coding",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "settings": {
+        "is_local_file": true,
+        "local_file": "C:/Nori/streaming/scenes/coding.html",
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "fps_custom": true,
+        "shutdown": true,
+        "restart_when_active": false,
+        "css": "body { margin: 0; overflow: hidden; background: transparent; }"
+      },
+      "mixers": 0,
+      "muted": true,
+      "enabled": true
+    },
+    {
+      "name": "Coding",
+      "id": "scene",
+      "versioned_id": "scene",
+      "settings": {
+        "id_counter": 1,
+        "items": [
+          {
+            "name": "Graphics — Coding",
+            "id": 1,
+            "visible": true,
+            "locked": true,
+            "rot": 0,
+            "pos": {
+              "x": 0,
+              "y": 0
+            },
+            "scale": {
+              "x": 1,
+              "y": 1
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds": {
+              "x": 0,
+              "y": 0
+            },
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "Graphics — Nori Demo",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "settings": {
+        "is_local_file": true,
+        "local_file": "C:/Nori/streaming/scenes/nori-demo.html",
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "fps_custom": true,
+        "shutdown": true,
+        "restart_when_active": false,
+        "css": "body { margin: 0; overflow: hidden; background: transparent; }"
+      },
+      "mixers": 0,
+      "muted": true,
+      "enabled": true
+    },
+    {
+      "name": "Nori Demo",
+      "id": "scene",
+      "versioned_id": "scene",
+      "settings": {
+        "id_counter": 1,
+        "items": [
+          {
+            "name": "Graphics — Nori Demo",
+            "id": 1,
+            "visible": true,
+            "locked": true,
+            "rot": 0,
+            "pos": {
+              "x": 0,
+              "y": 0
+            },
+            "scale": {
+              "x": 1,
+              "y": 1
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds": {
+              "x": 0,
+              "y": 0
+            },
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "Graphics — Discord Community",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "settings": {
+        "is_local_file": true,
+        "local_file": "C:/Nori/streaming/scenes/discord-community.html",
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "fps_custom": true,
+        "shutdown": true,
+        "restart_when_active": false,
+        "css": "body { margin: 0; overflow: hidden; background: transparent; }"
+      },
+      "mixers": 0,
+      "muted": true,
+      "enabled": true
+    },
+    {
+      "name": "Discord Community",
+      "id": "scene",
+      "versioned_id": "scene",
+      "settings": {
+        "id_counter": 1,
+        "items": [
+          {
+            "name": "Graphics — Discord Community",
+            "id": 1,
+            "visible": true,
+            "locked": true,
+            "rot": 0,
+            "pos": {
+              "x": 0,
+              "y": 0
+            },
+            "scale": {
+              "x": 1,
+              "y": 1
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds": {
+              "x": 0,
+              "y": 0
+            },
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "Graphics — Break",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "settings": {
+        "is_local_file": true,
+        "local_file": "C:/Nori/streaming/scenes/break.html",
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "fps_custom": true,
+        "shutdown": true,
+        "restart_when_active": false,
+        "css": "body { margin: 0; overflow: hidden; background: transparent; }"
+      },
+      "mixers": 0,
+      "muted": true,
+      "enabled": true
+    },
+    {
+      "name": "Break",
+      "id": "scene",
+      "versioned_id": "scene",
+      "settings": {
+        "id_counter": 1,
+        "items": [
+          {
+            "name": "Graphics — Break",
+            "id": 1,
+            "visible": true,
+            "locked": true,
+            "rot": 0,
+            "pos": {
+              "x": 0,
+              "y": 0
+            },
+            "scale": {
+              "x": 1,
+              "y": 1
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds": {
+              "x": 0,
+              "y": 0
+            },
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "Graphics — Ending",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "settings": {
+        "is_local_file": true,
+        "local_file": "C:/Nori/streaming/scenes/ending.html",
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "fps_custom": true,
+        "shutdown": true,
+        "restart_when_active": false,
+        "css": "body { margin: 0; overflow: hidden; background: transparent; }"
+      },
+      "mixers": 0,
+      "muted": true,
+      "enabled": true
+    },
+    {
+      "name": "Ending",
+      "id": "scene",
+      "versioned_id": "scene",
+      "settings": {
+        "id_counter": 1,
+        "items": [
+          {
+            "name": "Graphics — Ending",
+            "id": 1,
+            "visible": true,
+            "locked": true,
+            "rot": 0,
+            "pos": {
+              "x": 0,
+              "y": 0
+            },
+            "scale": {
+              "x": 1,
+              "y": 1
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds": {
+              "x": 0,
+              "y": 0
+            },
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0
+          }
+        ]
+      }
+    }
+  ],
+  "groups": [],
+  "transitions": [
+    {
+      "name": "Fade",
+      "id": "fade_transition",
+      "settings": {}
+    }
+  ],
+  "current_transition": "Fade",
+  "transition_duration": 350,
+  "quick_transitions": [],
+  "saved_projectors": [],
+  "resolution": {
+    "x": 1920,
+    "y": 1080
+  }
+}

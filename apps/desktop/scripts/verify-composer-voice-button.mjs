@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {readFileSync,existsSync,writeFileSync} from 'node:fs';
+import vm from 'node:vm';
+const stage='C:/Nori/.work/composer-voice-button', a=createRequire(import.meta.url)('@electron/asar');
+const p=stage+'/app.asar.next';
+const s=existsSync(p)?a.extractFile(p,'dist\\assets\\index-ari1On6a.js').toString():readFileSync(stage+'/code-workspace/dist/assets/index-ari1On6a.js','utf8');
+const marker=s.indexOf('`Enable voice input`'); assert.ok(marker>0);
+const start=s.lastIndexOf('(0,J.jsx)(`button`',marker),end=s.indexOf(',ce||g===`speaking`?',marker);
+assert.ok(start>0&&end>start); const expression=s.slice(start,end);
+const c=vm.createContext({P:true,le:value=>{c.P=value},J:{jsx:(type,props)=>({type,...props})}});
+const render=()=>vm.runInContext(expression,c);
+let b=render();assert.equal(b.type,'button');assert.equal(b['aria-pressed'],false);assert.equal(b['aria-label'],'Enable voice input');assert.equal(b.type,'button');assert.equal(c.P,true);
+b.onClick();assert.equal(c.P,false);b=render();assert.equal(b['aria-pressed'],true);assert.equal(b['aria-label'],'Disable voice input');
+b.onClick();assert.equal(c.P,true);assert.equal(render()['aria-pressed'],false);
+assert.ok(s.includes('function qQ(e){GQ(`work`,0,1400)}'));assert.ok(!s.includes('Systems are now online.'));
+const result={passed:true,checks:['render does not enable microphone','button does not submit form','enable toggles existing mic setter','pressed state and accessible label follow mic','disable turns mic off','music correction preserved','automatic introduction remains removed'],microphoneOpened:false};
+writeFileSync(stage+'/button-verification.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));

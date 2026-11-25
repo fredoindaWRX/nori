@@ -1,0 +1,17 @@
+packages:
+  - name: numpy
+    version: "<3"
+  - name: requests
+    version: "<3"
+  # Runtime health snapshots use psutil for CPU, memory, disk, process, and
+  # boot-time metrics. Keep it in the approved set so fresh installs are
+  # self-contained instead of failing when system_agent is first loaded.
+  - name: psutil
+    version: ">=5.9,<8"
+  - name: packaging
+    version: ">=23,<27"
+  # N.O.R.I.'s local workspace evidence is verified with pytest. It is an
+  # approved development-only dependency; it does not grant network or system
+  # control and is installed only into the Python runtime that starts Nori.
+  - name: pytest
+    version: ">=8,<9"

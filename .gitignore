@@ -1,0 +1,78 @@
+# --- Python environments (do not version) ---
+.venvs/
+.venv*/
+.venv-architect/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Logs and runtime state ---
+logs/
+*.log
+runtime-data/
+runtime_data/
+*.db
+*.sqlite
+*.sqlite3
+health/*.json
+health/*.lock
+
+# --- Scratch / working space ---
+scratch/
+tmp/
+*.tmp
+
+# --- Secrets and credentials ---
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+*.token
+credentials*.json
+client_secret*.json
+secrets/
+
+# --- Local model payloads and vendored binaries ---
+*.gguf
+*.safetensors
+*.onnx
+*.ckpt
+model-store/
+deep-model-store/
+ollama/
+tools/ComfyUI/
+
+# --- OS/editor noise ---
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# --- Owned native test artifacts and private consolidated state ---
+# Reviewed exclusions, not a blind restore of the lost working-copy rules.
+/verification/.native-*-probe-*/
+/verification/.audit-close-test-*/
+/verification/.proactive-close-test-*/
+/verification/.memory-recovery-test-*/
+/verification/voice-probes/
+/state/
+/runtime/voice/python310/
+/runtime/voice/packages/
+/runtime/stt/packages/
+/runtime/electron/
+/python/Python311/
+
+# Scratch-trained local model payloads, never a blanket source checkpoint.
+*.nori
+*.ndt
+/verification/.nori-model-test-*/
+/verification/.nori-native-test-*/
+
+# Isolated Git-managed development lanes are not product payload or nested source.
+/dev/worktrees/

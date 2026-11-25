@@ -1,0 +1,16 @@
+{
+  "provider": "github",
+  "owner": "fredoindaWRX",
+  "profile_url": "https://github.com/fredoindaWRX",
+  "source": "User supplied destination in this task",
+  "authentication_status": "Connected browser signed in as fredoindaWRX; Architect fork creation verified. Git Credential Manager has no usable HTTPS credentials: noninteractive push rejected before upload.",
+  "published_repositories": [
+    {
+      "knight": "architect",
+      "url": "https://github.com/fredoindaWRX/nori-architect",
+      "status": "upstream fork created; NORI implementation committed locally as 4f04c04, not yet pushed"
+    }
+  ],
+  "local_architect_branch": "nori-architect",
+  "local_architect_upstream_commit": "894898f84c4ac0a89f24bf7bee6c381eb0e67f51"
+}

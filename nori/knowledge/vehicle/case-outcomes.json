@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "case_id": "2013-silverado-l96-stall-20260915",
+      "vehicle": "2013 Chevrolet Silverado 6.0L L96",
+      "outcome": "bad fuel",
+      "outcome_status": "owner_confirmed_resolved",
+      "recorded_at": "2026-09-18",
+      "observed_clues": [
+        "intermittent stumble and stall",
+        "steady reported rail pressure did not exclude fuel contamination",
+        "unusual chemical exhaust odor",
+        "no black smoke reported",
+        "owner observed a light surface layer with a slight foamy white boundary in the fuel sample",
+        "symptoms resolved after the suspect fuel was diluted with fresh gasoline",
+        "scanner data showed effects but did not measure fuel composition"
+      ],
+      "lesson": "When pressure is acceptable but combustion is unstable and fuel quality is unverified, include an early representative fuel-sample inspection. Do not infer contamination from OBD data alone.",
+      "provenance": "Owner-reported visual sample evidence and resolved outcome; contaminant identity not independently laboratory verified"
+    }
+  ]
+}

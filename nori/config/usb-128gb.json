@@ -1,0 +1,18 @@
+{
+  "schema": "nori.usb.capacity-profile.v1",
+  "name": "NORI 128 GB clean-install USB capacity budget",
+  "purpose": "clean-install-media",
+  "persistent_owner_data_location": "installed-device-storage",
+  "media_bytes": 128000000000,
+  "reserve_bytes": 32000000000,
+  "filesystem_overhead_bytes": 4000000000,
+  "allocation_unit_bytes": 4096,
+  "notes": [
+    "128 GB means decimal manufacturer capacity, approximately 119.21 GiB.",
+    "Keep 32 GB as conservative installer-media headroom; this is not the installed user's memory/database allocation.",
+    "Allow another 4 GB for filesystem metadata, boot partitions and unmodeled overhead.",
+    "Select the complete clean installer, essential application/runtime and qualified starter model payload explicitly; not the developer workspace or every available model.",
+    "Never include existing owner credentials, identity keys, conversations, personal files, memories or populated user databases. Provision fresh owner state on the installed device.",
+    "Capacity approval does not certify a complete runtime, bootability, portability or hardware support."
+  ]
+}

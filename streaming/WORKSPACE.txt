@@ -1,0 +1,44 @@
+NORI / ANIMATED STREAM WORKSPACE
+Updated September 30, 2026.
+Active OBS collection: Nori Animated Monitors. Imported and selected in OBS.
+Original Untitled OBS collection preserved. YouTube profile/account not changed.
+All production assets remain under C:\Nori\streaming; Nori core not modified.
+
+10 scenes: Starting Soon; Coding — Monitor 1; Coding — Monitor 2;
+Nori Demo — Monitor 1; Nori Demo — Monitor 2; Coding; Nori Demo;
+Discord Community; Break; Ending.
+The plain Coding/Demo scenes are reserved window layouts without a bound window.
+Both full-monitor captures were inspected in OBS and display different monitors.
+Monitor 1 is LS28AG700N at 3840x2160; Monitor 2 is HP Pavilion32 at 2560x1440.
+All four monitor scenes fit the actual capture into the 1824x840 content frame
+with aspect ratio preserved. Connected display targets and previews inspected.
+The original fixed-scale capture could overrun the frame on the 4K monitor;
+this was corrected and verified in the reopened OBS collection.
+Canvas/output frame rate currently 30 fps. Fade transition 350 ms.
+
+Animation: floating/tilting Nori symbol, moving grid, atmospheric light, twinkling
+stars, cyan sweep. Runs locally in OBS Browser Source, without external services.
+This is animated artwork made from the rendered symbol, not a 3D model file.
+
+MIC — SteelSeries Sonar: separate source, muted; signal observed in mixer.
+GUESTS — Discord: separate application-audio source, muted. Discord was not
+running during setup, so a live guest audio test is still required.
+No global desktop audio in the new collection. No camera added.
+Starting Soon, Break and Ending contain no mic or guest source.
+Music licensing notes saved; no track files downloaded/loaded yet.
+Streaming was not started. An actual 18.9-second local Starting Soon to Break
+recording was decoded and five extracted frames reviewed. It contains graphics
+only and does not verify active microphone/Discord audibility.
+OBS is left on Starting Soon after monitor checks.
+
+preview.html: animated scene previews
+producer.html: local manual producer desk; does not remotely operate OBS
+obs/Nori-Animated-Monitors.json: imported collection backup
+LIVE-SETUP.txt: operation notes and outstanding sound check
+assets/nori-symbol-3d.png: transparent Nori artwork
+music/LICENSE-NOTES.txt: verified provider license reference
+
+OBS's YouTube control-panel web dock currently shows a sign-in page. This does
+not by itself establish the state of OBS's stream-service authorization. No login
+or broadcasting was attempted. User may need to sign into the dock themselves.
+Browser validation passed for all ten graphics, actual animation progression and producer-panel controls.

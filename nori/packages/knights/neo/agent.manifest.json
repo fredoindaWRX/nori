@@ -1,0 +1,30 @@
+{
+  "id": "neo",
+  "display_name": "Neo \u2014 Software Engineer",
+  "implementation": "NORI-native",
+  "system_role": "You are NORI Software Engineer. Work only through your declared coding contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+  "capabilities": [
+    "coding"
+  ],
+  "model_assignment": {
+    "development_adapter": "ollama/devstral",
+    "base_url": "http://127.0.0.1:11434",
+    "product_route": "seth-code",
+    "note": "Ollama is an optional local development adapter; Seth remains NORI-owned model-service boundary."
+  },
+  "knowledge_source": "Approved repository workspace indexed through Neo local code tools.",
+  "native_implementation": "shared/orchestration/neo_worker.py",
+  "service_boundary": "shared/orchestration/knight_service.py",
+  "status": "native_tool_contract_verified; CrewAI adapter implemented but optional dependency is not installed in this environment",
+  "system_prompt": "prompts/neo.md",
+  "agent_adapter": "agents/neo.py",
+  "mcp_tools": "tools/neo_tools.py",
+  "integration_test": "tests/test_neo.py",
+  "boundaries": [
+    "No browser access; Apoc owns browser automation.",
+    "No research access; Keymaker owns research and citations.",
+    "No access to Sentinel, identity, key, TPM, recovery, or permission-system paths.",
+    "No external network access.",
+    "Workspace writes require explicit caller approval."
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "date": "2026-09-30T19:59:35.626286",
+  "active_collection": "C:\\Users\\Studio\\AppData\\Roaming\\obs-studio\\basic\\scenes\\Nori_Animated_Monitors.json",
+  "backup": "C:\\Nori\\streaming\\obs\\backups\\Nori-Animated-Monitors-before-auto-fit-20260930-195935.json",
+  "reason": "Native OBS showed Monitor 1 at 3840x2160 and its item at 2240x1260, extending beyond the 1824x840 content frame. Fit inside the actual overlay content rectangle and preserve aspect ratio regardless of capture resolution.",
+  "bounds_type": {
+    "value": 2,
+    "name": "OBS_BOUNDS_SCALE_INNER",
+    "source": "https://github.com/obsproject/obs-studio/blob/32.2.2/libobs/obs.h"
+  },
+  "changes": [
+    {
+      "scene": "Coding — Monitor 1",
+      "capture": "Capture — Monitor 1",
+      "before": {
+        "pos": {
+          "x": 213.5,
+          "y": 136.0
+        },
+        "scale": {
+          "x": 0.5833333134651184,
+          "y": 0.5833333134651184
+        },
+        "bounds_type": 2,
+        "bounds_align": 0,
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "crop_to_bounds": null,
+        "locked": true
+      },
+      "after": {
+        "pos": {
+          "x": 48.0,
+          "y": 136.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "bounds_type": 2,
+        "bounds_align": 0,
+        "bounds": {
+          "x": 1824.0,
+          "y": 840.0
+        },
+        "crop_to_bounds": false,
+        "locked": true
+      }
+    },
+    {
+      "scene": "Nori Demo — Monitor 1",
+      "capture": "Capture — Monitor 1",
+      "before": {
+        "pos": {
+          "x": 213.5,
+          "y": 136.0
+        },
+        "scale": {
+          "x": 0.5833333134651184,
+          "y": 0.5833333134651184
+        },
+        "bounds_type": 2,
+        "bounds_align": 0,
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "crop_to_bounds": null,
+        "locked": true
+      },
+      "after": {
+        "pos": {
+          "x": 48.0,
+          "y": 136.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "bounds_type": 2,
+        "bounds_align": 0,
+        "bounds": {
+          "x": 1824.0,
+          "y": 840.0
+        },
+        "crop_to_bounds": false,
+        "locked": true
+      }
+    },
+    {
+      "scene": "Coding — Monitor 2",
+      "capture": "Capture — Monitor 2",
+      "before": {
+        "pos": {
+          "x": 213.5,
+          "y": 136.0
+        },
+        "scale": {
+          "x": 0.5833333134651184,
+          "y": 0.5833333134651184
+        },
+        "bounds_type": 2,
+        "bounds_align": 0,
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "crop_to_bounds": null,
+        "locked": true
+      },
+      "after": {
+        "pos": {
+          "x": 48.0,
+          "y": 136.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "bounds_type": 2,
+        "bounds_align": 0,
+        "bounds": {
+          "x": 1824.0,
+          "y": 840.0
+        },
+        "crop_to_bounds": false,
+        "locked": true
+      }
+    },
+    {
+      "scene": "Nori Demo — Monitor 2",
+      "capture": "Capture — Monitor 2",
+      "before": {
+        "pos": {
+          "x": 213.5,
+          "y": 136.0
+        },
+        "scale": {
+          "x": 0.5833333134651184,
+          "y": 0.5833333134651184
+        },
+        "bounds_type": 2,
+        "bounds_align": 0,
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "crop_to_bounds": null,
+        "locked": true
+      },
+      "after": {
+        "pos": {
+          "x": 48.0,
+          "y": 136.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "bounds_type": 2,
+        "bounds_align": 0,
+        "bounds": {
+          "x": 1824.0,
+          "y": 840.0
+        },
+        "crop_to_bounds": false,
+        "locked": true
+      }
+    }
+  ],
+  "verification_status": "OBS reopened and actual Coding and Nori Demo monitor previews inspected; complete desktop fits inside the content frame. Saved active collection has all four aspect-preserving bounds and two distinct connected display targets.",
+  "audio_and_stream_settings_changed": false,
+  "connected_display_names": {
+    "Monitor 1": "LS28AG700N: 3840x2160 @ 0,0 (Primary Monitor)",
+    "Monitor 2": "HP Pavilion32: 2560x1440 @ -2560,0"
+  },
+  "corrected_relative_transform_compatibility": "Removed stale pos_rel, scale_rel and bounds_rel before reload so OBS 32.2.2 converts the corrected absolute values, per its native loader.",
+  "preview_privacy": "Full monitor previews contained private app content and were inspected locally only; they were not exported into channel assets or published.",
+  "local_recording": {
+    "file": "channel-operator/02-Calendar/Week-1/W1-MAIN/live-captures/obs-starting-to-break-actual.mp4",
+    "duration_seconds": 18.9,
+    "decode": "passed",
+    "actual_frames_inspected": 5,
+    "audio_scope": "Graphics-only sample silent; no active microphone or guest audibility verification."
+  }
+}

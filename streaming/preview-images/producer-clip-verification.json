@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "checks": [
+    "Unstarted clip prompt",
+    "Timestamped clip marker",
+    "Running timer survives reload",
+    "Paused timer survives reload",
+    "Clip survives reload",
+    "Export includes timestamp and scene",
+    "Marker removal persists",
+    "Timer reset persists"
+  ],
+  "visual_browser_review": false,
+  "live_connections": false
+}

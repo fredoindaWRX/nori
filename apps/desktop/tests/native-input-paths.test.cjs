@@ -1,0 +1,11 @@
+const test=require('node:test')
+const assert=require('node:assert/strict')
+const {join}=require('node:path')
+const {nativeInputPaths}=require('../desktop/input-paths.cjs')
+test('native input uses root-contained interpreter/launcher and isolated arguments',()=>{
+  const root=join('C:','Relocated Nori')
+  const paths=nativeInputPaths(root)
+  assert.equal(paths.python,join(root,'python','Python311','python.exe'))
+  assert.deepEqual(paths.args,['-I','-B',join(root,'runtime','input','launch_worker.py')])
+  assert.equal(paths.cwd,root)
+})

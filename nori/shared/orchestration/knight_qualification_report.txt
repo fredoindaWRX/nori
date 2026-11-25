@@ -1,0 +1,110 @@
+NORI KNIGHT QUALIFICATION REPORT (nori.knight-qualification.v1)
+edition=home evaluated_at=2026-10-02T02:58:56.286913+00:00 source_revision=838244d
+
+KNIGHT apoc qualified=False
+  gates: registry_configuration=PASS real_capability_task=FAIL permission_denial_no_side_effect=PASS cancellation_or_timeout=FAIL dependency_failure_recovery=FAIL audit_verification=PASS package_install_verification=FAIL edition_boot_verification=PASS
+  lacks real_capability_task: blocked: no successful navigation evidence; browser execution denied
+  lacks cancellation_or_timeout: no cancellation/timeout evidence for apoc
+  lacks dependency_failure_recovery: stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs
+  lacks package_install_verification: package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)
+  blocker: no successful navigation evidence; browser execution denied
+  blocker: cancellation_or_timeout: no cancellation/timeout evidence for apoc
+
+KNIGHT architect qualified=False
+  gates: registry_configuration=PASS real_capability_task=PASS permission_denial_no_side_effect=FAIL cancellation_or_timeout=FAIL dependency_failure_recovery=FAIL audit_verification=PASS package_install_verification=FAIL edition_boot_verification=PASS
+  lacks permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  lacks cancellation_or_timeout: no cancellation/timeout evidence for architect
+  lacks dependency_failure_recovery: stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs
+  lacks package_install_verification: package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)
+  blocker: permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  blocker: cancellation_or_timeout: no cancellation/timeout evidence for architect
+
+KNIGHT keymaker qualified=False
+  gates: registry_configuration=PASS real_capability_task=PASS permission_denial_no_side_effect=FAIL cancellation_or_timeout=FAIL dependency_failure_recovery=FAIL audit_verification=PASS package_install_verification=FAIL edition_boot_verification=PASS
+  lacks permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  lacks cancellation_or_timeout: no cancellation/timeout evidence for keymaker
+  lacks dependency_failure_recovery: stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs
+  lacks package_install_verification: package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)
+  blocker: permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  blocker: cancellation_or_timeout: no cancellation/timeout evidence for keymaker
+
+KNIGHT machine qualified=False
+  gates: registry_configuration=PASS real_capability_task=PASS permission_denial_no_side_effect=FAIL cancellation_or_timeout=PASS dependency_failure_recovery=FAIL audit_verification=PASS package_install_verification=FAIL edition_boot_verification=PASS
+  lacks permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  lacks dependency_failure_recovery: stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs
+  lacks package_install_verification: package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)
+  blocker: permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+
+KNIGHT merovingian qualified=False
+  gates: registry_configuration=PASS real_capability_task=PASS permission_denial_no_side_effect=FAIL cancellation_or_timeout=FAIL dependency_failure_recovery=FAIL audit_verification=PASS package_install_verification=FAIL edition_boot_verification=PASS
+  lacks permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  lacks cancellation_or_timeout: no cancellation/timeout evidence for merovingian
+  lacks dependency_failure_recovery: stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs
+  lacks package_install_verification: package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)
+  blocker: permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  blocker: cancellation_or_timeout: no cancellation/timeout evidence for merovingian
+
+KNIGHT morpheus qualified=False
+  gates: registry_configuration=PASS real_capability_task=PASS permission_denial_no_side_effect=FAIL cancellation_or_timeout=FAIL dependency_failure_recovery=FAIL audit_verification=PASS package_install_verification=FAIL edition_boot_verification=PASS
+  lacks permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  lacks cancellation_or_timeout: no cancellation/timeout evidence for morpheus
+  lacks dependency_failure_recovery: stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs
+  lacks package_install_verification: package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)
+  blocker: permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  blocker: cancellation_or_timeout: no cancellation/timeout evidence for morpheus
+
+KNIGHT neo qualified=False
+  gates: registry_configuration=PASS real_capability_task=PASS permission_denial_no_side_effect=FAIL cancellation_or_timeout=FAIL dependency_failure_recovery=FAIL audit_verification=PASS package_install_verification=FAIL edition_boot_verification=PASS
+  lacks permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  lacks cancellation_or_timeout: no cancellation/timeout evidence for neo
+  lacks dependency_failure_recovery: stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs
+  lacks package_install_verification: package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)
+  blocker: permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  blocker: cancellation_or_timeout: no cancellation/timeout evidence for neo
+
+KNIGHT oracle qualified=False
+  gates: registry_configuration=PASS real_capability_task=PASS permission_denial_no_side_effect=FAIL cancellation_or_timeout=FAIL dependency_failure_recovery=FAIL audit_verification=PASS package_install_verification=FAIL edition_boot_verification=PASS
+  lacks permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  lacks cancellation_or_timeout: no cancellation/timeout evidence for oracle
+  lacks dependency_failure_recovery: stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs
+  lacks package_install_verification: package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)
+  blocker: permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  blocker: cancellation_or_timeout: no cancellation/timeout evidence for oracle
+
+KNIGHT sentinel qualified=False
+  gates: registry_configuration=PASS real_capability_task=PASS permission_denial_no_side_effect=FAIL cancellation_or_timeout=PASS dependency_failure_recovery=FAIL audit_verification=PASS package_install_verification=FAIL edition_boot_verification=PASS
+  lacks permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  lacks dependency_failure_recovery: stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs
+  lacks package_install_verification: package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)
+  blocker: permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+
+KNIGHT smith qualified=False
+  gates: registry_configuration=PASS real_capability_task=FAIL permission_denial_no_side_effect=FAIL cancellation_or_timeout=FAIL dependency_failure_recovery=FAIL audit_verification=PASS package_install_verification=FAIL edition_boot_verification=PASS
+  lacks real_capability_task: blocked: no isolated runner configured; ready_verified is false
+  lacks permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  lacks cancellation_or_timeout: no cancellation/timeout evidence for smith
+  lacks dependency_failure_recovery: stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs
+  lacks package_install_verification: package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)
+  blocker: no isolated runner configured; ready_verified is false
+  blocker: permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  blocker: cancellation_or_timeout: no cancellation/timeout evidence for smith
+
+KNIGHT tank qualified=False
+  gates: registry_configuration=PASS real_capability_task=PASS permission_denial_no_side_effect=FAIL cancellation_or_timeout=FAIL dependency_failure_recovery=FAIL audit_verification=PASS package_install_verification=FAIL edition_boot_verification=PASS
+  lacks permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  lacks cancellation_or_timeout: no cancellation/timeout evidence for tank
+  lacks dependency_failure_recovery: stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs
+  lacks package_install_verification: package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)
+  blocker: permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence
+  blocker: cancellation_or_timeout: no cancellation/timeout evidence for tank
+
+KNIGHT trinity qualified=False
+  gates: registry_configuration=PASS real_capability_task=FAIL permission_denial_no_side_effect=PASS cancellation_or_timeout=FAIL dependency_failure_recovery=FAIL audit_verification=PASS package_install_verification=FAIL edition_boot_verification=PASS
+  lacks real_capability_task: no run-verified real task evidence
+  lacks cancellation_or_timeout: no cancellation/timeout evidence for trinity
+  lacks dependency_failure_recovery: stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs
+  lacks package_install_verification: package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)
+  blocker: real_capability_task: no run-verified real task evidence
+  blocker: cancellation_or_timeout: no cancellation/timeout evidence for trinity
+
+HOME EDITION QUALIFIED: False (0/12 knights)

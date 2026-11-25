@@ -1,0 +1,3056 @@
+/* Use installed fonts and the system fallbacks without a network font request. */
+
+.working-panel{position:absolute;z-index:7;top:112px;left:50%;transform:translateX(-50%);width:min(520px,62vw);padding:14px 18px;background:rgba(8,7,12,.9);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);box-shadow:0 12px 44px #0008;backdrop-filter:blur(12px);color:#e9e4ec;font-family:'JetBrains Mono',monospace;letter-spacing:.03em}.working-head{font-size:12px;opacity:.72}.working-rule{height:1px;background:color-mix(in srgb,var(--accent) 22%,transparent);margin:10px 0}.working-stage{display:flex;align-items:center;gap:9px;font-size:12px}.working-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);animation:working-pulse 1.1s ease-in-out infinite}.working-entry{margin-top:11px;font-size:11px;opacity:.64}.working-terminal{display:inline-block;margin-right:7px;color:var(--accent)}@keyframes working-pulse{50%{opacity:.3;transform:scale(.72)}}
+
+:root {
+  /* The interface is graphite with a restrained ghost-violet bias. `--accent` is re-declared per phase and per panel;
+     this one stays put and is what anything neutral pins itself to. */
+  --interface: #c6beca;
+  --accent: var(--interface);
+  --bg: #020105;
+
+  /* Subsystem identity.
+     The colour answers "what Nori subsystem is this line about?", never "who
+     sent it" or "which bridge carried it". A reply that came back through Core
+     while reporting on the camera is VISION, because that is what it is about.
+     One note can therefore hold several colours at once, span by span.
+
+     Green and amber are the established panel accents (see .panel-green /
+     .panel-amber) reused verbatim rather than re-picked, so a subsystem colour
+     and a panel colour cannot drift apart. Core blue is its own value, and the
+     deeper blue stays a glow only — it is never text. */
+  --nori-core:   #4da3ff;
+  --nori-vision: #5affc8;
+  --nori-hal:    #ffb547;
+  --nori-core-glow: #1e6fff;
+  font-family: 'Chakra Petch', system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+html { background: var(--bg); }
+
+/* Static nebula-tinted falloff keeps depth and color without an animated star
+   field or a continuously decoded background video. */
+body {
+  background: var(--bg);
+}
+
+#root { background: transparent; }
+
+/* Star-free, static atmosphere behind the live neural graph. */
+body::before {
+  content: '';
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 18% 24%, rgba(83, 20, 122, .15), transparent 40%),
+    radial-gradient(ellipse at 84% 64%, rgba(122, 45, 26, .11), transparent 38%),
+    radial-gradient(ellipse at 54% 48%, rgba(8, 65, 92, .08), transparent 48%),
+    linear-gradient(145deg, #05030a 0%, #010106 72%, #000 100%);
+}
+
+/* Near stars travel on their own layer. The slow nebula and faster points give
+   the environment real parallax instead of a single picture being nudged. */
+#root::before {
+  content: none;
+  position: fixed;
+  inset: -12%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.54;
+  background-image:
+    radial-gradient(circle, rgba(232,250,255,.9) 0 1px, transparent 1.6px),
+    radial-gradient(circle, rgba(180,230,255,.72) 0 1px, transparent 1.8px),
+    radial-gradient(circle, rgba(205,156,255,.74) 0 1.2px, transparent 2px);
+  background-size: 190px 190px, 310px 310px, 470px 470px;
+  background-position: 0 0, 60px 110px, 180px 40px;
+  animation: nori-star-flight 7s linear infinite;
+  will-change: background-position, transform;
+}
+
+/* The portal is an independent animated light volume behind Nori. Its expanding
+   rings make the central vanishing point feel like an active jump destination,
+   while the black reactor remains in front of it. */
+#root::after {
+  content: none;
+  position: fixed;
+  z-index: 2;
+  left: 50%; top: 50%;
+  width: min(62vw, 880px); aspect-ratio: 1;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(.40);
+  opacity: 0;
+  background: radial-gradient(circle,
+    transparent 0 34%,
+    rgba(91, 42, 158, .03) 37%,
+    rgba(210, 85, 255, .48) 41%,
+    rgba(101, 156, 255, .24) 43%,
+    rgba(194, 74, 255, .05) 48%,
+    transparent 61%);
+  filter: blur(.25px);
+  animation: nori-warp-portal 6.4s cubic-bezier(.2,.75,.25,1) infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes nori-warp-portal {
+  0% { transform: translate(-50%, -50%) scale(.28); opacity: 0; }
+  12% { opacity: .30; }
+  62% { opacity: .45; }
+  100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before, #root::before, #root::after { animation: none; }
+}
+
+/* Black ground coat, a trace of violet interference at an oblique angle, and
+   neutral scanlines. The violet is intentionally below "purple background"
+   strength: it should be noticed after the black, not before it. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background:
+    radial-gradient(ellipse at 68% 32%, rgba(105, 31, 126, 0.045), transparent 38%),
+    radial-gradient(ellipse at center, transparent 34%, rgba(0, 0, 0, 0.28) 100%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(166, 148, 176, 0.016) 0px,
+      rgba(166, 148, 176, 0.016) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+}
+
+.scene {
+  position: fixed;
+  inset: 0;
+  /* The live reactor remains in front of the travelling near-star layer. */
+  z-index: 3;
+}
+.nori-orbit-hint {
+  position: fixed;
+  z-index: 5;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  color: rgba(223, 184, 255, .62);
+  font: 9px/1 'JetBrains Mono', monospace;
+  letter-spacing: .14em;
+  text-align: center;
+  text-shadow: 0 0 12px rgba(165, 70, 235, .55);
+}
+.nori-map-attribution {
+  position: fixed;
+  z-index: 5;
+  right: 18px;
+  bottom: 16px;
+  pointer-events: none;
+  color: rgba(219, 202, 239, .42);
+  font: 8px/1 'JetBrains Mono', monospace;
+  letter-spacing: .08em;
+}
+/* --------------------------------------------------------------------- HUD */
+
+.hud {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  color: var(--accent);
+  transition: color 600ms ease;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 11px;
+}
+
+.corner {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  opacity: 0.8;
+}
+.corner-tl { top: 26px; left: 26px; border-right: 0; border-bottom: 0; }
+.corner-tr { top: 26px; right: 26px; border-left: 0; border-bottom: 0; }
+.corner-bl { bottom: 26px; left: 26px; border-right: 0; border-top: 0; }
+.corner-br { bottom: 26px; right: 26px; border-left: 0; border-top: 0; }
+
+.hud-top {
+  position: absolute;
+  top: 44px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0 92px;
+}
+
+.brand-mark {
+  display: block;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.42em;
+  text-shadow: 0 0 22px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.brand-sub {
+  display: block;
+  margin-top: 5px;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  opacity: 0.72;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  /* The header is space-between, so with the wordmark hidden the status line
+     would slide to the left edge on its own. Claiming the free space keeps it
+     pinned right whether or not the brand is there — and with both present it
+     changes nothing, since space-between had already used that space up. */
+  margin-left: auto;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.75); }
+}
+
+/* Side rails */
+
+.rail {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  font-size: 10px;
+}
+.rail-left { left: 92px; }
+.rail-right { right: 92px; align-items: flex-end; }
+
+.rail-title {
+  font-size: 8px;
+  opacity: 0.68;
+  letter-spacing: 0.34em;
+  margin-bottom: 4px;
+}
+
+.rail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.82;
+}
+.rail-item.dim { opacity: 0.3; }
+.rail-item.mono { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em; }
+
+/* SYSTEMS rail: collapsible header + capped, scrollable list. The HUD is
+   pointer-events: none, so anything clickable opts back in. */
+.rail-toggle {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font-family: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.rail-toggle:hover { opacity: 0.85; }
+.rail-count {
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.1em;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  padding: 0 4px;
+}
+.rail-chevron {
+  width: 5px;
+  height: 5px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 200ms ease;
+}
+.rail-chevron.open { transform: rotate(45deg); }
+.rail-list {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  max-height: 42vh;
+  overflow-y: auto;
+  padding-right: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 45%, transparent) transparent;
+}
+.rail-list::-webkit-scrollbar { width: 3px; }
+.rail-list::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.rail-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.rail-btn {
+  pointer-events: auto;
+  padding: 5px 9px;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: inherit;
+  font-family: inherit;
+  font-size: 8px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  cursor: pointer;
+  clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
+}
+.rail-btn:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+
+.rail-btn.is-on { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+
+/* The settings panel, under the rail buttons. Native selects, restyled just
+   enough to sit in the chrome; the dropdown itself is the browser's. */
+.settings {
+  pointer-events: auto;
+  margin-top: 10px;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  background: color-mix(in srgb, var(--accent) 5%, rgba(2, 8, 12, 0.85));
+  backdrop-filter: blur(8px);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+.settings-row { display: flex; flex-direction: column; gap: 4px; }
+.settings-row label { font-size: 8px; letter-spacing: 0.3em; opacity: 0.45; }
+.settings select {
+  width: 100%;
+  padding: 5px 6px;
+  background: rgba(2, 8, 12, 0.9);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  color: #dff7ff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+.settings-actions { flex-direction: row; align-items: center; justify-content: space-between; margin-top: 2px; }
+.settings-note { font-size: 8px; letter-spacing: 0.2em; opacity: 0.4; }
+
+.model-manager-open { width: 100%; }
+.model-manager-backdrop { position: fixed; inset: 0; z-index: 300; display: grid; place-items: center; padding: 24px; background: rgba(1, 2, 8, .78); backdrop-filter: blur(12px); pointer-events: auto; }
+.model-manager { max-height: calc(100dvh - 48px); overflow-y: auto; overscroll-behavior: contain; box-sizing: border-box; width: min(520px, 92vw); padding: 24px; color: #e9e3f1; background: linear-gradient(145deg, rgba(19, 12, 30, .98), rgba(5, 8, 16, .98)); border: 1px solid rgba(189, 132, 245, .42); box-shadow: 0 0 80px rgba(119, 45, 186, .2), 0 22px 70px #000b; font-family: 'JetBrains Mono', monospace; }
+.model-manager-head, .model-manager-card-title, .model-manager-progress-label, .model-manager-actions, .model-manager-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.model-manager-head { position: sticky; top: 0; z-index: 1; background: #100b1b; }
+.model-manager-kicker { color: #bd88ec; font-size: 9px; letter-spacing: .24em; }
+.model-manager h2 { margin: 7px 0 0; font-size: 23px; font-weight: 500; letter-spacing: .08em; }
+.model-manager-close { border: 0; color: #d9cbe7; background: none; font: 26px/1 sans-serif; cursor: pointer; }
+.memory-open { width: 100%; margin-top: 7px; }
+.memory-backdrop { position: fixed; inset: 0; z-index: 320; display: grid; place-items: center; padding: 22px; background: #03050bd9; backdrop-filter: blur(10px); pointer-events: auto; }
+.memory-panel { display: flex; flex-direction: column; box-sizing: border-box; width: min(780px, 94vw); max-height: min(820px, calc(100dvh - 44px)); padding: 22px; overflow: hidden; color: #e7eaf0; background: linear-gradient(145deg, #17151fee, #0c1016f7); border: 1px solid #9ce4ca55; border-radius: 14px; box-shadow: 0 24px 90px #000b, 0 0 45px #9ce4ca12; font-family: 'Segoe UI', system-ui, sans-serif; }
+.memory-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.memory-kicker { color: #9ce4ca; font: 9px 'JetBrains Mono', monospace; letter-spacing: .22em; }
+.memory-header h2 { margin: 7px 0 0; font-size: 24px; font-weight: 550; }
+.memory-close { border: 0; color: #b4c0c9; background: transparent; font: 28px/1 'Segoe UI', sans-serif; cursor: pointer; }
+.memory-scope { margin: 14px 0; padding: 11px 13px; color: #b9c4cf; background: #9ce4ca0b; border-left: 2px solid #9ce4ca88; font-size: 12px; line-height: 1.55; }
+.memory-toolbar, .memory-toolbar > div, .memory-entry-meta, .memory-entry-actions { display: flex; align-items: center; justify-content: space-between; gap: 9px; }
+.memory-toolbar { min-height: 34px; color: #91a2b1; font-size: 11px; }
+.memory-toolbar button, .memory-entry-actions button { padding: 7px 10px; color: #d8e8e5; background: #ffffff0a; border: 1px solid #9ce4ca44; border-radius: 6px; font: 11px 'Segoe UI', sans-serif; cursor: pointer; }
+.memory-toolbar button:disabled, .memory-entry-actions button:disabled { opacity: .45; cursor: default; }
+.memory-coverage { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.memory-coverage span { padding: 7px 10px; color: #a9b8c5; background: #ffffff08; border: 1px solid #ffffff10; border-radius: 6px; font-size: 10px; }
+.memory-coverage b { margin-left: 6px; color: #9ce4ca; }
+.memory-list { min-height: 0; overflow-y: auto; padding: 2px 5px 2px 0; scrollbar-width: thin; scrollbar-color: #9ce4ca66 transparent; }
+.memory-entry { margin: 9px 0; padding: 13px; background: #ffffff07; border: 1px solid #ffffff12; border-radius: 9px; }
+.memory-entry-meta { align-items: baseline; color: #9ce4ca; font-size: 10px; }
+.memory-entry-meta time { color: #748392; font-size: 10px; }
+.memory-entry p { margin: 9px 0 12px; color: #e1e7ed; font-size: 13px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+.memory-entry textarea { box-sizing: border-box; width: 100%; min-height: 90px; margin: 10px 0; padding: 10px; color: #e1e7ed; background: #090c11; border: 1px solid #9ce4ca66; border-radius: 6px; font: 13px/1.5 'Segoe UI', sans-serif; resize: vertical; }
+.memory-entry-actions { justify-content: flex-end; }
+.memory-entry-actions .memory-remove { color: #ffb9b9; border-color: #f8717155; }
+.memory-empty, .memory-footer { color: #8f9eaa; font-size: 12px; line-height: 1.55; }
+.memory-empty { padding: 28px 8px; text-align: center; }
+.memory-footer { padding-top: 12px; border-top: 1px solid #ffffff12; }
+.memory-error { margin: 8px 0; padding: 10px 12px; color: #ffd0ce; background: #7f1d1d33; border: 1px solid #f8717155; border-radius: 6px; font-size: 12px; }
+.model-manager-copy, .model-manager-card p { color: #a9a0b4; font: 12px/1.6 'Chakra Petch', system-ui, sans-serif; }
+.model-manager-card { margin-top: 20px; padding: 17px; border: 1px solid rgba(189, 132, 245, .22); background: rgba(6, 5, 12, .58); }
+.model-manager-card-title { font-size: 13px; letter-spacing: .06em; }
+.model-manager-card-title span { color: #b99bcf; font-size: 8px; letter-spacing: .18em; }
+.model-manager-warning, .model-manager-error { color: #ffc96b !important; }
+.model-manager-error { color: #ff8797 !important; }
+.model-manager-progress { margin: 17px 0; }
+.model-manager-progress-label { color: #cdb8dd; font-size: 10px; }
+.model-manager-progress-track { height: 5px; margin-top: 8px; overflow: hidden; background: #1c1625; }
+.model-manager-progress-track i { display: block; height: 100%; background: linear-gradient(90deg, #8e45c0, #e7baff); box-shadow: 0 0 16px #c878ff; transition: width .25s ease; }
+.model-manager-actions { margin-top: 17px; }
+.model-manager-actions span { color: #80778b; font-size: 8px; letter-spacing: .12em; text-align: right; }
+.model-manager-primary, .model-manager-secondary, .model-manager-foot button { padding: 10px 14px; border: 1px solid rgba(199, 146, 241, .54); color: #f2eaff; background: rgba(142, 69, 192, .18); font: 10px 'JetBrains Mono', monospace; letter-spacing: .12em; cursor: pointer; }
+.model-manager-primary:hover, .model-manager-secondary:hover, .model-manager-foot button:hover { background: rgba(142, 69, 192, .35); }
+.model-manager button:disabled { opacity: .45; cursor: not-allowed; }
+.model-manager-foot { margin-top: 18px; color: #756b7d; font-size: 9px; letter-spacing: .08em; }
+
+/* Mute: same angular cyan chrome as the rest of the HUD. */
+.mute-btn {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 6px 10px;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: inherit;
+  font-family: inherit;
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  cursor: pointer;
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+}
+.mute-btn:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.mute-icon {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+.mute-btn.is-muted { color: #ff4d5e; border-color: rgba(255, 77, 94, 0.6); }
+.mute-btn.is-muted .mute-icon { background: #ff4d5e; box-shadow: 0 0 8px #ff4d5e; }
+/* The echo guard sits under the mic button and borrows its shape. Amber when
+   strict, because strict trades away talking over him for a quieter room. */
+.mute-btn.is-strict { color: #f0a93c; border-color: rgba(240, 169, 60, 0.6); }
+.mute-btn.is-strict .mute-icon { background: #f0a93c; box-shadow: 0 0 8px #f0a93c; }
+
+.tick {
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.meter {
+  width: 3px;
+  height: 96px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  display: flex;
+  align-items: flex-end;
+  margin: 4px 0;
+}
+
+.meter-fill {
+  width: 100%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  transition: height 90ms linear;
+}
+
+/* Tool badge */
+
+/* The tool readout. This is the moment the interface proves it did something
+   real, so it's set as a headline under the reactor rather than a chip on top
+   of it — no box, no backdrop, just light. */
+.tool-badge {
+  position: absolute;
+  /* Pinned near the top, in its own band with the rest of the status chrome.
+     The centring (x: -50%) is a framer motion prop in Hud.tsx, not here —
+     framer writes `transform` inline on an animated element and would overwrite
+     anything declared in CSS. */
+  top: 74px;
+  left: 50%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  white-space: nowrap;
+  padding: 7px 16px 7px 14px;
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--accent) 9%, rgba(2, 10, 12, 0.55));
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0 30px color-mix(in srgb, var(--accent) 22%, transparent);
+  /* Above the panels and the log so a long tool name reads cleanly, but it is a
+     thin chip that never enters the transcript's space to begin with. */
+  z-index: 6;
+}
+
+.tool-kicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 8px;
+  letter-spacing: 0.36em;
+  text-indent: 0.36em;
+  opacity: 0.6;
+  padding-right: 12px;
+  border-right: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+.tool-name {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  /* Bounded so a long name truncates rather than stretching the chip off-frame. */
+  max-width: min(52vw, 620px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #f2fbff;
+  text-shadow: 0 0 24px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+@media (max-width: 1100px) {
+  .tool-name { font-size: 12px; letter-spacing: 0.18em; max-width: 60vw; }
+  .tool-badge { top: 60px; }
+}
+
+.spinner {
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--accent);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Conversation log */
+
+.log {
+  position: absolute;
+  /* Leave room for the personality panel and the signal controls. */
+  left: max(416px, calc(50vw - 380px));
+  bottom: 132px;
+  width: min(760px, calc(100vw - 630px));
+  max-height: min(28vh, 220px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  pointer-events: auto;
+  scrollbar-color: #745295 #100a19;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  background: linear-gradient(120deg, rgba(10, 7, 18, .88), rgba(5, 8, 15, .7));
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-transform: none;
+  letter-spacing: 0.01em;
+}
+
+.log:empty { display: none; }
+.log-toolbar { position:sticky;top:-12px;z-index:1;display:flex;align-items:center;justify-content:space-between;min-height:28px;margin:-12px -16px 0;padding:4px 10px 4px 16px;background:#100d17eb;border-bottom:1px solid color-mix(in srgb,var(--accent) 16%,transparent);color:#b8a8c7;font:9px/1 'JetBrains Mono',monospace;letter-spacing:.14em; }
+.log-toolbar button { min-width:28px;height:24px;border:1px solid #8e70a855;background:#1a1322;color:#e4d3f2;font:16px/1 monospace;cursor:pointer; }
+.log-toolbar button:hover { background:#39264c; }
+.log-collapsed { max-height:none;padding:12px 16px;overflow:visible; }
+
+.log-line {
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  font-size: 14px;
+  line-height: 1.55;
+  flex-shrink: 0;
+}
+
+.log-text { min-width: 0; overflow-wrap: anywhere; }
+
+.log-who {
+  flex: 0 0 54px;
+  font-size: 8px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  padding-top: 3px;
+}
+
+.log-user .log-text { opacity: 0.52; }
+.log-nori .log-text {
+  color: #eaf9ff;
+  text-shadow: 0 0 26px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* Subsystem tinting. Declared after .log-nori so a subsystem span wins at equal
+   specificity without needing !important or an inflated selector.
+
+   Unclassified text is NOT given a subsystem colour: it keeps whatever the
+   line already had. Not knowing which system something belongs to is a normal
+   state, and painting it a colour would be a claim Nori cannot support. */
+.log-sub-core   .log-text,
+.log-sub-core   .log-seg { color: var(--nori-core); }
+.log-sub-vision .log-text,
+.log-sub-vision .log-seg { color: var(--nori-vision); }
+.log-sub-hal    .log-text,
+.log-sub-hal    .log-seg { color: var(--nori-hal); }
+
+/* The glow is the one flourish these get, and it only follows Core — the other
+   two already sit bright enough to carry their meaning on hue alone. */
+.log-sub-core .log-text,
+.log-sub-core .log-seg { text-shadow: 0 0 26px color-mix(in srgb, var(--nori-core-glow) 45%, transparent); }
+
+/* A mixed note: each span carries its own subsystem, so the spans differ in
+   colour while the line stays one line. */
+.log-seg + .log-seg { margin-left: 0.4em; }
+
+/* Live partial transcript while listening */
+
+.caption {
+  position: absolute;
+  left: 50%;
+  bottom: 132px;
+  transform: translateX(-50%);
+  font-size: 16px;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  color: #fff;
+  opacity: 0.85;
+  max-width: 66vw;
+  text-align: center;
+}
+
+.error {
+  position: absolute;
+  left: 50%;
+  /* Its own band above the input. An error used to sit directly over both the
+     type field and its keyboard legend, making the exact recovery action
+     unreadable. */
+  bottom: 112px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* Amber, not blood-red: most of these are notices (a reconnect, a stand-down),
+     not failures. A true failure still reads clearly against the dark HUD. */
+  color: #e8b84b;
+  font-size: 10px;
+  text-transform: none;
+  letter-spacing: 0.04em;
+  max-width: 70vw;
+  text-align: center;
+}
+.error-text { opacity: 0.9; }
+.error-x {
+  pointer-events: auto;
+  background: none;
+  border: 0;
+  padding: 0 2px;
+  color: inherit;
+  opacity: 0.55;
+  cursor: pointer;
+  font-size: 11px;
+}
+.error-x:hover { opacity: 1; }
+
+/* The type-to-N.O.R.I. bar. Reliable input, no mic. */
+.textbar {
+  position: absolute;
+  left: 50%;
+  bottom: 62px;
+  transform: translateX(-50%);
+  width: min(680px, 70vw);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  pointer-events: auto;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+  background: color-mix(in srgb, var(--accent) 6%, rgba(2, 8, 12, 0.82));
+  backdrop-filter: blur(8px);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+.textbar-prompt {
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  opacity: 0.8;
+}
+.textbar-attach {
+  flex: 0 0 auto;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  color: var(--accent);
+  background: transparent;
+  border-radius: 4px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+.textbar-attach:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.textbar-attachment,
+.textbar-attachment-error {
+  flex: 0 1 auto;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 10px 'JetBrains Mono', monospace;
+}
+.textbar-attachment { color: color-mix(in srgb, var(--accent) 75%, white); }
+.textbar-attachment-error { color: #ffb45e; }
+.textbar-input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: #eaffff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+.textbar-input::placeholder { color: color-mix(in srgb, var(--accent) 50%, transparent); }
+
+.hud-bottom {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 9px;
+  opacity: 0.68;
+  letter-spacing: 0.2em;
+}
+
+kbd {
+  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid currentColor;
+  padding: 1px 5px;
+  font-size: 9px;
+}
+
+/* Nori desktop workspace: familiar three-column chat shell, with Nori's
+   graphite / cyan identity. The underlying scene and all existing controls
+   remain mounted; this changes their presentation, not their capabilities. */
+.hud.nori-workspace {
+  --workspace-sidebar: 258px;
+  --workspace-inspector: 248px;
+  color: #e9edf3;
+  text-transform: none;
+  letter-spacing: normal;
+  font: 13px/1.45 Inter, 'Segoe UI', system-ui, sans-serif;
+}
+.nori-workspace .corner { display: none; }
+.nori-workspace .hud-top {
+  z-index: 15;
+  top: 0;
+  left: var(--workspace-sidebar);
+  right: var(--workspace-inspector);
+  height: 58px;
+  align-items: center;
+  padding: 0 22px;
+  background: #17191df2;
+  border-bottom: 1px solid #ffffff12;
+  backdrop-filter: blur(18px);
+}
+.nori-workspace .brand-mark {
+  font: 650 15px/1.2 Inter, 'Segoe UI', system-ui, sans-serif;
+  letter-spacing: .04em;
+  text-shadow: none;
+  color: #f1f5f9;
+}
+.nori-workspace .brand-sub {
+  margin-top: 2px;
+  font: 11px/1.2 Inter, 'Segoe UI', system-ui, sans-serif;
+  letter-spacing: .01em;
+  color: #98a4b4;
+}
+.nori-workspace .status {
+  gap: 8px;
+  margin-left: auto;
+  color: #a9b5c4;
+  font-size: 11px;
+}
+.nori-workspace .status .dot { width: 8px; height: 8px; }
+.nori-workspace .stop-btn { pointer-events: auto; }
+
+/* Integrations and actual controls form a scrollable navigation rail. */
+.nori-workspace .rail-left {
+  z-index: 14;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--workspace-sidebar);
+  padding: 74px 13px 16px;
+  transform: none;
+  overflow-y: auto;
+  gap: 10px;
+  background: #111317f7;
+  border-right: 1px solid #ffffff12;
+  color: #c9d2de;
+  scrollbar-width: thin;
+}
+.nori-workspace .rail-left .rail-title,
+.nori-workspace .rail-right .rail-title {
+  color: #8392a4;
+  font-size: 10px;
+  letter-spacing: .12em;
+  font-weight: 650;
+}
+.nori-workspace .rail-left .rail-toggle { width: 100%; padding: 8px 9px; border-radius: 8px; }
+.nori-workspace .nori-new-chat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 11px;
+  border: 1px solid #5affc833;
+  border-radius: 9px;
+  color: #d9fff2;
+  background: linear-gradient(110deg, #42dba518, #4da3ff10);
+  text-align: left;
+  font: 600 12px Inter, 'Segoe UI', system-ui, sans-serif;
+  cursor: pointer;
+}
+.nori-workspace .nori-new-chat:hover { background: #5affc822; }
+.nori-workspace .nori-new-chat span { font-size: 17px; line-height: 1; color: #5affc8; }
+.nori-workspace .nori-nav-label { margin: 9px 8px 0; color: #7e8b9a; font-size: 10px; font-weight: 650; }
+.nori-workspace .rail-count { border: 0; color: #8da0b4; }
+.nori-workspace .rail-chevron { margin-left: auto; }
+.nori-workspace .rail-list { gap: 3px; max-height: 30vh; padding: 2px 4px; }
+.nori-workspace .rail-item { min-height: 30px; padding: 5px 8px; border-radius: 7px; color: #b8c3d0; opacity: 1; font-size: 12px; }
+.nori-workspace .rail-item:hover { background: #ffffff0a; }
+.nori-workspace .rail-item .tick { width: 7px; height: 7px; flex: 0 0 7px; border-radius: 50%; background: #39d69a; box-shadow: 0 0 8px #39d69955; }
+.nori-workspace .rail-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 3px; }
+.nori-workspace .rail-btn,
+.nori-workspace .mute-btn {
+  min-height: 34px;
+  padding: 7px 9px;
+  border: 1px solid #ffffff14;
+  border-radius: 8px;
+  clip-path: none;
+  color: #cbd5e1;
+  background: #ffffff08;
+  font: 550 10px/1.2 Inter, 'Segoe UI', system-ui, sans-serif;
+  letter-spacing: .035em;
+  text-align: left;
+}
+.nori-workspace .rail-btn:hover,
+.nori-workspace .mute-btn:hover { background: #ffffff10; border-color: #5affc855; }
+.nori-workspace .rail-btn.is-on { color: #79f2ca; background: #38d7a315; border-color: #5affc844; }
+.nori-workspace .settings {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ffffff14;
+  border-radius: 10px;
+  background: #191c22;
+  clip-path: none;
+}
+.nori-workspace .settings-row label { color: #94a3b8; font: 600 10px/1.2 Inter, 'Segoe UI', system-ui, sans-serif; letter-spacing: .03em; }
+.nori-workspace .settings select { padding: 8px; border: 1px solid #ffffff19; border-radius: 7px; background: #111317; color: #e5edf6; font: 12px Inter, 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; }
+.nori-workspace .settings-note { color: #aab5c3; font: 10px/1.35 Inter, 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; }
+.nori-workspace .rail-left .rail-actions .rail-btn:nth-last-child(1) { grid-column: 1 / -1; }
+
+/* Conversation is the primary surface; never truncate the visible transcript
+   to four messages. It retains the existing scroll-follow behavior. */
+.nori-workspace .log {
+  z-index: 8;
+  top: 58px;
+  right: var(--workspace-inspector);
+  bottom: 106px;
+  left: var(--workspace-sidebar);
+  width: auto;
+  max-height: none;
+  padding: 20px clamp(22px, 7vw, 100px);
+  gap: 20px;
+  background: #17191de8;
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid #ffffff0d;
+  backdrop-filter: blur(16px);
+  scrollbar-color: #4c5968 #17191d;
+}
+.nori-workspace .log-toolbar {
+  top: -20px;
+  min-height: 34px;
+  margin: -20px calc(clamp(22px, 7vw, 100px) * -1) 2px;
+  padding: 4px 22px;
+  background: #17191df7;
+  border-bottom: 1px solid #ffffff10;
+  color: #94a3b8;
+  font: 600 10px/1 Inter, 'Segoe UI', system-ui, sans-serif;
+  letter-spacing: .08em;
+}
+.nori-workspace .log-toolbar button { border-radius: 6px; background: #ffffff09; color: #d6e0eb; }
+.nori-workspace .log-line { align-items: flex-start; gap: 14px; font-size: 14px; line-height: 1.65; }
+.nori-workspace .log-who { flex-basis: 70px; padding-top: 5px; color: #92a0b0; font: 650 10px/1.2 Inter, 'Segoe UI', system-ui, sans-serif; letter-spacing: .06em; }
+.nori-workspace .log-user .log-text,
+.nori-workspace .log-nori .log-text { color: #e5eaf0; opacity: 1; text-shadow: none; }
+.nori-workspace .log-user .log-text { color: #bec8d5; }
+.nori-workspace .log-sub-vision .log-text,
+.nori-workspace .log-sub-vision .log-seg { color: #5affc8; }
+.nori-workspace .log-sub-core .log-text,
+.nori-workspace .log-sub-core .log-seg { color: #8fc8ff; text-shadow: none; }
+
+.nori-workspace .rail-right {
+  z-index: 14;
+  top: 58px;
+  right: 0;
+  bottom: 0;
+  width: var(--workspace-inspector);
+  padding: 20px 14px;
+  transform: none;
+  align-items: stretch;
+  gap: 11px;
+  background: #111317f7;
+  border-left: 1px solid #ffffff12;
+  color: #cbd5e1;
+}
+.nori-workspace .rail-right .meter { width: 100%; height: 5px; min-height: 5px; border-radius: 10px; background: #ffffff14; }
+.nori-workspace .rail-right .meter-fill { background: #5affc8; border-radius: inherit; }
+.nori-workspace .rail-right .rail-item { padding: 0; color: #9aabba; }
+.nori-workspace .rail-right .mute-btn { width: 100%; }
+.nori-workspace .rail-right .mute-btn.is-muted { color: #9aa7b5; }
+
+.nori-workspace .textbar {
+  z-index: 16;
+  left: calc((100vw - var(--workspace-sidebar) - var(--workspace-inspector)) / 2 + var(--workspace-sidebar));
+  right: var(--workspace-inspector);
+  bottom: 24px;
+  width: auto;
+  min-height: 58px;
+  transform: translateX(-50%);
+  padding: 10px 13px;
+  border: 1px solid #ffffff1b;
+  border-radius: 16px;
+  background: #24272df5;
+  box-shadow: 0 12px 38px #0007;
+  clip-path: none;
+}
+.nori-workspace .textbar-prompt { display: none; }
+.nori-workspace .textbar-attach { width: 34px; height: 34px; border-color: #ffffff20; color: #b6c4d4; border-radius: 9px; }
+.nori-workspace .textbar-input { color: #f1f5f9; font: 14px Inter, 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; }
+.nori-workspace .textbar-input::placeholder { color: #8996a6; }
+.nori-workspace .textbar-attachment { color: #85e9ca; font: 11px Inter, 'Segoe UI', system-ui, sans-serif; }
+.nori-workspace .hud-bottom { display: none; }
+.nori-workspace .error { z-index: 30; left: calc((100vw - var(--workspace-sidebar) - var(--workspace-inspector)) / 2 + var(--workspace-sidebar)); bottom: 92px; width: min(80vw, 760px); transform: translateX(-50%); }
+.nori-workspace .working-panel { top: 72px; left: calc(var(--workspace-sidebar) + 20px); width: min(440px, calc(100vw - var(--workspace-sidebar) - var(--workspace-inspector) - 40px)); transform: none; border-radius: 12px; background: #20242bf5; }
+.nori-workspace .tool-badge { left: calc((100vw - var(--workspace-sidebar) - var(--workspace-inspector)) / 2 + var(--workspace-sidebar)); }
+.nori-workspace .workspace-toolbar { z-index: 25; color: #bdc8d5; }
+.nori-workspace .workspace-toolbar button { border-radius: 6px; background: #20242bee; border-color: #ffffff20; }
+
+@media (max-width: 940px) {
+  .hud.nori-workspace { --workspace-sidebar: 210px; --workspace-inspector: 0px; }
+  .nori-workspace .rail-right { display: none; }
+}
+@media (max-width: 640px) {
+  .hud.nori-workspace { --workspace-sidebar: 0px; --workspace-inspector: 0px; }
+  .nori-workspace .rail-left { display: none; }
+  .nori-workspace .hud-top { left: 0; padding: 0 16px; }
+  .nori-workspace .log { padding: 18px 16px; }
+  .nori-workspace .log-toolbar { margin-left: -16px; margin-right: -16px; }
+  .nori-workspace .log-line { gap: 8px; }
+  .nori-workspace .log-who { flex-basis: 52px; }
+}
+
+/* ----------------------------------------------------------------- panels */
+
+/* Centring is done with flex rather than `transform: translate(-50%)`.
+   Framer Motion's layout projection cannot measure through a transformed
+   ancestor — it re-measures every frame and fights the CSS, which shows up as
+   a hard flicker on any panel that animates. */
+.panels {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  pointer-events: none;
+}
+
+.panels-right {
+  top: 0;
+  bottom: 0;
+  right: 150px;
+  width: 320px;
+  align-items: flex-end;
+}
+
+/* Clear of the SYSTEMS rail, which sits at left:92px and runs ~150px wide. */
+.panels-left {
+  top: 0;
+  bottom: 0;
+  left: 272px;
+  width: 280px;
+  align-items: flex-start;
+}
+
+/* Under the reactor, for images and anything that needs the width. */
+.panels-wide {
+  left: 0;
+  right: 0;
+  bottom: 132px;
+  align-items: center;
+  justify-content: flex-end;
+}
+.panels-wide > * { width: min(620px, 60vw); }
+
+/* Accent identity. The panel re-declares --accent, so every .hud-* class inside
+   picks up the new colour without the model touching a hex value.
+
+   `default` needs a rule of its own even though it just restates the interface
+   cyan. Without one it inherits the live --accent from `.hud` and re-tints
+   itself amber, then violet, then green as the phase moves underneath it —
+   while every explicitly accented panel holds still. A panel is a record of a
+   moment; it should stop changing colour once it has landed. */
+.panel-default { --accent: var(--interface); }
+.panel-amber  { --accent: #ffb547; }
+.panel-violet { --accent: #c77dff; }
+.panel-green  { --accent: #5affc8; }
+.panel-red    { --accent: #ff6b6b; }
+
+.panel {
+  position: relative;
+  width: 100%;
+  /* Bounded so a stray image or a run of markup can't balloon into a
+     screen-height rectangle. */
+  max-height: 46vh;
+  overflow: hidden;
+  padding: 14px 16px;
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--accent) 9%, transparent),
+    color-mix(in srgb, var(--accent) 3%, transparent)
+  );
+  backdrop-filter: blur(7px);
+  transform-origin: top center;
+  overflow: hidden;
+}
+
+/* Bracket corners rather than a full border — instrument markings, not boxes. */
+.pk {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--accent);
+  opacity: 0.85;
+}
+.pk-tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.pk-tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.pk-bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.pk-br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+/* The scan wipe — a thin bright band travelling down the card once as it
+   lands. An earlier version filled the whole panel and washed the content out;
+   the point is a scan line passing over, not a flash. */
+.p-wipe {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 34%;
+  transform-origin: top;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 12%, transparent) 70%,
+    color-mix(in srgb, var(--accent) 55%, transparent) 100%
+  );
+  pointer-events: none;
+}
+
+.p-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.p-title {
+  font-size: 8px;
+  letter-spacing: 0.3em;
+  opacity: 0.62;
+}
+
+/* The design system N.O.R.I. composes with. These class names live in three
+   places and all three have to agree: here, in ALLOWED_CLASSES in
+   src/ui/Panels.tsx — anything absent from that set is stripped before it
+   reaches the DOM — and in the `display` tool description in
+   bridge/panels.mjs, which is how the model learns they exist. */
+
+.p-body {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Applied when the model asks for `stagger` — items land in sequence.
+   Indexed rather than scripted, so it works on whatever markup it authored.
+
+   An item is a direct child of the body, unless that child is one of the list
+   containers — then the rows inside it are the items and the container itself
+   sits still. This used to match grandchildren only, which is right for
+   `.hud-rows > .hud-row` and wrong for every other shape the design system
+   produces: a `<p class="hud-note">` body animated its inner span and nothing
+   else, and a flat row animated each of its columns separately. */
+.p-stagger > *,
+.p-stagger > :is(.hud-rows, .hud-grid, .hud-gallery) > * {
+  animation: rowIn 0.34s both;
+  animation-delay: var(--stagger-d, 0.05s);
+}
+
+/* A list container is scenery; its rows do the arriving. */
+.p-stagger > :is(.hud-rows, .hud-grid, .hud-gallery) { animation: none; }
+
+/* Delays are set on everything inside and only read by the rule above, so one
+   ladder covers both shapes. Anything past the last step shares it rather than
+   landing instantly — with six declared, a seventh row appeared fully formed
+   before the first one had moved. */
+.p-stagger *:nth-child(1) { --stagger-d: 0.05s; }
+.p-stagger *:nth-child(2) { --stagger-d: 0.11s; }
+.p-stagger *:nth-child(3) { --stagger-d: 0.17s; }
+.p-stagger *:nth-child(4) { --stagger-d: 0.23s; }
+.p-stagger *:nth-child(5) { --stagger-d: 0.29s; }
+.p-stagger *:nth-child(6) { --stagger-d: 0.35s; }
+.p-stagger *:nth-child(7) { --stagger-d: 0.41s; }
+.p-stagger *:nth-child(8) { --stagger-d: 0.47s; }
+.p-stagger *:nth-child(9) { --stagger-d: 0.53s; }
+.p-stagger *:nth-child(10) { --stagger-d: 0.59s; }
+.p-stagger *:nth-child(n + 11) { --stagger-d: 0.65s; }
+
+@keyframes rowIn {
+  from { opacity: 0; transform: translateX(12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* rows -------------------------------------------------------------------- */
+
+.hud-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.hud-row {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.hud-idx {
+  flex: 0 0 auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  opacity: 0.45;
+  padding-top: 2px;
+}
+
+.hud-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hud-label {
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: #e8f8ff;
+  /* Two lines then clip — a HUD row, not a paragraph. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hud-sub {
+  font-size: 10.5px;
+  line-height: 1.35;
+  opacity: 0.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hud-tag {
+  flex: 0 0 auto;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.42;
+  padding-top: 3px;
+}
+
+/* media ------------------------------------------------------------------- */
+
+.hud-img {
+  display: block;
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  /* Pull photographs slightly toward the interface palette so they don't
+     fight the surrounding cyan. */
+  filter: saturate(0.85) contrast(1.05);
+}
+
+.hud-caption {
+  display: block;
+  margin-top: 8px;
+  font-size: 10px;
+  opacity: 0.5;
+}
+
+/* Web media -----------------------------------------------------------------
+
+   Everything below shows something N.O.R.I. found rather than something he made:
+   image-search thumbnails, a clip, a YouTube result. It is loaded through the
+   bridge proxy (see rewriteMedia in src/ui/Panels.tsx), so as far as the page
+   is concerned it all comes from localhost.
+
+   Two constraints shape the lot of it. The panel is a fixed column with
+   `overflow: hidden`, so anything in here has to be width-driven and never
+   wider than its container — a stray intrinsic width on an image or an iframe
+   would be clipped rather than scrolled, and would take the layout with it. And
+   `.panels` is `pointer-events: none` so the HUD never eats a click, which
+   means anything the user is actually meant to operate has to opt back in. */
+
+.hud-gallery {
+  display: grid;
+  /* auto-fill rather than a fixed count: the same markup has to work in the
+     280px left column and the 620px wide slot under the reactor. */
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  /* A grid item's default `min-width: auto` is its content's intrinsic width,
+     which is how a 1200px-wide photograph pushes a track past 1fr and blows the
+     row out sideways. */
+  min-width: 0;
+}
+
+.hud-gallery > * {
+  min-width: 0;
+}
+
+.hud-thumb {
+  display: block;
+  width: 100%;
+  /* Fixed ratio so a gallery of mixed portrait and landscape results reads as a
+     grid of tiles rather than a ragged mosaic. */
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  /* Matches .hud-img — pulls photographs toward the interface palette so they
+     don't fight the surrounding cyan. */
+  filter: saturate(0.85) contrast(1.05);
+}
+
+/* A thumbnail leading a row is a tile beside the text, not the row's content —
+   without a basis of its own, `width: 100%` on a flex item makes it fight the
+   label for the whole row. */
+.hud-row > .hud-thumb {
+  flex: 0 0 56px;
+  width: 56px;
+  align-self: center;
+}
+
+.hud-video {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  max-height: 300px;
+  background: #000;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  /* Controls are the whole point of a player. */
+  pointer-events: auto;
+}
+
+/* A 16:9 box for an embed. Written for both shapes the model will produce: the
+   class on a wrapper around the iframe, and the class on the iframe itself. */
+.hud-embed {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  background: #000;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+/* The wrapper case. An iframe carrying the class itself is already the box —
+   this is a descendant selector, so it doesn't match one. */
+.hud-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* Media and its caption as one unit, so the caption can't drift onto the next
+   item when several sit in a row. */
+.hud-figure {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0 0;
+  min-width: 0;
+}
+
+.hud-figure > .hud-caption {
+  margin-top: 6px;
+}
+
+.hud-figure > img,
+.hud-figure > video {
+  max-width: 100%;
+}
+
+/* figures ----------------------------------------------------------------- */
+
+.hud-metric {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 40px;
+  line-height: 1;
+  color: #eafaff;
+  text-shadow: 0 0 30px color-mix(in srgb, var(--accent) 65%, transparent);
+}
+
+.hud-unit {
+  display: block;
+  margin-top: 6px;
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+.hud-note {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.55;
+  opacity: 0.8;
+  color: #dff4ff;
+}
+
+.hud-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+}
+
+/* Progress bar — width comes from a --v custom property, the one inline style
+   allowed through the sanitiser. */
+.hud-bar {
+  position: relative;
+  height: 2px;
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  overflow: hidden;
+}
+.hud-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--v, 0) * 100%);
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* Shown instead of a blank rectangle when a panel arrives with nothing in it. */
+.p-empty {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  opacity: 0.35;
+}
+
+.hud-dim { opacity: 0.45; }
+.hud-hot {
+  color: var(--accent);
+  text-shadow: 0 0 16px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+@media (max-width: 1400px) {
+  .panels-right { right: 40px; width: 290px; }
+  /* Below this width there isn't room for the rail and a left panel side by
+     side, so the panel takes the space and the rail sits under it. */
+  .panels-left { left: 40px; width: 260px; top: 32%; }
+}
+
+/* ------------------------------------------------------------ suggestions */
+
+.suggest {
+  position: absolute;
+  left: 50%;
+  bottom: 96px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  white-space: nowrap;
+}
+
+.suggest-lead {
+  font-size: 8px;
+  letter-spacing: 0.34em;
+  opacity: 0.3;
+}
+
+.suggest-text {
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  opacity: 0.45;
+}
+
+/* The stop button. Top-right, under the status line, only while busy. */
+.stop-btn {
+  position: absolute;
+  top: 100%;
+  right: 92px;
+  margin-top: 10px;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(255, 77, 94, 0.06);
+  border: 1px solid rgba(255, 77, 94, 0.55);
+  color: #ff4d5e;
+  font-family: inherit;
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  cursor: pointer;
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+}
+.stop-btn:hover { background: rgba(255, 77, 94, 0.18); }
+.stop-square {
+  width: 7px;
+  height: 7px;
+  background: #ff4d5e;
+  box-shadow: 0 0 8px #ff4d5e;
+}
+
+/* ------------------------------------------------------------------ queue */
+
+/* Bottom-right, clear of the transcript in the middle and the SIGNAL rail
+   above it. Same chrome as the rails; the items are plain text because they
+   are the user's words, not his. */
+.queue {
+  position: absolute;
+  right: 40px;
+  bottom: 132px;
+  width: min(320px, 28vw);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: auto;
+}
+.queue-title {
+  font-size: 8px;
+  opacity: 0.4;
+  letter-spacing: 0.34em;
+  margin-bottom: 2px;
+}
+.queue-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 8px;
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  color: #fff;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  background: color-mix(in srgb, var(--accent) 6%, rgba(2, 8, 12, 0.7));
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+}
+.queue-n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--accent);
+  padding-top: 2px;
+}
+.queue-text { flex: 1; opacity: 0.85; }
+.queue-x {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  opacity: 0.4;
+  cursor: pointer;
+  font-size: 10px;
+}
+.queue-x:hover { opacity: 1; }
+
+/* --------------------------------------------------------------- ignition */
+
+.ignition {
+  position: fixed;
+  inset: 0;
+  z-index: 7;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse at 50% 52%, rgba(78, 26, 137, .30), transparent 19%), radial-gradient(ellipse at 50% 50%, #120820 0%, #05040d 52%, #010107 100%);
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  color: #d9b5ff;
+}
+.ignition::before,
+.ignition::after { content: ''; position: absolute; inset: 0; pointer-events: none; }
+.ignition::before { background-image: radial-gradient(circle, rgba(226, 179, 255, .64) 0 1px, transparent 1.4px); background-size: 61px 61px; opacity: .3; mask-image: radial-gradient(ellipse at center, black, transparent 65%); }
+.ignition::after { background: radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, .48) 100%); }
+
+/* This is a second, small Three scene containing the same Core component as
+   the live world.  It deliberately has no logo ring or CSS orb: Nori's first
+   silhouette and her everyday silhouette must be one object. */
+.ignition-nori-form {
+  position: absolute;
+  width: min(48vmin, 350px);
+  height: min(48vmin, 350px);
+  pointer-events: none;
+  filter: drop-shadow(0 0 28px rgba(158, 67, 235, .26));
+}
+.ignition-nori-form canvas { display: block; width: 100% !important; height: 100% !important; }
+
+.ignition-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 1;
+}
+
+.ignition-word {
+  font-size: 15px;
+  letter-spacing: 0.52em;
+  text-indent: 0.52em; /* balance the trailing letter-space */
+  text-shadow: 0 0 30px rgba(211, 142, 255, .85);
+}
+.ignition-name { font-size: 8px; letter-spacing: .19em; opacity: .62; max-width: 290px; line-height: 1.5; }
+
+.ignition-sub {
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  opacity: 0.4;
+  text-transform: uppercase;
+}
+
+.ignition-skip {
+  position: fixed;
+  left: 50%;
+  bottom: 12vh;
+  transform: translateX(-50%);
+  z-index: 8;
+  padding: 10px 22px;
+  background: rgba(173, 82, 245, .05);
+  border: 1px solid rgba(197, 119, 255, .44);
+  color: #dfc1ff;
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  text-transform: uppercase;
+  cursor: pointer;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  transition: background 200ms ease, text-shadow 200ms ease;
+}
+.ignition-skip:hover {
+  background: rgba(173, 82, 245, .14);
+  text-shadow: 0 0 18px rgba(218, 157, 255, .9);
+}
+
+.ignition:hover .ignition-word {
+  text-shadow: 0 0 44px rgba(222, 157, 255, 1);
+}
+
+/* ------------------------------------------------------------------- boot */
+
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  background: var(--bg);
+  color: var(--accent);
+  overflow: hidden;
+}
+
+.ignition-mic {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  z-index: 9;
+  padding: 8px 11px;
+  background: rgba(7, 5, 14, .72);
+  border: 1px solid rgba(197, 119, 255, .32);
+  color: #dfc1ff;
+  font-family: inherit;
+  font-size: 9px;
+  letter-spacing: .2em;
+  cursor: pointer;
+}
+.ignition-mic[aria-pressed="true"] { color: #d2a4ff; border-color: rgba(197,119,255,.65); }
+.boot-video-only { background: transparent; }
+.boot-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #01020a;
+  opacity: 1;
+  transition: opacity 3s ease-in-out;
+}
+.startup-film, .startup-film canvas { width: 100%; height: 100%; display: block; }
+.startup-entity-film { position: relative; overflow: hidden; background: #020107; object-fit: cover; }
+.startup-entity-film > img {
+  width: 100%; height: 100%; display: block; object-fit: cover;
+  object-position: center;
+  animation: noriEntityApproach 12s cubic-bezier(.18,.66,.2,1) both;
+}
+/* The animated eye is clipped into its actual position in Nori's face. It is
+   a video window, so the blink and micro-movements are genuine motion rather
+   than a still image being dimmed on a timer. */
+.startup-entity-eye-video {
+  position: absolute;
+  left: 29%; top: 35.5%; width: 24%; height: 20%;
+  pointer-events: none;
+  object-fit: cover;
+  object-position: 50% 49%;
+  clip-path: ellipse(48% 43% at 50% 50%);
+  transform: translate(-50%, -50%) scale(1.05);
+  opacity: .78;
+  filter: hue-rotate(88deg) saturate(1.6) contrast(1.26) brightness(1.16);
+  mix-blend-mode: screen;
+  animation: noriEntityEyeAlive 7.4s ease-in-out infinite;
+}
+.startup-entity-flare {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 15% 18% at 29% 35.5%, rgba(192,111,255,.25), transparent 72%);
+  mix-blend-mode: screen;
+  animation: noriEntityEyePulse 2.9s ease-in-out infinite;
+}
+@keyframes noriEntityApproach {
+  from { transform: scale(1.025); filter: saturate(.76) brightness(.72); }
+  56% { filter: saturate(1.04) brightness(.94); }
+  to { transform: scale(1.105); filter: saturate(1.08) brightness(1.02); }
+}
+@keyframes noriEntityEyeAlive {
+  0%,100% { transform: translate(-50%, -50%) scale(1.02); opacity:.69; }
+  47% { transform: translate(-50.7%, -49.3%) scale(1.10); opacity:.88; }
+  56% { transform: translate(-49.5%, -50.5%) scale(1.06); opacity:.81; }
+}
+@keyframes noriEntityEyePulse { 50% { opacity: .38; } }
+.boot-video.is-landing {
+  opacity: 0;
+}
+.boot-video-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 42%, rgba(0, 1, 8, .24) 76%, rgba(0, 1, 8, .72) 100%);
+  opacity: 1;
+  transition: opacity 3.4s ease-in-out;
+}
+.boot-video-vignette.is-landing { opacity: 0; }
+
+/* Nori's actual eye: a crisp ghost-purple iris and black pupil, shared by the
+   opening and the live space state so the transition never changes identity. */
+.boot-iris {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: min(45vmin, 480px);
+  aspect-ratio: 1;
+  object-fit: contain;
+  transform: translate(-50%, -50%) scale(.82);
+  opacity: 0;
+  filter: drop-shadow(0 0 22px rgba(171, 74, 255, .72));
+  animation: noriIrisArrive 1.4s .45s cubic-bezier(.18,.78,.24,1) forwards, noriIrisBreathe 5.4s 1.9s ease-in-out infinite;
+  transition: opacity 3.7s ease-in-out, transform 3.7s ease-in-out;
+}
+.boot-iris.is-landing { opacity: 0; transform: translate(-50%, -50%) scale(1.12); animation-play-state: paused; }
+@keyframes noriIrisArrive { to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+@keyframes noriIrisBreathe { 50% { transform: translate(-50%, -50%) scale(1.025); filter: drop-shadow(0 0 34px rgba(183, 84, 255, .92)); } }
+
+.nori-iris {
+  position: fixed;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  width: min(45vmin, 480px);
+  aspect-ratio: 1;
+  object-fit: contain;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 26px rgba(165, 69, 238, .72));
+  animation: noriLiveIrisBreathe 5.4s ease-in-out infinite;
+}
+@keyframes noriLiveIrisBreathe { 50% { transform: translate(-50%, -50%) scale(1.025); filter: drop-shadow(0 0 38px rgba(181, 85, 255, .94)); } }
+
+/* An original moving cosmic field: it gives the start-up a slow big-bang
+   expansion without playing or borrowing a stock video. */
+.boot-cosmos {
+  position: absolute;
+  inset: -25%;
+  opacity: 0.82;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(218, 248, 255, 0.95) 0 0.35%, transparent 1.1%),
+    radial-gradient(ellipse at 50% 50%, rgba(72, 145, 255, 0.42) 0 4%, transparent 19%),
+    repeating-radial-gradient(ellipse at 50% 50%, transparent 0 3.2%, rgba(111, 157, 255, 0.3) 3.26% 3.33%, transparent 3.4% 6.8%),
+    radial-gradient(ellipse at 24% 66%, rgba(63, 44, 185, 0.56), transparent 32%),
+    radial-gradient(ellipse at 76% 30%, rgba(15, 120, 200, 0.46), transparent 30%);
+  filter: saturate(1.3) blur(0.25px);
+  transform-origin: center;
+  animation: noriCosmicBirth 8.8s cubic-bezier(.15, .7, .2, 1) both;
+}
+@keyframes noriCosmicBirth {
+  0% { opacity: 0; transform: scale(.16) rotate(-9deg); filter: saturate(.3) blur(3px); }
+  18% { opacity: .78; }
+  68% { opacity: .62; transform: scale(1.25) rotate(3deg); filter: saturate(1.35) blur(.4px); }
+  100% { opacity: 0; transform: scale(2.3) rotate(8deg); filter: saturate(1.15) blur(1px); }
+}
+
+/* -- beat 1: the status bar -------------------------------------------- */
+
+.boot-bar {
+  position: absolute;
+  top: 12%;
+  left: 0;
+  right: 0;
+  padding: 0 min(9vw, 140px);
+  transition: opacity 0.6s ease, filter 0.6s ease;
+}
+.boot-bar-dim { opacity: 0.28; filter: blur(0.6px); }
+
+.boot-bar-frame {
+  position: relative;
+  border-top: 1.5px solid var(--accent);
+  border-bottom: 1.5px solid var(--accent);
+  padding: 14px 26px 12px;
+  clip-path: polygon(3% 0, 97% 0, 100% 42%, 97% 100%, 3% 100%, 0 42%);
+  box-shadow:
+    inset 0 0 40px color-mix(in srgb, var(--accent) 12%, transparent),
+    0 0 30px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.boot-bar-title {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(18px, 3.4vw, 40px);
+  font-weight: 300;
+  letter-spacing: 0.14em;
+  color: #eafcff;
+  text-shadow: 0 0 26px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+.boot-dots { opacity: 0.6; margin: 0 0.2em; }
+.boot-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.05em;
+  margin-left: 0.15em;
+  background: var(--accent);
+  animation: bootBlink 0.7s steps(1) infinite;
+}
+@keyframes bootBlink { 50% { opacity: 0 } }
+
+.boot-seg { display: flex; gap: 3px; margin-top: 12px; }
+.boot-seg-cell {
+  flex: 1;
+  height: 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+.boot-seg-cell[data-on='1'] {
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.boot-log {
+  margin-top: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  line-height: 1.9;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+}
+.boot-log-line { animation: bootLogIn 0.25s ease both; }
+.boot-log-line::before { content: '\203a  '; opacity: 0.5; }
+@keyframes bootLogIn { from { opacity: 0; transform: translateX(-8px) } }
+
+/* -- beats 2-4: the centre stage --------------------------------------- */
+
+.boot-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.boot-rings,
+.boot-suit,
+.boot-reactor {
+  width: min(58vmin, 520px);
+  height: min(58vmin, 520px);
+  overflow: visible;
+}
+
+.boot-ring {
+  fill: none;
+  stroke: var(--accent);
+  opacity: 0.8;
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--accent) 50%, transparent));
+}
+.boot-name {
+  fill: #eafcff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.boot-wire {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.4;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--accent) 55%, transparent));
+}
+.boot-wire-dim { opacity: 0.4; stroke-width: 1; }
+.boot-suit-fig { filter: drop-shadow(0 0 8px color-mix(in srgb, var(--accent) 40%, transparent)); }
+.boot-avatar-skin {
+  fill: #1478d1;
+  opacity: 0.73;
+  filter: drop-shadow(0 0 16px rgba(57, 167, 255, .86));
+}
+.boot-eye {
+  fill: #fff;
+  filter: drop-shadow(0 0 6px #fff) drop-shadow(0 0 12px #89dfff);
+}
+.boot-tag {
+  fill: var(--accent);
+  opacity: 0.55;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-anchor: middle;
+}
+
+.boot-r-seg {
+  stroke: color-mix(in srgb, var(--accent) 30%, transparent);
+  stroke-width: 8;
+}
+.boot-r-on { stroke: #dffbff; filter: drop-shadow(0 0 8px var(--accent)); }
+.boot-r-ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  opacity: calc(0.3 + var(--glow) * 0.6);
+}
+.boot-r-ring-in { stroke-width: 1.5; opacity: calc(0.2 + var(--glow) * 0.5); }
+.boot-r-tri {
+  fill: color-mix(in srgb, var(--accent) calc(var(--glow) * 45%), transparent);
+  stroke: #eafcff;
+  stroke-width: 3;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 calc(var(--glow) * 26px) var(--accent));
+}
+.boot-r-tri-in {
+  fill: color-mix(in srgb, #eafcff calc(var(--glow) * 60%), transparent);
+  stroke: none;
+}
+.boot-r-v {
+  fill: none;
+  stroke: #05161a;
+  stroke-width: 3.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  opacity: var(--glow);
+}
+
+@media (max-width: 900px) {
+  .hud-top { padding: 0 46px; }
+  .rail-left {
+    left: 30px;
+    top: 112px;
+    bottom: calc(132px + min(28vh, 220px) + 24px);
+    transform: none;
+    width: min(300px, 80vw);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    pointer-events: auto;
+  }
+  .rail-left .nori-personality { width: 100%; flex-shrink: 0; }
+  .rail-right {
+    right: 30px;
+    top: 112px;
+    bottom: calc(132px + min(28vh, 220px) + 24px);
+    transform: none;
+    overflow-y: auto;
+    pointer-events: auto;
+  }
+  .log { left: 30px; width: calc(100vw - 60px); }
+}
+
+/* ---------------------------------------------------------------------------
+   Instrument layer
+
+   The graduated rings, gauges and reticles that make the reactor read as a
+   cockpit instrument rather than a glowing ball. Sits above the 3D scene
+   (z 1) and below the HUD chrome (z 4), so text and panels always win.
+
+   Everything animates with transform only, on its own compositor layer, and
+   nothing in here re-renders between phase changes.
+   --------------------------------------------------------------------------- */
+
+.instruments {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  /* The reactor sits slightly above centre, matching the 3D camera. */
+  transform: translateY(-2vh);
+}
+
+.instruments svg {
+  /* Tied to the smaller axis so the assembly stays circular and never crops. */
+  width: min(82vmin, 820px);
+  height: min(82vmin, 820px);
+  overflow: visible;
+}
+
+.instruments path,
+.instruments text {
+  transition: stroke 600ms ease, fill 600ms ease;
+}
+
+/* -- strokes -------------------------------------------------------------- */
+
+.ins-tick {
+  stroke: var(--ins);
+  stroke-width: 1;
+  opacity: 0.55;
+  vector-effect: non-scaling-stroke;
+}
+
+.ins-tick-major {
+  stroke: var(--ins);
+  stroke-width: 1.4;
+  opacity: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.ins-bar {
+  stroke: var(--ins);
+  stroke-width: 2.2;
+  opacity: 0.75;
+  vector-effect: non-scaling-stroke;
+}
+
+.ins-ring {
+  fill: none;
+  stroke: var(--ins);
+  stroke-width: 1;
+  opacity: 0.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.ins-ring-dashed {
+  stroke-dasharray: 46 12 4 12;
+  opacity: 0.8;
+}
+
+.ins-bracket {
+  fill: none;
+  stroke: var(--ins);
+  stroke-width: 1.6;
+  opacity: 0.85;
+  vector-effect: non-scaling-stroke;
+}
+
+.ins-spoke {
+  stroke: var(--ins);
+  stroke-width: 1;
+  opacity: 0.6;
+  vector-effect: non-scaling-stroke;
+}
+
+.ins-hex {
+  fill: none;
+  stroke: var(--ins);
+  stroke-width: 1.2;
+  opacity: 0.7;
+  vector-effect: non-scaling-stroke;
+}
+
+.ins-hex-inner {
+  opacity: 0.45;
+}
+
+.ins-label {
+  fill: var(--ins);
+  opacity: 0.75;
+  font: 400 13px/1 ui-monospace, "SF Mono", Menlo, monospace;
+  letter-spacing: 0.18em;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+/* -- rotation ------------------------------------------------------------- */
+
+@keyframes ins-cw  { to { transform: rotate(360deg) } }
+@keyframes ins-ccw { to { transform: rotate(-360deg) } }
+
+.ins-spin-cw,
+.ins-spin-cw-slow,
+.ins-spin-ccw,
+.ins-spin-ccw-fast {
+  transform-origin: 0 0;   /* the viewBox is centred on the origin */
+  transform-box: view-box;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  /* Phase changes retime the animation; easing the duration is not possible in
+     CSS, so the transition on stroke carries the change and the speed simply
+     steps. At these tempos the step is not readable as a jump. */
+  transition: none;
+}
+
+.ins-spin-cw        { animation-name: ins-cw;  animation-duration: var(--spin) }
+.ins-spin-cw-slow   { animation-name: ins-cw;  animation-duration: var(--spin-slow) }
+.ins-spin-ccw       { animation-name: ins-ccw; animation-duration: var(--spin) }
+.ins-spin-ccw-fast  { animation-name: ins-ccw; animation-duration: var(--spin-fast) }
+
+@media (prefers-reduced-motion: reduce) {
+  .ins-spin-cw,
+  .ins-spin-cw-slow,
+  .ins-spin-ccw,
+  .ins-spin-ccw-fast { animation: none }
+}
+
+/* ---------------------------------------------------------------------------
+   Decoding text
+
+   N.O.R.I.'s half of the transcript resolves out of noise instead of simply
+   appearing. Two spans do the work: the ghost is the live scramble, the veil
+   is the text that has not been reached yet — present in the DOM, and so in
+   the accessibility tree and in the line wrapping, but not painted. Reserving
+   that space is what stops the paragraph reflowing under the reader as the
+   answer streams in.
+   --------------------------------------------------------------------------- */
+
+.decode-ghost {
+  /* Monospace on purpose: the noise should read as a readout rather than as a
+     word that has been mistyped. */
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.92em;
+  color: var(--accent);
+  opacity: 0.62;
+  text-shadow: 0 0 16px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.decode-veil {
+  opacity: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Blades — the tool-execution sweep
+
+   Thin shards raking across the frame at a tilt while a tool runs. Everything
+   here is transform and opacity so the whole sweep stays on the compositor and
+   never touches layout, which matters because it plays over a live 3D scene.
+
+   The band is inset from the top and bottom of the frame rather than filling
+   it: the header and the transcript both have to stay legible through this,
+   and a blade crossing a line of text is noise in the literal sense.
+   --------------------------------------------------------------------------- */
+
+.blades {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 14%;
+  /* Stops well short of the transcript. A four-line log at the bottom of a
+     short viewport reaches roughly 28% up the frame, and a blade crossing a
+     line of text is noise in the literal sense. */
+  bottom: 30%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  /* Faded at both ends so the sweep reads as light passing through the middle
+     of the frame, and so it never arrives underneath the side rails or the
+     panel columns at full strength. */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+}
+
+/* A second element for the vertical fade. Two masks on one box needs
+   mask-composite, which is still uneven across engines; nesting is boring and
+   works everywhere. */
+.blade-field {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: linear-gradient(transparent, #000 20%, #000 80%, transparent);
+  mask-image: linear-gradient(transparent, #000 20%, #000 80%, transparent);
+}
+
+.blade {
+  position: absolute;
+  left: 0;
+  top: -14%;
+  height: 128%;
+  width: var(--blade-w);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--accent) 70%, #fff) 46%,
+    var(--accent) 58%,
+    transparent
+  );
+  box-shadow: 0 0 22px color-mix(in srgb, var(--accent) 55%, transparent);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: bladeSweep var(--blade-t) cubic-bezier(0.45, 0, 0.25, 1) var(--blade-d) infinite;
+}
+
+@keyframes bladeSweep {
+  0%   { transform: translateX(-18vw) skewX(var(--blade-k)) scaleY(0.55); opacity: 0 }
+  14%  { opacity: var(--blade-o) }
+  70%  { opacity: var(--blade-o) }
+  100% { transform: translateX(116vw) skewX(var(--blade-k)) scaleY(1); opacity: 0 }
+}
+
+/* Six slivers, all different. Machinery engaging is not a metronome — the
+   widths, tilts and tempos are deliberately co-prime-ish so the pattern never
+   visibly repeats over the few seconds a tool call lasts. The wide, dim ones
+   are the glow the sharp ones travel in. */
+.blade-1 { --blade-w: 2px;  --blade-k: -20deg; --blade-t: 1.55s; --blade-d: 0s;    --blade-o: 0.85; --blade-x: 22vw }
+.blade-2 { --blade-w: 7px;  --blade-k: -20deg; --blade-t: 2.1s;  --blade-d: 0.18s; --blade-o: 0.26; --blade-x: 27vw }
+.blade-3 { --blade-w: 1px;  --blade-k: -13deg; --blade-t: 1.15s; --blade-d: 0.42s; --blade-o: 0.7;  --blade-x: 44vw }
+.blade-4 { --blade-w: 16px; --blade-k: -27deg; --blade-t: 2.6s;  --blade-d: 0.6s;  --blade-o: 0.14; --blade-x: 58vw }
+.blade-5 { --blade-w: 2px;  --blade-k: -27deg; --blade-t: 1.85s; --blade-d: 0.9s;  --blade-o: 0.6;  --blade-x: 63vw }
+.blade-6 { --blade-w: 3px;  --blade-k: -8deg;  --blade-t: 1.35s; --blade-d: 1.25s; --blade-o: 0.5;  --blade-x: 78vw }
+
+/* The name of the tool rides in with the sweep, then holds nearly still long
+   enough to be read, then leaves with it. Sits near the top of the band so it
+   never collides with the headline readout under the reactor. */
+.blade-carrier {
+  position: absolute;
+  left: 50%;
+  top: 4%;
+}
+
+.blade-tool {
+  display: block;
+  white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #e6f9ff;
+  text-shadow:
+    0 0 18px var(--accent),
+    0 0 44px color-mix(in srgb, var(--accent) 55%, transparent);
+  will-change: transform, opacity;
+  animation: bladeCarry 3.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.blade-tool::before {
+  content: '⟩ ';
+  opacity: 0.5;
+}
+
+@keyframes bladeCarry {
+  0%   { transform: translateX(-150%) skewX(-18deg); opacity: 0 }
+  18%  { transform: translateX(-58%)  skewX(-4deg);  opacity: 0.92 }
+  72%  { transform: translateX(-42%)  skewX(4deg);   opacity: 0.92 }
+  100% { transform: translateX(45%)   skewX(18deg);  opacity: 0 }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No sweep. The blades still say "something is running", they just say it as
+     a still frame — parked where each one would have crossed. */
+  .blade {
+    animation: none;
+    opacity: calc(var(--blade-o) * 0.55);
+    transform: translateX(var(--blade-x)) skewX(var(--blade-k));
+  }
+  .blade-tool {
+    animation: none;
+    transform: translateX(-50%);
+    opacity: 0.9;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   One-shot frame effects
+
+   Mounted only while playing (see Effects.tsx), so none of this costs anything
+   at rest. Everything is pointer-events: none — the ignition button and the
+   boot screen sit above the HUD entirely, so nothing here can trap a click.
+   --------------------------------------------------------------------------- */
+
+.fx {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.fx-play {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* flash ------------------------------------------------------------------- */
+
+.fx-flash {
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--accent) 55%, transparent),
+    transparent 72%
+  );
+  animation: fxFlash 480ms ease-out both;
+}
+
+@keyframes fxFlash {
+  0%   { opacity: 0 }
+  12%  { opacity: 1 }
+  100% { opacity: 0 }
+}
+
+/* scan -------------------------------------------------------------------- */
+
+.fx-scan::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 16vh;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--accent) 26%, transparent) 55%,
+    color-mix(in srgb, var(--accent) 80%, #fff) 92%,
+    transparent
+  );
+  animation: fxScan 900ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes fxScan {
+  from { transform: translateY(-20vh) }
+  to   { transform: translateY(120vh) }
+}
+
+/* pulse ------------------------------------------------------------------- */
+
+/* Centred on the reactor rather than on the viewport — the camera puts it
+   slightly above the middle, and a shockwave that misses its source by 2vh
+   reads as a bug rather than as an effect. */
+.fx-wave {
+  position: absolute;
+  top: calc(50% - 2vh);
+  left: 50%;
+  width: 40vmin;
+  height: 40vmin;
+  margin: -20vmin 0 0 -20vmin;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  box-shadow:
+    0 0 44px color-mix(in srgb, var(--accent) 60%, transparent),
+    inset 0 0 44px color-mix(in srgb, var(--accent) 35%, transparent);
+  animation: fxWave 900ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+.fx-wave:nth-child(2) { animation-delay: 150ms }
+
+@keyframes fxWave {
+  from { transform: scale(0.22); opacity: 0.95 }
+  to   { transform: scale(3.4);  opacity: 0 }
+}
+
+/* glitch ------------------------------------------------------------------ */
+
+/* Slices displace what is *behind* them rather than painting over it —
+   backdrop-filter samples the live scene, so the tear happens to the reactor
+   itself. Stepped timing, because a glitch that eases is a wipe. */
+.fx-slice {
+  position: absolute;
+  left: -8%;
+  width: 116%;
+  opacity: 0;
+  -webkit-backdrop-filter: hue-rotate(90deg) saturate(1.9) contrast(1.08);
+  backdrop-filter: hue-rotate(90deg) saturate(1.9) contrast(1.08);
+  animation: fxTear 620ms steps(1, end) both;
+}
+
+.fx-glitch .fx-slice:nth-child(1) { top: 21%; height: 7%; animation-delay: 0ms }
+.fx-glitch .fx-slice:nth-child(2) { top: 45%; height: 4%; animation-delay: 90ms }
+.fx-glitch .fx-slice:nth-child(3) { top: 67%; height: 9%; animation-delay: 40ms }
+
+@keyframes fxTear {
+  0%, 100% { transform: translateX(0);      opacity: 0 }
+  10%      { transform: translateX(-3.5%);  opacity: 1 }
+  30%      { transform: translateX(2.6%);   opacity: 1 }
+  55%      { transform: translateX(-1.4%);  opacity: 1 }
+  80%      { transform: translateX(0.8%);   opacity: 1 }
+}
+
+/* The chromatic half of the tear: two full-frame casts pulling apart. */
+.fx-glitch::before,
+.fx-glitch::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: fxChroma 620ms steps(2, end) both;
+}
+
+.fx-glitch::before { background: rgba(255, 40, 90, 0.13) }
+.fx-glitch::after  { background: rgba(40, 220, 255, 0.13); animation-direction: reverse }
+
+@keyframes fxChroma {
+  0%, 100% { transform: translateX(0);    opacity: 0 }
+  20%      { transform: translateX(-7px); opacity: 1 }
+  60%      { transform: translateX(6px);  opacity: 0.8 }
+}
+
+/* shake ------------------------------------------------------------------- */
+
+/* Applied to the HUD root by Effects.tsx for the duration, so the chrome takes
+   the hit as one body — the 3D scene is a separate layer and keeps still,
+   which is what sells it as the instruments being knocked rather than the
+   world moving. */
+.hud.fx-shaking {
+  animation: fxShake 520ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes fxShake {
+  0%, 100% { transform: translate(0, 0) }
+  12%      { transform: translate(-11px, 5px) }
+  26%      { transform: translate(9px, -6px) }
+  42%      { transform: translate(-7px, -3px) }
+  58%      { transform: translate(6px, 4px) }
+  74%      { transform: translate(-3px, 2px) }
+  88%      { transform: translate(2px, -1px) }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Displacement is the part that hurts, so it goes; the effects still fire,
+     as a plain fade of the same colour in the same place. */
+  .hud.fx-shaking { animation: none }
+  .fx-slice,
+  .fx-wave,
+  .fx-scan::before,
+  .fx-glitch::before,
+  .fx-glitch::after {
+    animation-name: fxFade;
+    animation-timing-function: ease-out;
+  }
+}
+
+@keyframes fxFade {
+  0%   { opacity: 0 }
+  25%  { opacity: 0.7 }
+  100% { opacity: 0 }
+}
+
+/* ---------------------------------------------------------------------------
+   Diagnostics overlay (press D)
+
+   Deliberately plain and deliberately ugly: it is an instrument, not part of
+   the interface, and it should never be mistaken for one on camera.
+   --------------------------------------------------------------------------- */
+
+.diag {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 20;
+  width: min(24rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  padding: 0.75rem 0.9rem;
+  background: rgba(2, 10, 12, 0.94);
+  border: 1px solid var(--accent, #19d8d2);
+  border-radius: 2px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: #cfe6e3;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+}
+
+.diag-head {
+  letter-spacing: 0.18em;
+  color: var(--accent, #19d8d2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.diag-verdict {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.78rem;
+}
+
+.diag-sec {
+  margin: 0.7rem 0 0.3rem;
+  letter-spacing: 0.16em;
+  color: #6d8886;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.45rem;
+}
+
+.diag-row {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 0.5rem;
+}
+
+.diag-k { color: #6d8886; }
+.diag-v { color: #cfe6e3; overflow-wrap: anywhere; }
+.diag-ok { color: #3ef2a8; }
+.diag-bad { color: #ff6b6b; }
+
+/* ------------------------------------------------------------------ blades */
+/*
+   The blade stack — the surface for things meant to be looked at rather than
+   glanced at. Panels live down the sides in a fixed narrow column; blades take
+   the middle of the frame, because the whole point of them is that an article
+   needs a readable measure and a picture needs room.
+
+   The stack is centred rather than railed to one side. That does cover the
+   reactor, and it should: when there is something on screen worth reading, the
+   reactor is no longer the subject.
+*/
+.blades-stack {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  /* The container never eats clicks; only the cards inside it do, so the
+     reactor and the rails stay reachable around a small blade. */
+  pointer-events: none;
+}
+
+.bl {
+  position: absolute;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--accent) 11%, rgba(4, 12, 18, 0.94)),
+    color-mix(in srgb, var(--accent) 4%, rgba(2, 8, 12, 0.96))
+  );
+  border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.62),
+    0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent) inset;
+  transform-origin: center center;
+}
+
+/* Only the front blade gets the accent glow; the ones behind read as paper. */
+.bl-front {
+  box-shadow:
+    0 26px 80px rgba(0, 0, 0, 0.7),
+    0 0 34px -10px color-mix(in srgb, var(--accent) 46%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--accent) 16%, transparent) inset;
+}
+
+/* Sizes are about how the content is meant to be consumed.
+   `tall` is a reading measure — roughly 60 characters at the body size in
+   page.mjs, which is the width prose is actually legible at. */
+.bl-compact { width: min(90vw, 440px);  height: min(58vh, 380px) }
+.bl-tall    { width: min(92vw, 560px);  height: min(82vh, 900px) }
+.bl-wide    { width: min(88vw, 1080px); height: min(72vh, 720px) }
+.bl-full    { width: 92vw;              height: 88vh }
+.bl-expanded { width: 94vw; height: 92vh }
+
+.bl-head {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px 9px 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+
+.bl-title {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: color-mix(in srgb, var(--accent) 92%, white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bl-kind {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  opacity: 0.45;
+  margin-right: auto;
+}
+
+.bl-acts { display: flex; gap: 4px }
+
+.bl-btn {
+  pointer-events: auto;
+  appearance: none;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+  background: transparent;
+  color: color-mix(in srgb, var(--accent) 80%, white);
+  font: inherit;
+  font-size: 11px;
+  line-height: 1;
+  padding: 4px 7px;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.bl-btn:hover {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 46%, transparent);
+}
+
+.bl-body {
+  flex: 1 1 auto;
+  min-height: 0;      /* or the iframe refuses to shrink inside the flex column */
+  overflow: auto;
+  position: relative;
+}
+
+/* A framed document fills the blade. It carries its own scrollbar, its own
+   stylesheet and its own CSP — see bridge/page.mjs. */
+.bl-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color-scheme: dark;
+}
+
+.bl-image,
+.bl-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* contain, not cover: this is the thing being looked at, and cropping the
+     subject out of a photograph to fill a rectangle is the wrong trade. */
+  object-fit: contain;
+  background: rgba(0, 0, 0, 0.35);
+}
+.bl-image-openable { cursor: zoom-in; }
+.bl-expanded .bl-image-openable { cursor: zoom-out; }
+
+.bl-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 8px;
+  padding: 12px;
+}
+.bl-thumb {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.bl-markup { padding: 14px 16px; text-transform: none; letter-spacing: normal }
+
+.bl-file-result { padding: 20px; text-transform: none; letter-spacing: normal; overflow-wrap: anywhere }
+.bl-file-result p { margin: 0 0 14px; color: var(--muted); line-height: 1.5 }
+.bl-file-result code { display: block; padding: 12px; border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent); border-radius: 8px; user-select: text; white-space: pre-wrap }
+.bl-file-result button { margin-top: 14px; padding: 9px 14px; border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent); border-radius: 8px; background: transparent; color: var(--accent); cursor: pointer }
+.bl-file-result button:hover { background: color-mix(in srgb, var(--accent) 12%, transparent) }
+
+.bl-note {
+  padding: 22px;
+  opacity: 0.6;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 12px;
+}
+
+.bl-hint {
+  position: absolute;
+  bottom: 3.2vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  opacity: 0.42;
+  pointer-events: none;
+}
+.bl-hint kbd {
+  font: inherit;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  padding: 1px 4px;
+}
+
+/* The body scrollbar inside a blade, matched to the reader view's own. */
+.bl-body::-webkit-scrollbar { width: 9px }
+.bl-body::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent) 34%, transparent);
+  border-radius: 9px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bl { transition: none }
+}
+
+/* The slot carries the depth transform; the blade inside it carries the drag.
+   Both need a transform, and one element cannot serve two owners. */
+.bl-slot {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.bl-slot > .bl { pointer-events: auto }
+
+/* Dragged by the header, so the body stays selectable. */
+.bl-head { cursor: grab; user-select: none }
+.bl-head:active { cursor: grabbing }
+.bl-btn { cursor: pointer }
+
+.bl-grip {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 18px;
+  height: 18px;
+  cursor: nwse-resize;
+  /* Two hairlines, the usual visual shorthand for a resize corner. */
+  background:
+    linear-gradient(135deg, transparent 0 46%,
+      color-mix(in srgb, var(--accent) 60%, transparent) 46% 54%, transparent 54%),
+    linear-gradient(135deg, transparent 0 68%,
+      color-mix(in srgb, var(--accent) 40%, transparent) 68% 76%, transparent 76%);
+  opacity: 0.55;
+  touch-action: none;
+  z-index: 2;
+}
+.bl-grip:hover { opacity: 1 }
+
+/* A resized blade is sized inline, so the presets must not fight it. */
+.bl[style*="width"] { max-width: none; max-height: none }
+
+/* The tab strip. Pinned to the very top edge, above the brand line and above an
+   expanded blade, so every open blade stays one click away whatever is on
+   screen. Scrolls sideways rather than wrapping once there are a lot of them. */
+.bl-tabs {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 70;
+  display: flex;
+  gap: 4px;
+  max-width: min(72vw, 1100px);
+  overflow-x: auto;
+  scrollbar-width: none;
+  pointer-events: auto;
+}
+.bl-tabs::-webkit-scrollbar { display: none }
+
+.bl-tab {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 220px;
+  padding: 5px 6px 5px 9px;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent) 70%, white);
+  background: color-mix(in srgb, var(--accent) 6%, rgba(2, 8, 12, 0.88));
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  user-select: none;
+  clip-path: polygon(6px 0, 100% 0, 100% 100%, 0 100%, 0 6px);
+  transition: background 160ms ease, border-color 160ms ease, opacity 160ms ease;
+}
+.bl-tab:hover { background: color-mix(in srgb, var(--accent) 16%, rgba(2, 8, 12, 0.88)) }
+.bl-tab.is-active {
+  color: color-mix(in srgb, var(--accent) 95%, white);
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  box-shadow: 0 0 18px -6px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+.bl-tab.is-hidden { opacity: 0.55 }
+
+.bl-tab-n {
+  font-size: 8px;
+  opacity: 0.55;
+}
+.bl-tab-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.bl-tab-edit {
+  width: 130px;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  padding: 1px 4px;
+  outline: none;
+}
+.bl-tab-x {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 9px;
+  line-height: 1;
+  padding: 2px 4px;
+  opacity: 0.5;
+  cursor: pointer;
+}
+.bl-tab-x:hover { opacity: 1; color: #ff4d5e }
+
+/* ------------------------------------------------------------------- hands */
+/*
+   The hand overlay. Above everything, because it shows where a press will land
+   and must never be occluded by the thing it is about to press. pointer-events
+   is none throughout — this is a picture of a pointer, not a pointer; the real
+   events are synthesised and dispatched at whatever is underneath (hands.ts).
+*/
+.hands-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  pointer-events: none;
+}
+
+/* The camera indicator. Deliberately always visible while tracking runs: an
+   interface that can see the room has to say so without being asked. */
+.hands-live {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 96;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 10px;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: color-mix(in srgb, var(--accent) 90%, white);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  background: color-mix(in srgb, var(--accent) 10%, rgba(2, 8, 12, 0.8));
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+.hands-live::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff4d4d;
+  box-shadow: 0 0 8px #ff4d4d;
+  animation: handsPulse 1.6s ease-in-out infinite;
+}
+@keyframes handsPulse {
+  0%, 100% { opacity: 1 }
+  50%      { opacity: 0.35 }
+}
+
+/* The legend. Bottom-left, out of the way of both the reactor and the blade
+   stack, and gone once you have proved you know how it works. */
+.gguide {
+  position: fixed;
+  left: 22px;
+  bottom: 22px;
+  z-index: 96;
+  min-width: 210px;
+  padding: 11px 13px 9px;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, rgba(2, 8, 12, 0.86));
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+  text-transform: none;
+  letter-spacing: normal;
+}
+.gguide-head {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 8px;
+}
+.gguide-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 3px 0;
+  font-size: 11px;
+}
+.gguide-icon { width: 17px; font-size: 13px; line-height: 1; filter: saturate(0.2) }
+.gguide-name {
+  width: 44px;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent) 95%, white);
+}
+.gguide-does { opacity: 0.68; font-size: 11px }
+.gguide-foot {
+  margin-top: 8px;
+  padding-top: 7px;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  opacity: 0.45;
+}
+.gguide-foot kbd {
+  font: inherit;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  padding: 0 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hands-live::before { animation: none }
+}
+
+/* Spun in CSS, deliberately. Under framer this was an infinitely repeating
+   animation, and AnimatePresence will not unmount a subtree whose animations
+   never end — which left the whole ignition overlay on top of the interface
+   for the entire session, swallowing every click and every pinch. */
+.ignition-ring { animation: ignitionSpin 18s linear infinite }
+
+@keyframes ignitionSpin {
+  from { transform: rotate(0deg) }
+  to   { transform: rotate(360deg) }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .ignition-ring { animation: none }
+}
+
+/* The live camera inside a blade. Mirrored, because a person expects their own
+   image to behave like a reflection — the frames sent to the model are not. */
+.bl-camera {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  background: #000;
+}
+/* A shared screen is not a mirror, and its text has to read. */
+.bl-camera.bl-screen {
+  transform: none;
+  object-fit: contain;
+}
+
+.surface-navigation {
+  position: fixed; right: 30px; bottom: 96px; z-index: 12;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 9px;
+  padding: 14px 17px; border: 1px solid #c6b0ef33;
+  background: #0b0915cc; color: #d6c9ee; font: 11px/1.5 monospace;
+  pointer-events: auto; backdrop-filter: blur(8px);
+}
+.surface-navigation-bar { display:flex; align-items:center; justify-content:space-between; gap:18px; min-width:190px; }
+.surface-navigation-title { letter-spacing: .13em; font-size: 10px; color: #e7d7ff; }
+.surface-navigation button.surface-navigation-toggle { min-width:30px; min-height:28px; padding:3px 8px; font-size:16px; line-height:1; }
+.surface-navigation-hint { opacity: .8; }
+.surface-navigation button {
+  border: 1px solid #bea0e766; background: #372449b3; color: #f1e8ff;
+  font: 11px monospace; padding: 9px 14px; cursor: pointer;
+}
+.surface-navigation button:hover { background: #573777; }
+.surface-navigation button:disabled { opacity: .5; cursor: wait; }
+.surface-travel-cover {
+  position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: 0;
+  background: radial-gradient(ellipse at center, #221331, #090611 75%);
+  transition: opacity 420ms ease;
+}
+.surface-travel-cover.is-covered { opacity: 1; }
+.earth-surface { position: fixed; inset: 0; z-index: 30; background: #080a0d; color: #f0e9fc; }
+.earth-surface-map { width: 100%; height: 100%; background: #0c111c; }
+.earth-surface .leaflet-container { font-family: Arial, sans-serif; }
+.earth-surface-toolbar {
+  position: absolute; z-index: 800; left: 22px; top: 22px;
+  display: flex; align-items: center; gap: 20px; max-width: calc(100% - 110px);
+  padding: 14px 18px; border: 1px solid #c3afe949; border-radius: 6px;
+  background: #14101ee8; box-shadow: 0 5px 24px #0007; font: 12px/1.5 Arial, sans-serif;
+}
+.earth-surface-toolbar strong { display: block; font: 10px/1.6 monospace; letter-spacing: .17em; color: #e0c2ff; }
+.earth-surface-toolbar span { display: block; font-variant-numeric: tabular-nums; color: #d6d4df; }
+.earth-surface-toolbar button { cursor: pointer; border: 1px solid #a58fbc6b; border-radius: 3px; padding: 9px 12px; color: #f2e8ff; background: #2a2035; font: 12px Arial, sans-serif; }
+.earth-surface-toolbar button:hover { background: #534165; }
+.earth-surface-style { display: flex; gap: 5px; }
+.earth-surface-style button[aria-pressed="true"] { background: #735294; border-color: #d4acee; }
+.earth-surface-status { position: absolute; left: 50%; bottom: 27px; transform: translateX(-50%); z-index: 800; background: #14101ee3; color: #e4dded; padding: 9px 15px; border-radius: 4px; font: 11px Arial, sans-serif; pointer-events: none; }
+.earth-surface-crosshair { position: absolute; left: 50%; top: 50%; width: 13px; height: 13px; margin: -7px; border: 1px solid #fff9; border-radius: 50%; box-shadow: 0 0 2px #000; pointer-events: none; z-index: 600; }
+.earth-surface .leaflet-control-attribution { color: #222; background: #ffffffe6; max-width: 70vw; }
+@media (max-width: 700px) { .earth-surface-toolbar { gap: 9px; padding: 9px; flex-wrap: wrap; } .earth-surface-status { width: 80%; text-align: center; } }
+.cesium-earth .cesium-viewer, .cesium-earth .cesium-viewer-cesiumWidgetContainer, .cesium-earth .cesium-widget { width: 100%; height: 100%; }
+.cesium-earth .cesium-widget-credits { bottom: 4px; padding: 4px 7px; background: #111b; }
+.earth-zoom-controls { position: absolute; top: 22px; right: 22px; display: flex; flex-direction: column; gap: 5px; z-index: 810; }
+.earth-zoom-controls button { font: 24px Arial; width: 37px; height: 37px; border: 1px solid #9784ad; color: #fff; background: #21162b; border-radius: 4px; cursor: pointer; }
+.earth-provider-settings { position: absolute; top: 100px; left: 22px; z-index: 850; width: 360px; padding: 20px; border: 1px solid #a68abe66; background: #16101ff2; border-radius: 6px; box-shadow: 0 6px 30px #0008; font: 12px/1.6 Arial, sans-serif; }
+.earth-provider-settings strong { font-size: 15px; }
+.earth-provider-settings p { color: #cabed7; margin: 10px 0; }
+.earth-provider-settings label { display: block; color: #edddff; }
+.earth-provider-settings input { display: block; box-sizing: border-box; margin: 6px 0 12px; width: 100%; padding: 10px; border: 1px solid #887098; background: #09060f; color: #fff; }
+.earth-provider-settings button, .earth-back-to-globe { padding: 10px 14px; border: 1px solid #af91ca; border-radius: 4px; background: #523768; color: #fff; cursor: pointer; }
+.earth-back-to-globe { position: fixed; z-index: 850; right: 22px; top: 115px; }
+.neural-region-overlay { z-index: 101 !important; }
+
+/* Final workspace layout rules follow the legacy HUD/scene styles. */
+.hud.nori-workspace { background: #17191d; }
+body:has(.nori-workspace)::after { display: none; }
+.workspace-toolbar { color: #93a0ae; letter-spacing: .05em; }
+.workspace-toolbar button { border-radius: 6px; border-color: #ffffff14; background: #1c2027; }
+.workspace-view-button {
+  pointer-events: auto; margin-left: 16px; padding: 7px 11px; border-radius: 8px;
+  border: 1px solid #ffffff18; color: #bfcbd9; background: #ffffff06;
+  font: 12px 'Segoe UI', system-ui, sans-serif; cursor: pointer;
+}
+.workspace-view-button:hover { color: #79f2ca; border-color: #5affc844; }
+.workspace-welcome {
+  position: absolute; pointer-events: auto; z-index: 5; top: 27%;
+  left: calc((100vw - var(--workspace-sidebar) - var(--workspace-inspector)) / 2 + var(--workspace-sidebar));
+  transform: translateX(-50%); width: min(650px, calc(100vw - var(--workspace-sidebar) - var(--workspace-inspector) - 60px));
+  text-align: center;
+}
+.workspace-emblem {
+  display: grid; place-items: center; width: 52px; height: 52px; margin: 0 auto 22px;
+  border-radius: 17px; border: 1px solid #80efc943; color: #a5ffe1;
+  background: linear-gradient(145deg,#2a5b52,#2b2842); font: 650 26px 'Segoe UI',system-ui,sans-serif;
+  box-shadow: 0 8px 32px #0003;
+}
+.nori-astral { position: absolute; width: min(680px, 100%); height: 430px; left: 50%; top: -190px; transform: translateX(-50%); pointer-events: none; z-index: -1; overflow: hidden; opacity: .85; }
+.nori-astral svg { width: 100%; height: 100%; overflow: visible; }
+.nori-astral-halo { position: absolute; inset: 16% 12%; background: radial-gradient(ellipse, #a6fff322 0%, #52bcd90c 30%, transparent 65%); }
+.nori-astral-orbit { transform-origin: 240px 240px; animation: nori-astral-orbit 160s linear infinite; }
+.nori-astral-paused .nori-astral-orbit { animation-play-state: paused; }
+@keyframes nori-astral-orbit { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .nori-astral-orbit { animation: none; } }
+.workspace-welcome h1 { margin: 0 0 12px; color: #eef4f9; font-size: clamp(24px,2.6vw,34px); letter-spacing: -.035em; font-weight: 550; }
+.workspace-welcome p { max-width: 460px; margin: 0 auto; color: #8594a6; font-size: 14px; line-height: 1.7; }
+.workspace-starters { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 32px; }
+.workspace-starters button {
+  display: flex; justify-content: space-between; gap: 8px; align-items: flex-start;
+  min-height: 90px; padding: 15px; color: #b8c6d6; background: #20242a;
+  border: 1px solid #ffffff0c; border-radius: 12px; text-align: left; cursor: pointer;
+  font: 12px/1.6 'Segoe UI',system-ui,sans-serif;
+}
+.workspace-starters button:hover { background: #293139; border-color: #5affc833; }
+.workspace-starters button span { color: #6c9c92; }
+.nori-workspace .workspace-inspector-heading { margin-bottom: 2px; font-size: 12px; color: #d6e0eb; font-weight: 600; }
+.workspace-model-card { pointer-events: auto; display: flex; flex-direction: column; gap: 6px; padding: 13px; border-radius: 10px; background: #1c2027; border: 1px solid #ffffff12; text-align: left; cursor: pointer; }
+.workspace-model-card span { font-size: 10px; color: #8595a6; }
+.workspace-model-card strong { color: #d9e6ef; font: 550 12px/1.5 'Segoe UI',system-ui,sans-serif; overflow-wrap: anywhere; }
+.workspace-model-card small { color: #65bda4; font-size: 10px; }
+.workspace-outputs { margin: 10px 0 14px; }
+.workspace-section-title { display: flex; justify-content: space-between; color: #c4cedb; font-size: 11px; margin-bottom: 10px; }
+.workspace-section-title span { color: #6f8591; }
+.workspace-outputs p { color: #718193; font-size: 11px; line-height: 1.6; }
+.workspace-outputs button { display: flex; gap: 9px; width: 100%; pointer-events: auto; padding: 9px; border-radius: 7px; border: 0; background: #ffffff05; color: #b9cddd; text-align: left; font-size: 11px; cursor: pointer; }
+.workspace-outputs button:hover { background: #ffffff0e; }
+.nori-workspace .rail-left { overflow-x: hidden; }
+.nori-workspace .rail-left .nori-personality-panel { width: 100%; max-width: 100%; min-width: 0; }
+.nori-workspace .textbar {
+  right: auto; width: min(800px,calc(100vw - var(--workspace-sidebar) - var(--workspace-inspector) - 48px));
+  min-height: 90px; align-items: flex-end; bottom: 20px;
+}
+.nori-workspace .textbar-input { min-width: 0; height: 64px; min-height: 44px; max-height: 180px; resize: vertical; padding: 3px 5px; line-height: 1.6; }
+.workspace-send { flex: 0 0 34px; width: 34px; height: 34px; border: 0; border-radius: 10px; background: #9ce4ca; color: #132a24; font: 600 22px/1 'Segoe UI',system-ui,sans-serif; cursor: pointer; }
+.workspace-send:disabled { background: #3b444c; color: #7e8c99; cursor: default; }
+.nori-workspace .log { bottom: 125px; }
+.nori-workspace .blades-stack { z-index: 18; }
+.nori-workspace .error { bottom: 116px; }
+.workspace-ignition { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 30px; color: #e5edf5; background: #17191d; font-family: 'Segoe UI',system-ui,sans-serif; }
+.workspace-start-card { width: min(410px,100%); text-align: center; }
+.workspace-start-card h1 { font-size: 30px; font-weight: 550; letter-spacing: -.03em; margin: 0 0 12px; }
+.workspace-start-card p { font-size: 14px; color: #8e9dad; line-height: 1.7; margin: 0 0 30px; }
+.workspace-start-card button { cursor: pointer; font-family: inherit; }
+.workspace-start-primary { display: flex; align-items: center; justify-content: space-between; padding: 13px 17px; width: 100%; border: 1px solid #8fe9c855; border-radius: 11px; color: #112a22; background: #9ce4ca; font-size: 14px; font-weight: 600; }
+.workspace-start-secondary,.workspace-start-mic { display: block; width: 100%; border: 0; background: transparent; color: #8395a7; font-size: 12px; padding: 15px; }
+.workspace-start-mic { color: #689b8e; font-size: 11px; padding: 8px; }
+.nori-workspace .rail-btn.vision-control { color: var(--nori-vision); }
+.workspace-quit { pointer-events: auto; margin-top: auto; padding: 12px 9px; border: 0; background: transparent; color: #82919f; font: 11px 'Segoe UI',system-ui,sans-serif; text-align: left; cursor: pointer; }
+.workspace-quit:hover { color: #d2dde5; }
+@media(max-width:700px) {
+  .workspace-starters { grid-template-columns: 1fr; gap: 6px; margin-top: 18px; }
+  .workspace-starters button { min-height: 44px; padding: 10px; }
+  .workspace-welcome { top: 18%; }
+  .workspace-welcome h1 { font-size: 24px; }
+}

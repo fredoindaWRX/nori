@@ -1,0 +1,11 @@
+{
+  "schema": "nori.face-profile.v1",
+  "principal_id": "owner.vanguard.001",
+  "calibrated": false,
+  "embedding_algorithm": "nori-local-face-encoder-pending",
+  "embedding_dimension": null,
+  "thresholds": {"reject_below": null, "accept_at_or_above": null},
+  "raw_images_retained": false,
+  "diagnostic_retention_enabled": false,
+  "camera_enabled": false
+}

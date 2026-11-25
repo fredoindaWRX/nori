@@ -1,0 +1,97 @@
+/* Nori app layout v2 (owner, 2026-11-16: "her layout should look like this when i press to the app").
+   A neutral dark sidebar with her real functions, and a rounded composer with a + menu and a connections menu.
+   Everything here is scoped to body.nv2; Ctrl+Shift+L (or More > Classic layout) removes that class and the
+   earlier layout returns untouched. The React app's own nodes are restyled in place, never moved. */
+
+#nv2-side, #nv2-pop { display: none; }
+/* In the classic layout the composer extras stay out of the way. */
+form.textbar > .nv2-chips, form.textbar > .nv2-round { display: none; }
+body.nv2 { --nv2-side: 244px; --nv2-bg: #070d1a; --nv2-line: rgba(120, 170, 255, .16); --nv2-text: #d7e6ff; --nv2-dim: #7f97c2; }
+body.nv2 .hud.nori-workspace { --workspace-sidebar: var(--nv2-side) !important; --workspace-inspector: 0px !important; font: 13px/1.45 "Segoe UI", system-ui, sans-serif !important; color: var(--nv2-text) !important; }
+body.nv2 #nori-orb { left: var(--nv2-side); }
+
+/* Sidebar */
+body.nv2 #nv2-side { display: flex; flex-direction: column; position: fixed; z-index: 20; left: 0; top: 0; bottom: 0; width: var(--nv2-side); box-sizing: border-box;
+  padding: 10px 8px 8px; background: var(--nv2-bg); border-right: 1px solid var(--nv2-line); color: var(--nv2-text); font: 14px/1.3 "Segoe UI", system-ui, sans-serif; user-select: none; overflow-y: auto; scrollbar-width: thin; }
+#nv2-side .nv2-brand { display: flex; align-items: center; gap: 8px; padding: 6px 8px 12px; font-weight: 600; letter-spacing: .02em; }
+#nv2-side .nv2-dot { width: 8px; height: 8px; border-radius: 50%; background: #5b8cff; box-shadow: 0 0 8px #5b8cff88; }
+#nv2-side .nv2-state { margin-left: auto; color: var(--nv2-dim); font-size: 11px; font-weight: 400; text-transform: lowercase; }
+#nv2-side button.nv2-item { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 33px; padding: 6px 8px; border: 0; border-radius: 8px; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+#nv2-side button.nv2-item:hover, #nv2-side button.nv2-item.on { background: rgba(90, 162, 255, .13); }
+#nv2-side button.nv2-item svg { flex: 0 0 17px; width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; opacity: .9; }
+#nv2-side button.nv2-item span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#nv2-side button.nv2-sub { padding-left: 26px; font-size: 13px; color: #b9cff5; }
+#nv2-side .nv2-badge { margin-left: auto; flex: none; color: var(--nv2-dim); font-size: 11px; }
+#nv2-side .nv2-label { margin: 16px 8px 5px; color: var(--nv2-dim); font-size: 12px; }
+#nv2-side .nv2-empty { padding: 4px 8px 4px 26px; color: var(--nv2-dim); font-size: 12px; line-height: 1.4; }
+#nv2-side .nv2-foot { margin-top: auto; padding: 10px 8px 4px; border-top: 1px solid var(--nv2-line); color: var(--nv2-dim); font-size: 11px; line-height: 1.5; }
+
+/* Popover menus and small panels */
+body.nv2 #nv2-pop.open { display: block; position: fixed; z-index: 40; min-width: 210px; max-width: 360px; max-height: 70vh; overflow-y: auto; box-sizing: border-box; padding: 6px;
+  background: #0c1528; border: 1px solid rgba(120, 170, 255, .22); border-radius: 14px; box-shadow: 0 14px 40px rgba(0, 0, 0, .55); color: var(--nv2-text); font: 14px/1.35 "Segoe UI", system-ui, sans-serif; }
+#nv2-pop h3 { margin: 6px 10px 4px; font-size: 12px; font-weight: 600; color: var(--nv2-dim); }
+#nv2-pop p { margin: 4px 10px 8px; font-size: 12px; line-height: 1.45; color: var(--nv2-dim); }
+#nv2-pop button.nv2-row { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 34px; padding: 6px 10px; border: 0; border-radius: 9px; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+#nv2-pop button.nv2-row:hover { background: rgba(90, 162, 255, .14); }
+#nv2-pop button.nv2-row svg { flex: 0 0 16px; width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+#nv2-pop .nv2-line { display: flex; gap: 10px; padding: 6px 10px; font-size: 13px; }
+#nv2-pop .nv2-line small { margin-left: auto; color: var(--nv2-dim); white-space: nowrap; }
+#nv2-pop input { display: block; width: calc(100% - 12px); margin: 4px 6px 8px; box-sizing: border-box; padding: 8px 10px; border: 1px solid rgba(255, 255, 255, .14); border-radius: 9px; background: #070d1a; color: #e6f0ff; font: inherit; outline: none; }
+#nv2-pop input:focus { border-color: rgba(255, 255, 255, .32); }
+
+/* Header: only her state stays, top right */
+body.nv2 .nori-workspace .hud-top { background: none !important; border: 0 !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; box-shadow: none !important; }
+body.nv2 .nori-workspace .hud-top .brand { visibility: hidden; }
+body.nv2 .nori-workspace .status, body.nv2 .nori-workspace .status-text { color: var(--nv2-dim) !important; text-shadow: none !important; font: 11px "Segoe UI", system-ui, sans-serif !important; letter-spacing: .04em !important; }
+
+/* Her earlier side panels become drawers: More (left) and Library / tasks (right) */
+body.nv2 .nori-workspace .rail-left { left: var(--nv2-side) !important; z-index: 19 !important; width: 270px !important; padding-top: 16px !important; background: #0a1222 !important; border-right: 1px solid var(--nv2-line) !important;
+  transform: translateX(-110%) !important; visibility: hidden; transition: transform .18s ease, visibility .18s; box-shadow: 14px 0 40px rgba(0, 0, 0, .45); }
+body.nv2.nv2-more .nori-workspace .rail-left { transform: none !important; visibility: visible; }
+body.nv2 .nori-workspace .rail-right { display: flex !important; top: 0 !important; z-index: 19 !important; width: 300px !important; background: #0a1222 !important; border-left: 1px solid var(--nv2-line) !important;
+  transform: translateX(110%) !important; visibility: hidden; transition: transform .18s ease, visibility .18s; overflow-y: auto; box-shadow: -14px 0 40px rgba(0, 0, 0, .45); }
+body.nv2.nv2-inspect .nori-workspace .rail-right { transform: none !important; visibility: visible; }
+body.nori-orb-on.nv2 .nori-workspace :is(.rail-left, .rail-right) :is(h1, h2, h3, p, small, strong, summary, li, label, div, span) { color: #c4d8fa !important; text-shadow: none !important; }
+body.nori-orb-on.nv2 .nori-workspace :is(.rail-left, .rail-right) :is(section, details) { background: rgba(255, 255, 255, .04) !important; border-color: var(--nv2-line) !important; }
+body.nori-orb-on.nv2 .nori-workspace :is(.rail-left, .rail-right) button { color: #d7e6ff !important; border-color: rgba(255, 255, 255, .14) !important; background: rgba(255, 255, 255, .05) !important; font-family: "Segoe UI", system-ui, sans-serif !important; text-shadow: none !important; }
+body.nori-orb-on.nv2 .nori-workspace :is(.rail-left, .rail-right) button:hover { background: rgba(255, 255, 255, .1) !important; border-color: rgba(255, 255, 255, .26) !important; }
+body.nori-orb-on.nv2 .nori-workspace .nori-nav-label { color: var(--nv2-dim) !important; text-shadow: none !important; letter-spacing: .04em !important; }
+body.nori-orb-on.nv2 .nori-workspace .rail-item .tick { background: #5b8cff !important; box-shadow: none !important; }
+
+/* Conversation: see-through dark, so her form stays behind it */
+body.nori-orb-on.nv2 .nori-workspace .log { top: 0 !important; background: rgba(5, 10, 22, .7) !important; border: 0 !important; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font-family: "Segoe UI", system-ui, sans-serif !important; bottom: 196px !important; }
+body.nori-orb-on.nv2 .nori-workspace .log-toolbar { background: rgba(7, 13, 26, .9) !important; color: var(--nv2-dim) !important; border-color: var(--nv2-line) !important; }
+body.nori-orb-on.nv2 .nori-workspace .log-who { color: var(--nv2-dim) !important; }
+body.nori-orb-on.nv2 .nori-workspace .log-user, body.nori-orb-on.nv2 .nori-workspace .log-user .log-text { color: #9fb8e6 !important; text-shadow: none !important; }
+body.nori-orb-on.nv2 .nori-workspace .log-nori .log-text { color: #e6f0ff !important; text-shadow: none !important; }
+body.nv2 .log-line.nv2-miss { display: none !important; }
+
+/* Welcome */
+body.nori-orb-on.nv2 .workspace-welcome h1 { font: 500 30px/1.2 Georgia, "Times New Roman", serif !important; color: #e6f0ff !important; letter-spacing: 0 !important; }
+body.nori-orb-on.nv2 .workspace-welcome p { background: none !important; color: var(--nv2-dim) !important; font-family: "Segoe UI", system-ui, sans-serif !important; }
+body.nv2 .workspace-starters button { background: rgba(11, 20, 38, .86) !important; border: 1px solid var(--nv2-line) !important; color: #c4d8fa !important; border-radius: 14px !important; font-family: "Segoe UI", system-ui, sans-serif !important; }
+body.nv2 .workspace-starters button:hover { background: #12203c !important; border-color: rgba(120, 170, 255, .4) !important; }
+body.nv2 .workspace-starters button span { color: var(--nv2-dim) !important; }
+
+/* Composer: chips on top, the text, then + and connections on the left, mic and send on the right */
+body.nori-orb-on.nv2 .nori-workspace .textbar { display: grid !important; grid-template-columns: auto auto 1fr auto auto; grid-template-rows: auto auto auto; align-items: center !important; gap: 6px 8px !important;
+  width: min(770px, calc(100vw - var(--nv2-side) - 48px)) !important; min-height: 0 !important; padding: 0 12px 10px !important; bottom: 26px !important;
+  background: #0b1426 !important; border: 1px solid rgba(120, 170, 255, .24) !important; border-radius: 22px !important; box-shadow: 0 12px 38px rgba(0, 0, 0, .45) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+body.nv2 .textbar .nv2-chips { grid-row: 1; grid-column: 1 / -1; display: flex; gap: 6px; margin: 0 -12px; padding: 8px 12px; background: #081020; border-bottom: 1px solid var(--nv2-line); border-radius: 21px 21px 0 0; }
+body.nv2 .textbar .nv2-chip { display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 10px; border: 0; border-radius: 8px; background: none; color: #c4d8fa; font: 13px "Segoe UI", system-ui, sans-serif !important; cursor: pointer; max-width: 320px; }
+body.nv2 .textbar .nv2-chip:hover { background: rgba(90, 162, 255, .13); }
+body.nv2 .textbar .nv2-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.nv2 .textbar .nv2-chip svg, body.nv2 .textbar .nv2-round svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+body.nori-orb-on.nv2 .nori-workspace .textbar-input { grid-row: 2; grid-column: 1 / -1; width: 100%; box-sizing: border-box; height: 58px; min-height: 44px; padding: 8px 4px 0 !important; color: #e6f0ff !important; caret-color: #e6f0ff !important; font: 15px/1.5 "Segoe UI", system-ui, sans-serif !important; resize: none !important; }
+body.nori-orb-on.nv2 .nori-workspace .textbar-input::placeholder { color: #5f7fb0 !important; }
+body.nv2 .textbar > .textbar-attach, body.nv2 .textbar > .nv2-round { grid-row: 3; width: 32px !important; height: 32px !important; padding: 0; display: inline-flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 255, 255, .16) !important; border-radius: 50% !important; background: none !important; color: #c4d8fa !important; font-size: 18px; cursor: pointer; }
+body.nv2 .textbar > .textbar-attach:hover, body.nv2 .textbar > .nv2-round:hover { background: rgba(90, 162, 255, .14) !important; }
+body.nv2 .textbar > .textbar-attach.nv2-plus { grid-column: 1; }
+body.nv2 .textbar > .nv2-round { grid-column: 2; }
+body.nv2 .textbar > .textbar-attachment, body.nv2 .textbar > .textbar-attachment-error { grid-row: 3; grid-column: 3; justify-self: start; }
+body.nv2 .textbar > .textbar-attach.nv2-mic { grid-column: 4; border: 0 !important; }
+body.nv2 .textbar > .workspace-send { grid-row: 3; grid-column: 5; width: 32px; height: 32px; flex: none; border-radius: 50% !important; background: #9cc6ff !important; color: #06101f !important; font-size: 18px !important; }
+body.nv2 .textbar > .workspace-send:disabled { background: #16233d !important; color: #5f7fb0 !important; }
+body.nv2 .textbar > #nori-skill-zip-upload { display: none !important; }
+body.nv2 .nori-workspace .error { bottom: 200px !important; color: #d6b36a !important; font-family: "Segoe UI", system-ui, sans-serif !important; }
+#nv2-side .nv2-foot a { color: inherit; }

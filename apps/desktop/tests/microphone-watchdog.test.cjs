@@ -1,0 +1,17 @@
+const test=require('node:test')
+const assert=require('node:assert/strict')
+const {createMicrophoneWatchdog}=require('../desktop/microphone-watchdog.cjs')
+const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms))
+test('missing samples fail once and stop disarms the timer',async()=>{
+  let failures=0
+  const watchdog=createMicrophoneWatchdog(()=>failures++,{timeoutMs:20})
+  watchdog.touch()
+  await wait(65)
+  assert.equal(failures,1)
+  watchdog.touch();await wait(35)
+  assert.equal(failures,1)
+  const stopped=createMicrophoneWatchdog(()=>failures++,{timeoutMs:20})
+  stopped.touch();stopped.stop();await wait(35)
+  assert.equal(failures,1)
+  assert.throws(()=>createMicrophoneWatchdog(()=>{}, {timeoutMs:0}),/Invalid/)
+})

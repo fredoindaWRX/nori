@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "checks": [
+    "Exports only selected question and blank topic",
+    "Loads actual native engine answer",
+    "Draft persists locally",
+    "Unrelated question rejected",
+    "Posted-to-chat payload rejected",
+    "HTML stays literal text"
+  ],
+  "actualNativeInference": true,
+  "model": "llama3.2-3b-instruct",
+  "automaticPosting": false,
+  "liveChatConnected": false,
+  "visualBrowserReview": false
+}

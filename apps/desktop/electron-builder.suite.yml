@@ -1,0 +1,22 @@
+appId: ai.nori.desktop
+productName: N.O.R.I.
+executableName: Nori
+asar: true
+directories:
+  output: release/suite-desktop
+files:
+  - dist/**/*
+  - desktop/**/*
+  - bridge/**/*
+  - public/nori-icon.ico
+  - public/nori-icon.png
+  - public/icons/nori-spin-minute/**/*
+  - package.json
+  - "!node_modules/@anthropic-ai/**/*"
+  - "!bridge/{chrome,panels,ui,vision}.mjs"
+extraResources:
+  - from: release/suite-payload/NoriSuite
+    to: NoriSuite
+win:
+  target: dir
+  icon: public/nori-icon.ico

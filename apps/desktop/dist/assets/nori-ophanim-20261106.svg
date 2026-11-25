@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-100 -100 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="glow" r="0.5">
+      <stop offset="0" stop-color="#a5ffe1" stop-opacity=".55"/>
+      <stop offset=".45" stop-color="#7a5cff" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#7a5cff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="-1" x2="0" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ffe9a8"/>
+      <stop offset=".5" stop-color="#e8b84e"/>
+      <stop offset="1" stop-color="#b9862c"/>
+    </linearGradient>
+    <radialGradient id="iris" r="0.5">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".25" stop-color="#a5ffe1"/>
+      <stop offset=".7" stop-color="#5a8cff"/>
+      <stop offset="1" stop-color="#7a3cff"/>
+    </radialGradient>
+    <symbol id="eye" viewBox="-10 -6 20 12" overflow="visible">
+      <path d="M-10 0 Q0 -7.5 10 0 Q0 7.5 -10 0Z" fill="#0a0f1e" stroke="#f3d27a" stroke-width="1.2"/>
+      <circle r="3.4" fill="url(#iris)"/>
+      <circle r="1.5" fill="#04060c"/>
+    </symbol>
+  </defs>
+
+  <circle r="98" fill="url(#glow)"/>
+
+  <!-- Outer wheel: a gold rim full of eyes, turning slowly. -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="90s" repeatCount="indefinite"/>
+    <circle r="78" fill="none" stroke="url(#gold)" stroke-width="5"/>
+    <circle r="70" fill="none" stroke="#f3d27a" stroke-opacity=".45" stroke-width="1"/>
+    <circle r="86" fill="none" stroke="#f3d27a" stroke-opacity=".35" stroke-width="1"/>
+    <g id="rim-eyes">
+      <use xlink:href="#eye" href="#eye" x="-9" y="-83" width="18" height="10"/>
+      <use xlink:href="#eye" href="#eye" x="-9" y="-83" width="18" height="10" transform="rotate(30)"/>
+      <use xlink:href="#eye" href="#eye" x="-9" y="-83" width="18" height="10" transform="rotate(60)"/>
+      <use xlink:href="#eye" href="#eye" x="-9" y="-83" width="18" height="10" transform="rotate(90)"/>
+      <use xlink:href="#eye" href="#eye" x="-9" y="-83" width="18" height="10" transform="rotate(120)"/>
+      <use xlink:href="#eye" href="#eye" x="-9" y="-83" width="18" height="10" transform="rotate(150)"/>
+      <use xlink:href="#eye" href="#eye" x="-9" y="-83" width="18" height="10" transform="rotate(180)"/>
+      <use xlink:href="#eye" href="#eye" x="-9" y="-83" width="18" height="10" transform="rotate(210)"/>
+      <use xlink:href="#eye" href="#eye" x="-9" y="-83" width="18" height="10" transform="rotate(240)"/>
+      <use xlink:href="#eye" href="#eye" x="-9" y="-83" width="18" height="10" transform="rotate(270)"/>
+      <use xlink:href="#eye" href="#eye" x="-9" y="-83" width="18" height="10" transform="rotate(300)"/>
+      <use xlink:href="#eye" href="#eye" x="-9" y="-83" width="18" height="10" transform="rotate(330)"/>
+    </g>
+  </g>
+
+  <!-- Inner wheels: two tilted rings crossing inside the first, turning the other way. -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="60s" repeatCount="indefinite"/>
+    <ellipse rx="62" ry="22" fill="none" stroke="#a5ffe1" stroke-width="3" transform="rotate(60)"/>
+    <ellipse rx="62" ry="22" fill="none" stroke="#a78bff" stroke-width="3" transform="rotate(-60)"/>
+    <ellipse rx="62" ry="22" fill="none" stroke="#f3d27a" stroke-opacity=".75" stroke-width="2"/>
+    <use xlink:href="#eye" href="#eye" x="-7" y="-4" width="14" height="8" transform="rotate(60) translate(62 0) rotate(90)"/>
+    <use xlink:href="#eye" href="#eye" x="-7" y="-4" width="14" height="8" transform="rotate(60) translate(-62 0) rotate(90)"/>
+    <use xlink:href="#eye" href="#eye" x="-7" y="-4" width="14" height="8" transform="rotate(-60) translate(62 0) rotate(90)"/>
+    <use xlink:href="#eye" href="#eye" x="-7" y="-4" width="14" height="8" transform="rotate(-60) translate(-62 0) rotate(90)"/>
+    <use xlink:href="#eye" href="#eye" x="-7" y="-4" width="14" height="8" transform="translate(62 0) rotate(90)"/>
+    <use xlink:href="#eye" href="#eye" x="-7" y="-4" width="14" height="8" transform="translate(-62 0) rotate(90)"/>
+  </g>
+
+  <!-- The central eye. -->
+  <circle r="26" fill="#a5ffe1" fill-opacity=".12"/>
+  <path d="M-30 0 Q0 -24 30 0 Q0 24 -30 0Z" fill="#070b18" stroke="url(#gold)" stroke-width="3"/>
+  <circle r="13" fill="url(#iris)">
+    <animate attributeName="r" values="13;11.5;13" dur="6s" repeatCount="indefinite"/>
+  </circle>
+  <circle r="5.5" fill="#03050b"/>
+  <circle cx="-4" cy="-4" r="2.2" fill="#ffffff" fill-opacity=".9"/>
+</svg>

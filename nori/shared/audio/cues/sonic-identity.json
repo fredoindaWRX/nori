@@ -1,0 +1,52 @@
+{
+  "schema": "nori.sonic-identity.v1",
+  "identity": "NORI Neon Circuit",
+  "ownership": "Original procedurally synthesized NORI system audio",
+  "sample_rate_hz": 48000,
+  "channels": 1,
+  "sample_format": "PCM16",
+  "cues": [
+    {
+      "cue": "home-start",
+      "file": "nori-home-start.wav",
+      "purpose": "Home NORI presence forming",
+      "duration_ms": 1550
+    },
+    {
+      "cue": "server-start",
+      "file": "nori-server-start.wav",
+      "purpose": "Ghost Server One coming online",
+      "duration_ms": 2200
+    },
+    {
+      "cue": "owner-verified",
+      "file": "nori-owner-verified.wav",
+      "purpose": "Owner identity accepted",
+      "duration_ms": 580
+    },
+    {
+      "cue": "knight-dispatch",
+      "file": "nori-knight-dispatch.wav",
+      "purpose": "Round Table task dispatched",
+      "duration_ms": 720
+    },
+    {
+      "cue": "task-complete",
+      "file": "nori-task-complete.wav",
+      "purpose": "Task completed and verified",
+      "duration_ms": 820
+    },
+    {
+      "cue": "warning",
+      "file": "nori-warning.wav",
+      "purpose": "Action needs attention",
+      "duration_ms": 840
+    },
+    {
+      "cue": "watchman-intervention",
+      "file": "nori-watchman-intervention.wav",
+      "purpose": "Robotics Watchman safe-state intervention",
+      "duration_ms": 1150
+    }
+  ]
+}

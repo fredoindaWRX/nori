@@ -1,0 +1,6 @@
+{
+  "port": 11435,
+  "engine_binary": "engine/norama/norama-worker.exe",
+  "model_path": "models/language/llama3.2-3b-instruct/llama3.2-3b-instruct.gguf",
+  "model_id": "llama3.2-3b-instruct"
+}

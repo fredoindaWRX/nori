@@ -1,0 +1,71 @@
+{
+  "platform": "NORI",
+  "productIdentity": {
+    "publicName": "N.O.R.I.",
+    "legacyNames": [
+      "Cortana",
+      "Aoki"
+    ],
+    "lineageDocument": "Documentation/PRODUCT-LINEAGE.md"
+  },
+  "version": "0.1.0",
+  "editions": {
+    "home": {
+      "artifact": "OS/workstation/artifacts/nori-home-os-x86_64.img",
+      "installable": true
+    },
+    "server": {
+      "artifact": "OS/server/artifacts/nori-server-os-x86_64.img",
+      "installable": true
+    },
+    "robotics": {
+      "artifact": "OS/robotics/artifacts",
+      "installable": false
+    }
+  },
+  "services": {
+    "model": {
+      "entry": "shared/model-service/nori_model_service.py",
+      "api": [
+        "/health",
+        "/v1/models",
+        "/v1/capabilities",
+        "/v1/chat",
+        "/policy",
+        "/audit"
+      ]
+    },
+    "orchestration": {
+      "entry": "shared/orchestration/nori_orchestrator.py"
+    },
+    "permissions": {
+      "entry": "shared/permissions/nori_policy.py"
+    },
+    "audit": {
+      "entry": "shared/audit/nori_audit.py",
+      "format": "jsonl",
+      "path": "Logs/runtime-audit.jsonl"
+    },
+    "supervisor": {
+      "entry": "shared/runtime/start-nori-services.ps1"
+    },
+    "hardware": {
+      "entry": "shared/hardware/nori_hal.py",
+      "api": [
+        "/snapshot",
+        "/tier"
+      ]
+    },
+    "updates": {
+      "entry": "shared/updates/nori_update_manager.py",
+      "operations": [
+        "verify",
+        "stage"
+      ]
+    }
+  },
+  "renderer": {
+    "entry": "shared/avatar/nori-face-renderer.html",
+    "portable": true
+  }
+}

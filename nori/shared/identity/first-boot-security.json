@@ -1,0 +1,14 @@
+{
+  "schema": "nori.first-boot-security.v1",
+  "state": "pending",
+  "required": ["password_or_pin", "device_key"],
+  "recovery_required": ["offline_recovery_key"],
+  "account_contacts_supported": ["linked_email"],
+  "linked_email_required": false,
+  "linked_email_grants_owner_authority": false,
+  "recovery_contact_grants_owner_authority": false,
+  "optional_when_supported": ["fingerprint", "face_presence", "owner_voice"],
+  "biometrics_local_only": true,
+  "biometrics_stored_in_installer": false,
+  "allow_owner_session_before_required_enrollment": false
+}

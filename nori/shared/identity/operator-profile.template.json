@@ -1,0 +1,8 @@
+{
+  "schema": "nori.operator-profile.v1",
+  "principal_id": "owner.unclaimed",
+  "callsign": "Unclaimed",
+  "display_name": "Unclaimed owner",
+  "title": "Pending activation",
+  "owner_number": 1
+}

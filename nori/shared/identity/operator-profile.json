@@ -1,0 +1,8 @@
+{
+  "schema": "nori.operator-profile.v1",
+  "principal_id": "owner.vanguard.001",
+  "callsign": "Ghost",
+  "display_name": "Ghost",
+  "title": "Founding Operator",
+  "owner_number": 1
+}

@@ -1,0 +1,34 @@
+MUSIC / LICENSE VERIFICATION
+Checked September 30, 2026, against official StreamBeats pages:
+https://www.streambeats.com/licensing/
+https://www.streambeats.com/faq/
+Official download destination: https://streambeats.bandcamp.com/
+
+The published Synchronization and Master Use License permits StreamBeats tracks
+to accompany YouTube/Twitch video content, royalty-free, worldwide, perpetually.
+It supports monetized videos. Attribution is optional. This covers stream video
+and retained YouTube VOD video; false Content ID claims can still happen.
+Restrictions include standalone music redistribution, a music-only radio
+station, remixing/sampling, and game/movie/TV use without separate licensing.
+Use the tracks as background to the coding/demo stream, not a music channel.
+
+No audio files are downloaded, approved individually, or loaded into OBS yet.
+Suggested direction: lofi, ambient, or low-intensity synthwave from the official
+StreamBeats catalog. Confirm specific downloads belong to StreamBeats and log
+each track in track-register.csv, including title, artist, download URL, license
+URL, date checked, and whether credit is required. Save the applicable license
+evidence with the download. Do not substitute similarly named music catalogs.
+
+Their FAQ directs free downloads through Bandcamp (name-your-price $0).
+If downloading prompts for email/account information, the user should complete
+that step. Do not supply personal information or purchase music automatically.
+Load verified local MP3/WAV/FLAC files into an OBS loop/playlist.
+
+Optional credit template for the YouTube description, after choosing tracks:
+Background music: [TRACK TITLE] by [ARTIST], StreamBeats.
+Used under the StreamBeats Synchronization and Master Use License:
+https://www.streambeats.com/licensing/
+
+The publisher provides a false-claim reporting link on its official license
+page. Keep the exact track name and video URL if a claim needs resolution.
+This document summarizes the terms; use the official license for full details.

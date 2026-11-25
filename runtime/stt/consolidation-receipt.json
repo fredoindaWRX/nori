@@ -1,0 +1,10 @@
+{
+  "source": "F:/release/suite-payload/NoriSuite/apps/NoriV2/.venv-stt/Lib/site-packages",
+  "target": "C:\\Nori\\runtime\\stt\\packages",
+  "files": 3323,
+  "bytes": 269462255,
+  "copiedFilesSha256Verified": true,
+  "usbModified": false,
+  "modelCopied": false,
+  "runtimeVerified": false
+}

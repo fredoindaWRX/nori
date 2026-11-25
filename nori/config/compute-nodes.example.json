@@ -1,0 +1,31 @@
+{
+  "description": "Examples only. Disabled nodes cannot receive work until the hardware exists, health checks pass, and Private Pairing verifies transport.",
+  "nodes": [
+    {
+      "id": "thinkcentre-server",
+      "endpoint": "http://thinkcentre.nori-paired:11434",
+      "backend": "ollama",
+      "accelerators": ["cpu"],
+      "memory_gb": 16,
+      "capabilities": ["chat", "embeddings", "rerank"],
+      "priority": 40,
+      "enabled": false,
+      "healthy": false,
+      "transport": "private_pairing",
+      "transport_verified": false
+    },
+    {
+      "id": "future-amd-halo",
+      "endpoint": "http://halo.nori-paired:11434",
+      "backend": "ollama",
+      "accelerators": ["rocm", "npu", "cpu"],
+      "memory_gb": 128,
+      "capabilities": ["chat", "coding", "knowledge", "embeddings", "rerank", "vision", "large_reasoning"],
+      "priority": 90,
+      "enabled": false,
+      "healthy": false,
+      "transport": "private_pairing",
+      "transport_verified": false
+    }
+  ]
+}

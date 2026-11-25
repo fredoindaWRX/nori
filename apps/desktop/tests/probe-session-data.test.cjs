@@ -1,0 +1,23 @@
+const test=require('node:test')
+const assert=require('node:assert/strict')
+const {mkdtempSync,mkdirSync,rmSync,symlinkSync,existsSync}=require('node:fs')
+const {join}=require('node:path')
+const {tmpdir}=require('node:os')
+const {probeSessionData}=require('../desktop/probe-session-data.cjs')
+test('probe browser session is separate, repeatable and rejects unrelated or linked targets',()=>{
+  const root=mkdtempSync(join(tmpdir(),'nori-session-separation-'))
+  try{
+    mkdirSync(join(root,'verification'))
+    const profile=join(root,'verification','.native-desktop-probe-fixture');mkdirSync(profile)
+    const session=probeSessionData(root,profile)
+    assert.notEqual(session,profile)
+    assert.equal(session,join(root,'verification','.native-browser-session-fixture'))
+    assert.equal(probeSessionData(root,profile),session)
+    assert.throws(()=>probeSessionData(root,root),/isolated/)
+    const another=join(root,'verification','.native-desktop-probe-linked');mkdirSync(another)
+    const linked=join(root,'verification','.native-browser-session-linked')
+    symlinkSync(profile,linked,'junction')
+    assert.throws(()=>probeSessionData(root,another),/Linked/)
+    assert.equal(existsSync(profile),true)
+  }finally{rmSync(root,{recursive:true,force:true})}
+})

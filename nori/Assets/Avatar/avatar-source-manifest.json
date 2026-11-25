@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "owner": "N.O.R.I.",
+  "purpose": "source geometry and rig reference for the authored particle avatar",
+  "assets": [
+    {
+      "file": "NORI-avatar-source.glb",
+      "source": "operator-provided NORI character mesh",
+      "sha256": "AE79031F0E1C7A93DB1D8F3DB631FB40E3CB19543CCFB8987EE609BA422A5FD9",
+      "usage": "deterministic particle surface sampling"
+    },
+    {
+      "file": "NORI-avatar-rigged-source.fbx",
+      "source": "operator-provided NORI character rig",
+      "sha256": "08474F1BA84017FE536BCFEF4F1475B5DCBC871B3628B4F7F780A7D45C0E2DA0",
+      "usage": "future authored motion and animation-retargeting reference"
+    }
+  ]
+}

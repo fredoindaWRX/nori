@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "localOnly": true,
+  "ttsHttpStatus": 200,
+  "sttHttpStatus": 200,
+  "syntheticTranscript": "is ready to help.",
+  "audioBytes": 74444,
+  "elapsedMs": 5114,
+  "microphoneUsed": false,
+  "playbackUsed": false,
+  "limitations": [
+    "Runtime read from USB and uses installed Python homes; packaged relocation, browser playback and real microphone recognition not verified."
+  ]
+}

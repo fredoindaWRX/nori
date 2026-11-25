@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nori LCD</title>
+<style>
+  :root { --mood: rgb(255, 170, 48); }
+  html, body { margin: 0; width: 100%; height: 100%; background: #000; overflow: hidden; font-family: "Courier New", ui-monospace, monospace; }
+  #stage { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+  #stage canvas { display: block; }
+  .line { position: absolute; left: 14%; right: 14%; text-align: center; color: var(--mood); text-shadow: 0 0 1.4vmin #000, 0 0 1.4vmin var(--mood); }
+  #temps { top: 7%; font-size: 4.6vmin; font-weight: bold; }
+  #word { bottom: 15%; font-size: 3.8vmin; letter-spacing: .24em; text-transform: uppercase; }
+  #said { bottom: 6%; left: 20%; right: 20%; font-size: 3.2vmin; line-height: 1.2; color: #fff1dc; max-height: 8vmin; overflow: hidden; opacity: 0; transition: opacity .35s; }
+  #said.show { opacity: 1; }
+</style>
+</head>
+<body>
+  <div id="stage"></div>
+  <div id="temps" class="line"></div>
+  <div id="word" class="line"></div>
+  <div id="said" class="line"></div>
+  <script type="module" src="/assets/nori-lcd-20261108.js"></script>
+</body>
+</html>

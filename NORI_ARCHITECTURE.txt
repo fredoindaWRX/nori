@@ -1,0 +1,85 @@
+NORI-NATIVE ARCHITECTURE — OWNER DIRECTION, 2026-09-30
+
+Target: Nori runs on Nori. Not an Ollama derivative, renamed llama.cpp,
+or permanent proxy to another inference service. All active components live
+under C:\Nori. This document is an architecture contract, not completion evidence.
+
+Nori Core / native Knights
+  -> NorLlama: owned execution/session/resource-policy layer
+  -> Norama.cpp: independently implemented tensor/model execution engine
+  -> licensed imported weights initially; own trained Nori weights eventually
+  -> CUDA/Windows hardware platform
+
+Boundaries
+1. Core owns identity, permissions, memory, tools, voice/vision and task lifecycle.
+   A generated tool suggestion is not permission to execute it.
+2. NorLlama owns bounded admission, model residency, session isolation, cancellation,
+   streaming and health. It must never silently delegate to Ollama/cloud when the
+   owner selects the Nori-native backend. An unsupported model fails explicitly.
+3. Norama owns decoding, tensor validation, graph execution and device allocations.
+   It does not spawn shell commands, fetch dependencies or manage desktop windows.
+4. Model import is a compatibility boundary, not the definition of Nori's future
+   model architecture. Preserve original provenance/license/tokenizer/chat format.
+5. The future Nori model needs its own selected architecture, permitted training
+   data, tokenizer, training/checkpoint pipeline and held-out evaluations. Memory
+   growth or repository ingestion alone does not train foundation-model weights.
+
+Own model development bootstrap, 2026-09-30
+training/nori_foundation contains an independently implemented experimental
+DualTrace v0 byte model, random initialization, bounded offline optimization,
+held-out synthetic fixture loss and data-only checkpoint validation. Its first
+25,346-parameter CPU training proof produced own weights under
+models/nori-development, not a Llama fine-tune. PyTorch/NumPy and conventional
+gated recurrence remain named third-party/standard foundations, not inventions.
+This tiny repetitive generator is not assistant-qualified or connected to the
+production native engine. Imported weights stay named and transitional. See
+verification/own-nori-model-bootstrap-2026-09-30.txt for exact scope and receipts.
+
+Own model native execution follow-up, 2026-09-30
+Own scratch-trained DualTrace weights now execute an independently written
+CPU/CUDA recurrent graph in a separate norama-dualtrace.exe diagnostic. Native
+data-only .ndt export and all-logit/greedy/reset/corruption/bounds checks pass on
+the actual RTX4080 SUPER:6training and8native tests. The native diagnostic does
+not use PyTorch,GGUF,Ollama or llama.cpp for inference. Training still uses the
+named PyTorch/NumPy dependencies. Tiny model remains unqualified;no production
+default switch or NorLlama service integration. See own-nori-native-engine report
+and final parity receipt under verification. Scaling/usefulness still required.
+
+Own-model resident serving follow-up, 2026-09-30
+Separate DualTrace CUDA worker now keeps ownweights loaded and resets traces per
+request through NorLlama's bounded/authenticated service. Explicit architecture
+handshake,experimental launch and /v1/experimental/chat prevent accidental normal
+assistant use. Stream/cancel/reuse/crash/owner-EOF/HTTPshutdown acceptance10PASS.
+Shared supervised pipe watcher now stops/joins;real Windows HTTPshutdown crash
+fixed and existing Core/desktop/speech path regressed. Source+models remain under
+main root. No model-default switch or capability claim;full39groupsNOT_VERIFIED.
+See verification/own-nori-service-2026-09-30.txt and current candidate receipts.
+
+Implementation gates
+A. Own correctness kernels/graph and bounded weight import (in progress).
+B. Complete licensed checkpoint/tokenizer execution; reproduce trusted test vectors.
+C. Resident GPU weights, incremental KV cache and measured latency/memory limits.
+D. NorLlama isolated sessions, bounded queues, cancellation and authenticated local
+   API; integrate native Knights/desktop without implicit third-party fallback.
+E. Offline/cold-start/voice/vision/tools/recovery/installer validation before removal
+  of rollback services. Existing llama.cpp-backed runtime is transitional only.
+   Historical llama.cpp-backed wording above is superseded by current independent
+   engine evidence; imported model weights remain transitional and identifiable.
+F. Train/evaluate Nori's own model and replace imports only after capability proof.
+
+Ownership honesty
+Our application/system architecture and independently written engine are ours.
+Standard transformer math, GGUF compatibility formats, CUDA, Windows, imported
+weights and research are not invented by us. No claim of a novel trained model,
+end-to-end live integration, 8K fidelity or production performance without proof.
+
+Installed component structure — owner follow-up
+Keep source editable for development and recovery;installed product is one Nori
+suite of built executables,libraries or packaged modules with explicit interfaces.
+Core owns lifecycle;runtime owns model sessions;engine owns inference;capability
+modules own voice/vision/memory/learning/workspace functions. Component identity,
+version,dependencies,hashes and qualification must be represented in a release
+manifest. Models,assets and mutable private state are not disguised as code.
+Packaging Python/JavaScript is not a claim of native compilation or self-contained
+dependencies. A source-independent clean install must prove startup,updates,
+modify,uninstall and recovery. All39 roadmap requirements remain in scope.

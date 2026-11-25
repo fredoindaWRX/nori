@@ -1,0 +1,54 @@
+NORI / STREAM ASSISTANT TRIAL
+
+Open producer.html on monitor 2 alongside OBS. The panel is a local manual
+producer desk: timer, scene cues, rehearsal checklist, question queue, editable
+moderator message drafts and exportable session notes. Its launcher now provides on-demand answers through the local Nori engine.
+YouTube live chat, Discord observation and OBS control remain unconnected. All buttons are local except
+the link to the local preview and the local text-file download.
+
+Use this Codex chat for producer assistance during a session: describe a problem,
+paste a public viewer question, ask for a transition/talking point, or request a
+summary of what you have built. The assistant can help with the provided context.
+It does not currently receive an automatic live video/audio/chat feed, operate
+OBS, continuously monitor chat, post messages, delete comments or ban viewers.
+
+NORI INTEGRATION PATH
+Keep a future stream companion outside Nori core until the prototype is reviewed.
+1. Read public YouTube live chat using the official Live Streaming API, with
+   an explicit account connection and the broadcast's liveChatId.
+2. Turn viewer questions into a producer queue; send only selected public chat
+   content to Nori. Never grant viewer text authority over computer operations.
+3. Have Nori suggest answers, topic cues and moderation flags for human review.
+4. Add OBS scene/mute control through a deliberately configured local connection.
+5. Add posting/deletion/timeout only after agreeing a policy and granting the
+   needed channel-owner/moderator permissions. Maintain an action log and a
+   clear stop control. Start with suggestions and read-only observation.
+
+Existing YouTube sign-in inside OBS does not give this panel or Nori a separate
+YouTube API connection. No credentials are requested, read or embedded here.
+
+Verified official references, September 30, 2026:
+https://developers.google.com/youtube/v3/live/docs/liveChatMessages/list
+https://developers.google.com/youtube/v3/live/docs/liveChatBans/insert
+https://learn.chatgpt.com/docs/browser?surface=app
+
+YouTube chat retrieval supports streamList for pushed messages; list responses
+provide nextPageToken and pollingIntervalMillis for paced retrieval. Moderation
+ban requests require OAuth and channel-owner/moderator authorization. Consult
+the official API docs when implementing, rather than reusing OBS's login.
+
+CLIP MARKERS AND SESSION TIMER - OCTOBER 1, 2026
+Start the timer when your recording or stream starts. Enter a short highlight label and press Mark clip now. The marker stores elapsed time, label, and selected scene cue locally. Export session notes includes all markers for later editing. Running or paused timer state survives a page reload. Pause stops elapsed time; Reset starts the clock over and keeps existing markers. Remove marker removes only that marker.
+
+Eight local logic checks passed for timestamps, timer persistence, marker persistence/removal, export, and reset. Visual browser review was unavailable because the in-app browser blocks local file navigation. These controls do not capture video, automatically detect highlights, or establish a live OBS/Nori/YouTube connection.
+
+LOCAL NORI ANSWERS — verified October 1, 2026
+Each queued viewer question now has Export for Nori. Download that one question, then drag the JSON file onto tools/Connect-Nori-Answer.cmd. The supported local NorLlama lifecycle starts its imported llama3.2-3b-instruct model, produces an answer JSON next to your question, and shuts down. No cloud speech credits are used.
+Load the new answer JSON with Load Nori answer in producer.html. It must match a question still in your queue. Review it, use it as a message draft, and copy it yourself. The answer is model generated and may need correction.
+The assistant receives only the selected question and a blank topic; it does not receive session notes, drafts, private windows or other queued questions. No desktop tools, OBS controls, chat posting or moderation privileges are exposed.
+Actual local inference was verified using the OBS monitor question; the first vague answer was retained as a diagnostic, and the revised stream-context answer is in preview-images/stream-answer-verified.json. Six answer logic checks and eight existing clip/timer checks passed. Browser visual review remains unavailable; no live chat connection is claimed.
+
+DIRECT NORI ANSWERS — October 1, 2026
+Run C:/Nori/streaming/tools/Start-Nori-Producer.cmd and open http://127.0.0.1:8769. Queue a selected viewer question and press Ask Nori. Its answer appears in the panel; Use answer as message draft makes it editable. No files need to be exported for this route. Closing the launcher stops the server. The currently running local server can be used now.
+
+The panel is served only at 127.0.0.1. It forwards only the selected question and a blank topic. Known dual-monitor OBS privacy answers use verified setup facts after the small model repeated a cross-monitor error. Other questions use local inference and require review. The rejected model answer was retained in producer-server-rejected-model-answer.json. The direct UI answer and draft workflow were verified; chat posting, viewer moderation and remote OBS controls are still not connected.

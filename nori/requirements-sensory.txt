@@ -1,0 +1,5 @@
+# Optional local hardware acquisition dependencies.
+sounddevice>=0.5,<0.6
+pynmea2>=1.19,<2
+pyserial>=3.5,<4
+bleak>=1,<4

@@ -1,0 +1,7 @@
+{
+  "port": 11436,
+  "architecture": "nori-dualtrace-v0",
+  "engine_binary": "engine/norama/norama-dualtrace-worker.exe",
+  "model_path": "models/nori-development/dualtrace-instructions-1fusily8/weights.ndt",
+  "model_id": "nori-dualtrace-instructions-512-development"
+}

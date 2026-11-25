@@ -1,0 +1,981 @@
+const { app, BrowserWindow, session, shell, Menu, Tray, nativeImage, screen, desktopCapturer, ipcMain } = require('electron')
+const { workspaceLayout, fitWindowBounds } = require('./workspace-layout.cjs')
+const { installDisplayMediaHandler } = require('./display-media.cjs')
+const { displayImages } = require('./capture-size.cjs')
+const { consumeModelProgress } = require('./model-progress.cjs')
+const { managedSpawn: spawn } = require('./managed-child.cjs')
+const { installationIntent } = require('./installation-intent.cjs')
+const { nativeModelStatus } = require('./native-model-status.cjs')
+const { localPage } = require('./local-page.cjs')
+const { speechPagePolicy } = require('./speech-page-policy.cjs')
+const { bindWindowStartup } = require('./window-startup.cjs')
+const { nativeRuntimeMode } = require('./native-service.cjs')
+const { nativeInputPaths } = require('./input-paths.cjs')
+const { startNativeStack } = require('./native-stack.cjs')
+const { acquireStateOwner } = require('./state-owner.cjs')
+const { drainDesktopWriters, onceDesktopShutdown } = require('./desktop-writers.cjs')
+const { startProjectMonitor } = require('./project-monitor.cjs')
+const { rendererConnection } = require('./connection-config.cjs')
+const { workspaceProbe } = require('./workspace-probe.cjs')
+const { probeSessionData } = require('./probe-session-data.cjs')
+const { browserStorageFixture } = require('./browser-storage-fixture.cjs')
+const { desktopStateSelection } = require('./desktop-state-selection.cjs')
+const { reportProbeFailure } = require('./probe-failure.cjs')
+const { createDesktopSessionOutcome } = require('./desktop-session-outcome.cjs')
+const desktopSession = createDesktopSessionOutcome()
+const manageInstallation = installationIntent(process.argv)
+const { createReadStream, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync, writeSync } = require('node:fs')
+const { createServer } = require('node:http')
+const { extname, join, resolve } = require('node:path')
+
+// Nori is commonly launched from a wrapper that may close its own console
+// pipe after starting Electron. Node/Vite's logger writes asynchronously, so
+// without this guard that benign condition becomes an uncaught main-process
+// EPIPE and takes the desktop app down with it.
+for (const stream of [process.stdout, process.stderr]) {
+  stream?.on('error', (error) => {
+    if (error?.code === 'EPIPE') return
+    throw error
+  })
+}
+
+const ROOT = resolve(__dirname, '..')
+const DIST = join(ROOT, 'dist')
+const SUITE_ROOT = app.isPackaged ? join(process.resourcesPath, 'NoriSuite') : resolve(ROOT, '..', '..')
+const PROBE_SESSION = workspaceProbe(SUITE_ROOT, process.argv, process.env)
+const CONSOLIDATED_STATE = !PROBE_SESSION || PROBE_SESSION.layoutRoot
+  ? desktopStateSelection({suiteRoot:SUITE_ROOT,appRoot:ROOT,packaged:app.isPackaged,
+    executable:process.execPath,probeLayoutRoot:PROBE_SESSION?.layoutRoot,stateLayout:process.env.NORI_STATE_LAYOUT})
+  : null
+if (CONSOLIDATED_STATE && nativeRuntimeMode() !== 'norllama') throw Error('Consolidated state requires native runtime; rollback layout refused')
+const USER_DATA_ROOT = CONSOLIDATED_STATE ? CONSOLIDATED_STATE.desktop : PROBE_SESSION ? PROBE_SESSION.directory : app.isPackaged
+  ? join(process.env.LOCALAPPDATA || app.getPath('userData'), 'Nori')
+  : join(SUITE_ROOT, 'runtime-data')
+if (app.isPackaged || PROBE_SESSION || CONSOLIDATED_STATE) app.setPath('userData', USER_DATA_ROOT)
+// Validate separation on synthetic profiles first. Existing production profiles
+// require explicit migration; do not silently strand their cookies/localStorage.
+const PROBE_BROWSER_ROOT = CONSOLIDATED_STATE ? CONSOLIDATED_STATE.browser : PROBE_SESSION ? probeSessionData(SUITE_ROOT, USER_DATA_ROOT) : null
+if (PROBE_BROWSER_ROOT) app.setPath('sessionData', PROBE_BROWSER_ROOT)
+const COUNCIL_ROOT = join(SUITE_ROOT, 'nori')
+const OLLAMA_ROOT = join(SUITE_ROOT, 'ollama')
+// Packaged weights live beside the rest of the installed suite. Inno Setup
+// grants write access only to this model-store directory so Ollama can pull or
+// remove optional models without making the app binaries writable.
+const OLLAMA_MODELS = join(SUITE_ROOT, 'models')
+const OLLAMA_URL = `http://127.0.0.1:${Number(process.env.NORI_OLLAMA_PORT || (app.isPackaged ? 11435 : 11434))}`
+const COUNCIL_PORT = Number(process.env.NORI_COUNCIL_PORT || (app.isPackaged ? 19107 : 9107))
+const COUNCIL_URL = `http://127.0.0.1:${COUNCIL_PORT}`
+const COUNCIL_HEALTH_URL = `${COUNCIL_URL}/health`
+// Windows uses the multi-resolution ICO for taskbar clarity; PNG remains a
+// fallback for the browser/app surfaces that prefer it.
+const ICON = existsSync(join(ROOT, 'public', 'nori-icon.ico'))
+  ? join(ROOT, 'public', 'nori-icon.ico')
+  : join(ROOT, 'public', 'nori-icon.png')
+const LOCAL_STT_PYTHON = process.platform === 'win32'
+  ? join(app.isPackaged ? SUITE_ROOT : ROOT, app.isPackaged ? 'apps' : '', app.isPackaged ? 'NoriV2' : '', '.venv-stt', 'Scripts', 'python.exe')
+  : join(ROOT, '.venv-stt', 'bin', 'python')
+const HOST = '127.0.0.1'
+const FACE_PORT = Number(process.env.NORI_DESKTOP_PORT || (app.isPackaged ? 15188 : 5188))
+const FACE_ORIGIN = `http://${HOST}:${FACE_PORT}`
+const BRIDGE_PORT = Number(process.env.NORI_BRIDGE_PORT || (app.isPackaged ? 18787 : 8787))
+const BRIDGE_URL = `http://${HOST}:${BRIDGE_PORT}/health`
+const LEGACY_BUS_URL = process.env.NORI_EVENT_BUS_HEALTH_URL || 'http://127.0.0.1:9390/health'
+const LEGACY_BUS_SCRIPT = join(SUITE_ROOT, 'cortana_event_bus.py')
+const COMFY_ROOT = join(SUITE_ROOT, 'tools', 'ComfyUI')
+const COMFY_PYTHON = join(COMFY_ROOT, '.venv', 'Scripts', 'python.exe')
+const COMFY_PORT = Number(process.env.NORI_COMFY_PORT || (app.isPackaged ? 18188 : 8188))
+const COMFY_URL = `http://127.0.0.1:${COMFY_PORT}/system_stats`
+const HAND_INPUT_PORT = Number(process.env.NORI_HAND_INPUT_PORT || (app.isPackaged ? 19393 : 9393))
+const HAND_INPUT_URL = `http://127.0.0.1:${HAND_INPUT_PORT}/input`
+const HAND_INPUT_SCRIPT = join(app.isPackaged ? SUITE_ROOT : ROOT, app.isPackaged ? 'apps/NoriV2/bridge/system_hand_input.py' : 'bridge/system_hand_input.py')
+const MIME = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
+  '.svg': 'image/svg+xml', '.webp': 'image/webp', '.wasm': 'application/wasm',
+  '.mp4': 'video/mp4', '.webm': 'video/webm',
+  '.mp3': 'audio/mpeg', '.wav': 'audio/wav', '.woff2': 'font/woff2',
+}
+const DEEP_MODEL = 'gpt-oss:20b'
+
+let window = null
+let bridge = null
+let council = null
+let ollama = null
+let nativeService = null
+let nativeExitObservation = null
+let projectMonitor = null
+const projectMonitorOwner = new AbortController()
+const RUNTIME_MODE = nativeRuntimeMode()
+let nativeCleanupDone = false
+let desktopStateOwner = null
+let browserStateOwner = null
+let desktopCleanupVerified = false
+let desktopBootPending = null
+let desktopStartupCleanupFailed = false
+const desktopStartupOwner = new AbortController()
+let legacyBus = null
+let face = null
+let comfy = null
+let handInput = null
+const handInputKey = require('node:crypto').randomBytes(48).toString('base64url')
+let tray = null
+let isQuitting = false
+let iconFrames = []
+let iconFrame = 0
+let iconTimer = null
+let spanningWorkspace = false
+let normalWindowBounds = null
+let workspaceResize = null
+
+function workspaceState() {
+  const layout = workspaceLayout(screen.getAllDisplays(), screen.getPrimaryDisplay().id)
+  const viewport = window && !window.isDestroyed() ? window.getContentBounds() : layout.bounds
+  return { ...layout, viewport, spanning: spanningWorkspace, enabled: spanningWorkspace && layout.screens.length > 1 }
+}
+
+function publishWorkspace() {
+  if (window && !window.isDestroyed()) window.webContents.send('nori:workspace:changed', workspaceState())
+}
+
+/** Nori's intended single-monitor window, centered in a display's work area.
+ *  The Electron display API supplies the work area, so no resolution is
+ *  hard-coded — the window follows whichever monitor is selected. */
+function centeredWindowBounds(workArea, width, height) {
+  const w = Math.min(Math.max(640, width), workArea.width)
+  const h = Math.min(Math.max(480, height), workArea.height)
+  return { x: workArea.x + Math.round((workArea.width - w) / 2),
+    y: workArea.y + Math.round((workArea.height - h) / 2), width: w, height: h }
+}
+
+function arrangeWorkspace() {
+  if (!window || window.isDestroyed()) return
+  const layout = workspaceLayout(screen.getAllDisplays(), screen.getPrimaryDisplay().id)
+  if (spanningWorkspace) {
+    if (window.isFullScreen()) window.setFullScreen(false)
+    if (window.isMaximized()) window.unmaximize()
+    window.setBounds(layout.bounds)
+  } else {
+    // Single-monitor mode: Nori lives on one display, centered, at her intended
+    // size, so the reactor sits mid-screen instead of over the monitor seam.
+    window.setBounds(centeredWindowBounds(screen.getPrimaryDisplay().workArea, 1440, 940))
+  }
+  publishWorkspace()
+}
+
+function toggleWorkspace() {
+  if (!window || window.isDestroyed()) return
+  if (spanningWorkspace) {
+    spanningWorkspace=false
+    const primary=screen.getPrimaryDisplay().workArea
+    const restore=normalWindowBounds || centeredWindowBounds(primary,1440,940)
+    window.setBounds(fitWindowBounds(restore,screen.getDisplayMatching(restore).workArea))
+  } else {
+    normalWindowBounds=window.getBounds()
+    spanningWorkspace=true
+    arrangeWorkspace()
+  }
+  publishWorkspace()
+}
+
+function configureWorkspace() {
+  const owns = (event) => window && event.sender === window.webContents && event.senderFrame === window.webContents.mainFrame
+  ipcMain.on('nori:connection:read', (event) => { event.returnValue = owns(event) ? rendererConnection(BRIDGE_PORT, Boolean(PROBE_SESSION), HAND_INPUT_PORT) : null })
+  ipcMain.handle('nori:workspace:read', (event) => owns(event) ? workspaceState() : null)
+  ipcMain.handle('nori:hand:input', async (event, input) => {
+    if (!owns(event) || PROBE_SESSION || !handInput || handInput.exitCode !== null) return false
+    if (!input || typeof input !== 'object' || Object.keys(input).sort().join(',') !== 'pinch,x,y'
+        || typeof input.pinch !== 'boolean' || ![input.x,input.y].every(value=>typeof value==='number'&&Number.isFinite(value)&&value>=0&&value<=1)) return false
+    try {
+      const response=await fetch(HAND_INPUT_URL,{method:'POST',redirect:'error',signal:AbortSignal.timeout(500),
+        headers:{origin:FACE_ORIGIN,authorization:`Bearer ${handInputKey}`,'content-type':'application/json'},body:JSON.stringify(input)})
+      return response.ok
+    } catch { return false }
+  })
+  ipcMain.handle('nori:screen:capture-displays', async (event) => {
+    if (!owns(event)) return []
+    if (PROBE_SESSION) throw new Error('Screen capture is disabled in the workspace acceptance session')
+    const displays = screen.getAllDisplays()
+    const maxWidth = Math.max(640, ...displays.map((display) => Math.min(1280, display.size.width)))
+    const maxHeight = Math.max(360, ...displays.map((display) => Math.min(720, display.size.height)))
+    const sources = await desktopCapturer.getSources({
+      types: ['screen'],
+      thumbnailSize: { width: maxWidth, height: maxHeight },
+    })
+    return displayImages(displays, sources)
+  })
+  ipcMain.handle('nori:workspace:command', (event, command) => {
+    if (!owns(event)) return null
+    if (command === 'minimize') window.minimize()
+    else if (command === 'hide') window.hide()
+    else if (command === 'toggle-span') {
+      toggleWorkspace()
+    }
+    publishWorkspace()
+    return workspaceState()
+  })
+  const displaysChanged = () => {
+    clearTimeout(workspaceResize)
+    workspaceResize = setTimeout(arrangeWorkspace, 200)
+  }
+  screen.on('display-added', displaysChanged)
+  screen.on('display-removed', displaysChanged)
+  screen.on('display-metrics-changed', displaysChanged)
+}
+
+function configureModelManager() {
+  const owns = (event) => window && event.sender === window.webContents && event.senderFrame === window.webContents.mainFrame
+  const modelManagerUrl = `${OLLAMA_URL}/api/tags`
+  ipcMain.handle('nori:models:status', async (event) => {
+    if (!owns(event)) return { installed: false, online: false }
+    if (RUNTIME_MODE === 'norllama') return nativeModelStatus(nativeService, DEEP_MODEL)
+    try {
+      const response = await fetch(modelManagerUrl, { signal: AbortSignal.timeout(2500) })
+      if (!response.ok) return { installed: false, online: false }
+      const data = await response.json()
+      const installed = (data.models || []).some((model) => model.name === DEEP_MODEL || model.model === DEEP_MODEL)
+      return { installed, online: true, model: DEEP_MODEL }
+    } catch { return { installed: false, online: false, model: DEEP_MODEL } }
+  })
+  ipcMain.handle('nori:models:install-deep', async (event) => {
+    if (!owns(event)) return { ok: false, error: 'This request did not come from Nori.' }
+    if (RUNTIME_MODE === 'norllama') return { ok: false, error: 'Native20B import/setup is not implemented yet;no Ollama download was started.' }
+    try {
+      const response = await fetch(`${OLLAMA_URL}/api/pull`, {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ name: DEEP_MODEL, stream: true }),
+        signal: AbortSignal.timeout(60 * 60 * 1000),
+      })
+      if (!response.ok || !response.body) throw new Error(`Model service returned HTTP ${response.status}.`)
+      await consumeModelProgress(response.body, (progress) => {
+        if (window && !window.isDestroyed()) window.webContents.send('nori:models:progress', progress)
+      })
+      return { ok: true }
+    } catch (error) { return { ok: false, error: error.message || 'The model could not be installed.' } }
+  })
+  ipcMain.handle('nori:models:remove-deep', async (event) => {
+    if (!owns(event)) return { ok: false, error: 'This request did not come from Nori.' }
+    if (RUNTIME_MODE === 'norllama') return { ok: false, error: 'Native optional-model management is not connected;no existing model was removed.' }
+    try {
+      const response = await fetch(`${OLLAMA_URL}/api/delete`, {
+        method: 'DELETE', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ name: DEEP_MODEL }), signal: AbortSignal.timeout(15000),
+      })
+      if (!response.ok && response.status !== 404) throw new Error(`Model service returned HTTP ${response.status}.`)
+      return { ok: true }
+    } catch (error) { return { ok: false, error: error.message || 'The model could not be removed.' } }
+  })
+}
+
+app.setName('N.O.R.I.')
+// The opted-in local wake phrase can start the boot voice without requiring a
+// preliminary click. Audio output still begins only in response to that wake.
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required')
+if (process.platform === 'win32') app.setAppUserModelId('ai.nori.desktop')
+
+const ownsDesktopInstance = app.requestSingleInstanceLock()
+if (!ownsDesktopInstance) app.quit()
+// Acquire cooperative exclusion synchronously before ready and before creating
+// any session/window. Failed acquisition never creates or adopts state.
+if (ownsDesktopInstance && CONSOLIDATED_STATE) {
+  try {
+    desktopStateOwner = acquireStateOwner(CONSOLIDATED_STATE.desktop, { purpose: 'desktop' })
+    browserStateOwner = acquireStateOwner(CONSOLIDATED_STATE.browser, { purpose: 'desktop' })
+  } catch (error) {
+    try { browserStateOwner?.release() } finally { desktopStateOwner?.release() }
+    throw error
+  }
+}
+app.on('second-instance', (_event, argv) => {
+  manageInstallation.request(argv)
+  if (!window) return
+  if (window.isMinimized()) window.restore()
+  window.show()
+  window.focus()
+  if (!window.webContents.isLoading() && manageInstallation.consume()) window.webContents.send('nori:models:show')
+})
+
+ipcMain.on('nori:models:open', (event) => {
+  if (window && event.sender === window.webContents && event.senderFrame === window.webContents.mainFrame) {
+    window.webContents.send('nori:models:show')
+  }
+})
+
+function localFile(url) {
+  return localPage(url, DIST, FACE_ORIGIN)
+}
+
+function startFace() {
+  if (!existsSync(join(DIST, 'index.html'))) {
+    throw new Error('Desktop assets are missing. Run npm run build first.')
+  }
+  face = createServer((request, response) => {
+    const file = localFile(request.url || '/')
+    response.setHeader('content-type', MIME[extname(file).toLowerCase()] || 'application/octet-stream')
+    response.setHeader('cache-control', extname(file) === '.html' ? 'no-store' : 'public, max-age=31536000, immutable')
+    if (file === join(DIST, 'index.html')) {
+      try {
+        response.end(speechPagePolicy(readFileSync(file, 'utf8'), new URL(BRIDGE_URL).origin))
+      } catch {
+        response.statusCode = 500
+        response.end('Local desktop speech policy is unavailable.')
+      }
+      return
+    }
+    createReadStream(file).on('error', () => {
+      response.statusCode = 404
+      response.end('Not found')
+    }).pipe(response)
+  })
+  return new Promise((resolveReady, reject) => {
+    face.once('error', reject)
+    face.listen(FACE_PORT, HOST, resolveReady)
+  })
+}
+
+async function bridgeIsUp() {
+  try {
+    const response = await fetch(BRIDGE_URL, { signal: AbortSignal.timeout(800) })
+    return response.ok
+  } catch { return false }
+}
+
+async function councilIsUp() {
+  try { return (await fetch(COUNCIL_HEALTH_URL, { signal: AbortSignal.timeout(700) })).ok } catch { return false }
+}
+
+async function ollamaIsUp() {
+  try { return (await fetch(`${OLLAMA_URL}/api/tags`, { signal: AbortSignal.timeout(700) })).ok } catch { return false }
+}
+
+function prepareSuiteRuntime() {
+  if (!app.isPackaged) return
+  const pythonRoots = { '3.10': 'Python310', '3.11': 'Python311' }
+  const environments = [
+    join(COUNCIL_ROOT, '.venv-architect'),
+    join(COMFY_ROOT, '.venv'),
+    join(SUITE_ROOT, 'apps', 'NoriV2', '.venv-stt'),
+    join(SUITE_ROOT, 'data', 'voice-runtime'),
+  ]
+  for (const environment of environments) {
+    const cfg = join(environment, 'pyvenv.cfg')
+    if (!existsSync(cfg)) continue
+    const text = readFileSync(cfg, 'utf8')
+    const version = text.match(/^version\s*=\s*(\d+\.\d+)/mi)?.[1]
+    const pythonHome = pythonRoots[version]
+    if (!pythonHome) continue
+    const portableHome = join(SUITE_ROOT, 'python', pythonHome)
+    if (!existsSync(join(portableHome, 'python.exe'))) continue
+    const rebased = text.replace(/^home\s*=.*$/mi, `home = ${portableHome}`)
+    if (rebased !== text) writeFileSync(cfg, rebased)
+  }
+}
+
+async function startOllama() {
+  if (!app.isPackaged || await ollamaIsUp()) return
+  const executable = join(OLLAMA_ROOT, 'ollama.exe')
+  if (!existsSync(executable)) return
+  ollama = spawn(executable, ['serve'], {
+    cwd: OLLAMA_ROOT,
+    env: { ...process.env, OLLAMA_HOST: new URL(OLLAMA_URL).host, OLLAMA_MODELS },
+    stdio: 'ignore', windowsHide: true,
+  })
+  for (let attempt = 0; attempt < 120; attempt++) {
+    if (await ollamaIsUp()) return
+    await new Promise((resolveWait) => setTimeout(resolveWait, 250))
+  }
+  ollama.kill()
+  ollama = null
+  throw new Error('The bundled local model service did not become ready.')
+}
+
+async function startCouncil() {
+  if (!app.isPackaged || await councilIsUp()) return
+  const python = join(COUNCIL_ROOT, '.venv-architect', 'Scripts', 'python.exe')
+  const entry = join(COUNCIL_ROOT, 'main.py')
+  if (!existsSync(python) || !existsSync(entry)) return
+  const secret = join(USER_DATA_ROOT, 'secrets', 'council-token')
+  if (!existsSync(secret)) {
+    mkdirSync(join(USER_DATA_ROOT, 'secrets'), { recursive: true })
+    writeFileSync(secret, require('node:crypto').randomBytes(48).toString('base64url'), { flag: 'wx', mode: 0o600 })
+  }
+  const token = readFileSync(secret, 'utf8').trim()
+  if (token.length < 32) throw new Error('The local Council token is invalid.')
+  process.env.NORI_API_TOKEN = token
+  council = spawn(python, [entry], {
+    cwd: COUNCIL_ROOT,
+    env: {
+      ...process.env,
+      NORI_ROOT: SUITE_ROOT,
+      NORI_DATA_ROOT: join(USER_DATA_ROOT, 'nori-data'),
+      NORI_API_TOKEN: token,
+      NORI_BIND: '127.0.0.1',
+      NORI_OLLAMA_URL: OLLAMA_URL,
+      OLLAMA_URL,
+    },
+    stdio: 'ignore', windowsHide: true,
+  })
+  for (let attempt = 0; attempt < 120; attempt++) {
+    if (await councilIsUp()) return
+    if (council.exitCode !== null) break
+    await new Promise((resolveWait) => setTimeout(resolveWait, 250))
+  }
+  council.kill()
+  council = null
+  throw new Error('The bundled Nori Council did not become ready.')
+}
+
+async function legacyBusIsUp() {
+  try {
+    const response = await fetch(LEGACY_BUS_URL, { signal: AbortSignal.timeout(350) })
+    return response.ok
+  } catch { return false }
+}
+
+async function startLegacyBus() {
+  if (RUNTIME_MODE !== 'ollama-rollback') return
+  if (await legacyBusIsUp() || !existsSync(LEGACY_BUS_SCRIPT)) return
+  legacyBus = spawn(process.env.NORI_PYTHON || 'python', ['-u', LEGACY_BUS_SCRIPT], {
+    cwd: resolve(ROOT, '..', '..'), env: process.env, stdio: 'ignore', windowsHide: true,
+  })
+  for (let attempt = 0; attempt < 20; attempt++) {
+    if (await legacyBusIsUp()) return
+    await new Promise((resolveWait) => setTimeout(resolveWait, 100))
+  }
+  legacyBus.kill()
+  legacyBus = null
+}
+
+async function comfyIsUp() {
+  try { return (await fetch(COMFY_URL, { signal: AbortSignal.timeout(350) })).ok } catch { return false }
+}
+
+async function startComfy() {
+  if (RUNTIME_MODE !== 'ollama-rollback') return
+  if (await comfyIsUp() || !existsSync(COMFY_PYTHON)) return
+  comfy = spawn(COMFY_PYTHON, ['main.py', '--listen', '127.0.0.1', '--port', String(COMFY_PORT), '--disable-auto-launch'], {
+    cwd: COMFY_ROOT, env: process.env, stdio: 'ignore', windowsHide: true,
+  })
+  for (let attempt = 0; attempt < 120; attempt++) {
+    if (await comfyIsUp()) return
+    await new Promise((resolveWait) => setTimeout(resolveWait, 250))
+  }
+  comfy.kill(); comfy = null
+}
+
+async function startHandInput() {
+  // Never adopt an unrelated local mouse-control service.
+  const paths = RUNTIME_MODE === 'norllama' ? nativeInputPaths(SUITE_ROOT) : {
+    python:app.isPackaged ? LOCAL_STT_PYTHON : (process.env.NORI_PYTHON || 'python'),
+    args:[HAND_INPUT_SCRIPT],cwd:app.isPackaged ? join(SUITE_ROOT,'apps','NoriV2') : ROOT,
+  }
+  handInput = spawn(paths.python, paths.args, {
+    cwd: paths.cwd,
+    env: { ...process.env, NORI_HAND_INPUT_PORT: String(HAND_INPUT_PORT), NORI_DESKTOP_ORIGIN: FACE_ORIGIN, NORI_HAND_INPUT_KEY: handInputKey },
+    stdio: 'ignore', windowsHide: true,
+  })
+}
+
+async function startBridge() {
+  if (await bridgeIsUp()) {
+    if (RUNTIME_MODE === 'norllama') throw new Error('Existing bridge cannot be adopted by the native app;its backend identity is not verified')
+    return
+  }
+  const env = {
+    ...process.env,
+    // The desktop build owns a private Whisper environment. Pinning the
+    // interpreter here keeps wake-word listening independent of whichever
+    // Python (or browser speech API) happens to be installed on the machine.
+      ...(RUNTIME_MODE === 'ollama-rollback' && existsSync(LOCAL_STT_PYTHON) ? { NORI_PYTHON: LOCAL_STT_PYTHON } : {}),
+      ...(PROBE_SESSION ? { NORI_PYTHON: join(USER_DATA_ROOT, 'missing-stt-interpreter.exe'), NORI_ALLOW_WRITES: '0' } : {}),
+      NORI_WHISPER_MODEL: app.isPackaged
+        ? join(SUITE_ROOT, 'data', 'whisper', 'base.en')
+        : (process.env.NORI_WHISPER_MODEL || 'base.en'),
+    NORI_ROOT: SUITE_ROOT,
+    NORI_DATA_ROOT: join(USER_DATA_ROOT, 'runtime-data'),
+    NORI_SETTINGS_DIR: join(USER_DATA_ROOT, 'settings'),
+    NORI_API_TOKEN_FILE: join(USER_DATA_ROOT, 'secrets', 'council-token'),
+    NORI_API_TOKEN: process.env.NORI_API_TOKEN || '',
+    NORI_OLLAMA_URL: OLLAMA_URL,
+    NORI_COUNCIL_URL: COUNCIL_URL,
+    NORI_COUNCIL_PORT: String(COUNCIL_PORT),
+    NORI_COMFY_URL: `http://127.0.0.1:${COMFY_PORT}`,
+    NORI_EVENT_BUS_HEALTH_URL: LEGACY_BUS_URL,
+    NORI_EVENT_BUS_URL: process.env.NORI_EVENT_BUS_URL || 'http://127.0.0.1:9390/publish',
+    NORI_DEFAULT_MODEL: process.env.NORI_DEFAULT_MODEL || 'qwen3.5:4b',
+    NORI_STRONG_MODEL: process.env.NORI_STRONG_MODEL || 'qwen3.5:9b',
+    NORI_DEEP_MODEL: process.env.NORI_DEEP_MODEL || 'gpt-oss:20b',
+    NORI_BRIDGE_PORT: String(BRIDGE_PORT),
+    NORI_TTS_WORKER: join(SUITE_ROOT, 'apps', 'desktop', 'bridge', 'kokoro_tts.py'),
+    NORI_LOCAL_CHAT: process.env.NORI_LOCAL_CHAT ?? '1',
+    NORI_VISION_BACKEND: process.env.NORI_VISION_BACKEND || 'auto',
+    NORI_VISION_MODEL: process.env.NORI_VISION_MODEL || 'qwen3-vl:8b-instruct',
+    NORI_VISION_OLLAMA_URL: process.env.NORI_VISION_OLLAMA_URL || OLLAMA_URL,
+    NORI_ALLOWED_ORIGINS: [process.env.NORI_ALLOWED_ORIGINS, FACE_ORIGIN]
+      .filter(Boolean).join(','),
+    ELECTRON_RUN_AS_NODE: '1',
+  }
+  bridge = spawn(process.execPath, [join(ROOT, 'bridge', 'server.mjs')], {
+    // app.asar is a virtual archive, not a Windows working directory. Keep
+    // the source path inside the archive, but give the child process a real,
+    // writable cwd in the user's profile when packaged.
+    cwd: app.isPackaged ? USER_DATA_ROOT : ROOT,
+    env,
+    stdio: 'ignore',
+    windowsHide: true,
+  })
+    for (let attempt = 0; attempt < 50; attempt++) {
+      if (bridge.startupError) throw bridge.startupError
+      if (await bridgeIsUp()) return
+    await new Promise((resolveWait) => setTimeout(resolveWait, 100))
+  }
+  throw new Error('Nori bridge did not become ready.')
+}
+
+function configurePermissions() {
+  const local = (url) => {
+    try { return new URL(url).origin === FACE_ORIGIN } catch { return false }
+  }
+  session.defaultSession.setPermissionCheckHandler((_wc, permission, origin) =>
+    local(origin) && (PROBE_SESSION ? ['fullscreen', 'pointerLock'] : ['media', 'fullscreen', 'pointerLock', 'display-capture']).includes(permission))
+  session.defaultSession.setPermissionRequestHandler((wc, permission, callback) =>
+    callback(local(wc.getURL()) && (PROBE_SESSION ? ['fullscreen', 'pointerLock'] : ['media', 'fullscreen', 'pointerLock', 'display-capture']).includes(permission))
+  )
+  // Naming a real source is load-bearing on Windows: `useSystemPicker` is
+  // macOS-only in Electron 44, so without it the page's getDisplayMedia fails
+  // with "Invalid capture constraints". See display-media.cjs.
+  if (!PROBE_SESSION) installDisplayMediaHandler(session.defaultSession, { desktopCapturer, screen })
+}
+
+function createWindow() {
+  window = new BrowserWindow({
+    title: 'N.O.R.I. v2',
+    width: 1440,
+    height: 940,
+    minWidth: 640,
+    minHeight: 480,
+    backgroundColor: '#020609',
+    icon: currentIcon(),
+    autoHideMenuBar: true,
+    show: false,
+    frame: false,
+    webPreferences: {
+      contextIsolation: true,
+      sandbox: true,
+      nodeIntegration: false,
+      webSecurity: true,
+      spellcheck: false,
+      preload: join(__dirname, 'workspace-preload.cjs'),
+    },
+  })
+  // Windows may cache the shortcut icon separately from the running window.
+  // Set the first Nori-world frame again after the native handle exists, so
+  // both the taskbar button and notification-area icon begin from Nori's own
+  // globe rather than Electron's fallback.
+  // Either event may arrive first (or ready-to-show may never arrive). Bind
+  // layout and visibility once; late events cannot re-show a user-hidden app.
+  bindWindowStartup(window, { probe: Boolean(PROBE_SESSION), currentIcon, arrangeWorkspace, showNori })
+  window.on('resize', publishWorkspace)
+  window.on('move', publishWorkspace)
+  window.webContents.on('did-finish-load', () => {
+    desktopSession.rendererLoaded()
+    publishWorkspace()
+    if (manageInstallation.consume()) window.webContents.send('nori:models:show')
+  })
+  window.webContents.on('render-process-gone', () => {
+    if (!isQuitting) { desktopSession.fail('renderer-exited'); app.quit() }
+  })
+  if (PROBE_SESSION) window.webContents.once('did-finish-load', async () => {
+    try {
+      // Only inspect Nori's own generated UI; no capture or input injection.
+      // A rendered galaxy alone is not readiness: require live metadata too.
+      const deadline = Date.now() + 20000
+      while (!(await window.webContents.executeJavaScript(`(()=>{
+        const model = document.querySelector('select[aria-label="Local model"]');
+        const style = document.querySelector('select[aria-label="Response style"]');
+        return Boolean(model?.value && model.options.length && style?.options.length > 1);
+      })()`))) {
+        if (Date.now() > deadline) throw new Error('Local model/settings were not announced to the standby interface.')
+        await new Promise(resolveReady => setTimeout(resolveReady, 200))
+      }
+      const renderer = await window.webContents.executeJavaScript(`(async()=>({
+        connection: window.noriConnection,
+        settings: [...document.querySelectorAll('.settings select')].map(n=>({label:n.getAttribute('aria-label'),value:n.value,options:[...n.options].map(o=>({value:o.value,label:o.textContent}))})),
+        systems: [...document.querySelectorAll('.rail-left .rail-item')].map(n=>n.textContent),
+        workspace: await window.noriWorkspace.read(),
+        mode: document.documentElement.dataset.workspace,
+        toolbars: [...document.querySelectorAll('.workspace-toolbar')].map(n=>({text:n.textContent,x:n.getBoundingClientRect().x,y:n.getBoundingClientRect().y})),
+        scene: (()=>{const r=document.querySelector('.scene')?.getBoundingClientRect();return r?{x:r.x,y:r.y,width:r.width,height:r.height}:null})()
+      }))()`)
+      const browserCookieMode = process.argv.find(value => value.startsWith('--browser-cookie='))?.slice('--browser-cookie='.length)
+      if (browserCookieMode) {
+        if (!['seed', 'check'].includes(browserCookieMode)) throw Error('Invalid synthetic browser continuity mode')
+        // Probe-only synthetic cookie on a nonresolving domain: no network,
+        // owner cookie reads, real credentials or application tool writes.
+        const fixtureUrl = 'http://nori-migration-fixture.invalid/'
+        if (browserCookieMode === 'seed') {
+          await session.defaultSession.cookies.set({url:fixtureUrl,name:'nori_migration_fixture',
+            value:'synthetic-durable-cookie-v1',expirationDate:Math.floor(Date.now()/1000)+86400})
+          await session.defaultSession.cookies.flushStore()
+        }
+        const cookies = await session.defaultSession.cookies.get({url:fixtureUrl,name:'nori_migration_fixture'})
+        if (cookies.length !== 1 || cookies[0].value !== 'synthetic-durable-cookie-v1') throw Error('Synthetic browser cookie continuity failed')
+        renderer.browserCookie = {mode:browserCookieMode,syntheticCookieVerified:true,networkUsed:false}
+        if (process.env.NORI_BROWSER_STATE_FIXTURE_URL) {
+          renderer.browserStorage = await browserStorageFixture({BrowserWindow,session:session.defaultSession,
+            mode:browserCookieMode,url:process.env.NORI_BROWSER_STATE_FIXTURE_URL})
+        }
+      }
+      if (process.argv.includes('--earth-check')) {
+        // Explicit isolated test of Nori's own DOM, not OS input or capture.
+        renderer.earth = await window.webContents.executeJavaScript(`(async()=>{
+          const canvas=document.querySelector('.scene canvas');
+          if(!canvas)throw Error('Orbit canvas missing');
+          const r=canvas.getBoundingClientRect();
+          canvas.dispatchEvent(new MouseEvent('dblclick',{bubbles:true,clientX:r.left+r.width/2,clientY:r.top+r.height/2}));
+          const wait=ms=>new Promise(done=>setTimeout(done,ms));
+          const deadline=Date.now()+25000;
+          while(document.querySelector('.cesium-earth')?.dataset.ready!=='true'){
+            if(Date.now()>deadline)throw Error('Earth renderer did not become ready');
+            await wait(100);
+          }
+          await wait(3000);
+          const globe=document.querySelector('.cesium-earth');
+          [...globe.querySelectorAll('button')].find(button=>button.textContent==='Go to coordinates')?.click();
+          await wait(100);
+          const navigation=globe.querySelector('form[aria-label="Earth coordinate navigation"]');
+          if(!navigation)throw Error('Earth coordinate controls missing');
+          navigation.querySelector('[name="latitude"]').value='42.3601';
+          navigation.querySelector('[name="longitude"]').value='-71.0589';
+          navigation.requestSubmit();
+          await wait(1700);
+          const latitude=Number(globe.dataset.currentLatitude),longitude=Number(globe.dataset.currentLongitude);
+          if(Math.abs(latitude-42.3601)>.01||Math.abs(longitude+71.0589)>.01)throw Error('Earth coordinate navigation missed destination');
+          const before=Number(globe.dataset.height);
+          globe.querySelector('[aria-label="Zoom in"]').click();
+          await wait(1000);
+          const after=Number(globe.dataset.height);
+          const mapCanvas=globe.querySelector('canvas');
+          const result={entryLatitude:Number(globe.dataset.latitude),entryLongitude:Number(globe.dataset.longitude),
+            destinationLatitude:latitude,destinationLongitude:longitude,
+            beforeHeight:before,afterHeight:after,canvasWidth:mapCanvas?.width,canvasHeight:mapCanvas?.height,provider:globe.dataset.provider};
+          if(!(after<before)||!result.canvasWidth||!result.canvasHeight)throw Error('Earth zoom or canvas failed');
+          for(let step=0;step<10&&Number(globe.dataset.height)>20;step++){
+            globe.querySelector('[aria-label="Zoom in"]').click();
+            await wait(200);
+          }
+          await wait(500);
+          result.closeHeight=Number(globe.dataset.height);
+          if(!(result.closeHeight>0&&result.closeHeight<=20))throw Error('Close Earth zoom failed');
+          globe.querySelector('.earth-return').click();
+          await wait(1400);
+          if(document.querySelector('.cesium-earth'))throw Error('Return to orbit failed');
+          return {...result,returnedToOrbit:true,imageryQualityVerified:false};
+        })()`)
+      }
+      if (process.argv.includes('--manage-installation')) {
+        const deadline = Date.now() + 10000
+        let installation
+        do {
+          installation = await window.webContents.executeJavaScript(`(()=>{
+            const dialog=document.querySelector('.model-manager');
+            return dialog?{text:dialog.textContent,buttons:[...dialog.querySelectorAll('button')].map(b=>({text:b.textContent,disabled:b.disabled}))}:null;
+          })()`)
+          if (installation?.text.includes(nativeService.status.modelId) &&
+            installation.buttons.some(b=>b.text==='20B SUPPORT PENDING'&&b.disabled)) break
+          if (Date.now()>deadline) throw new Error('Native installation management did not report loaded model and pending 20B support: '+JSON.stringify(installation))
+          await new Promise(done=>setTimeout(done,100))
+        } while (true)
+        renderer.installation=installation
+      }
+      let monitorEvidence
+      if (process.argv.includes('--monitor-check')) {
+        if (!projectMonitor) throw Error('Owned project monitor did not start')
+        const response = await fetch(projectMonitor.endpoint + '/project/api/status')
+        const status = await response.json()
+        if (!response.ok || status.readOnly !== true || status.roadmap?.requirementCount !== 39) throw Error('Owned project monitor status failed')
+        monitorEvidence = { endpoint: projectMonitor.endpoint, readOnly: status.readOnly, roadmap: status.roadmap }
+      }
+      // Explicit source demo must be owner-visible even if Windows/Chromium
+      // never delivers ready-to-show for an initially hidden preview.
+      // Keep this after live backend readiness and inside the sensor-denied probe.
+      if (!app.isPackaged && process.argv.includes('--visible-demo')) showNori()
+      const receipt = { desktop_probe: 'READY', windowBounds: window.getBounds(), contentBounds: window.getContentBounds(),
+        privateProfile: PROBE_SESSION.directory, browserSession: app.getPath('sessionData'),
+        consolidatedStateSelected: Boolean(CONSOLIDATED_STATE), selectedCoreState: CONSOLIDATED_STATE?.core,
+        projectMonitor: monitorEvidence,
+        renderer, runtime: nativeService.status, sensorsDenied: true, captureDenied: true, writesEnabled: false }
+      writeFileSync(join(PROBE_SESSION.directory, 'desktop-readiness.json'), JSON.stringify(receipt), { flag: 'wx' })
+      if (!app.isPackaged && process.argv.includes('--native-exit-probe')) {
+        // Source-only, sensor-denied synthetic fault: stop this exact owned
+        // runtime after real readiness, WITHOUT requesting a stack/GUI quit.
+        // The stack must classify the loss before it drains its sibling Core.
+        void nativeService.runtime.stop().catch(() => {
+          desktopSession.fail('native-cleanup-failed'); app.quit()
+        })
+      }
+    } catch (error) {
+      desktopSession.fail('probe-readiness-failed')
+      reportProbeFailure(PROBE_SESSION,error)
+      console.error('[nori-desktop] Workspace acceptance readiness failed'); app.quit()
+    }
+  })
+  window.webContents.setWindowOpenHandler(({ url }) => {
+    if (/^https?:/i.test(url)) void shell.openExternal(url)
+    return { action: 'deny' }
+  })
+  window.webContents.on('will-navigate', (event, url) => {
+    if (new URL(url).origin !== FACE_ORIGIN) event.preventDefault()
+  })
+  window.webContents.on('before-input-event', (event, input) => {
+    if (input.type !== 'keyDown') return
+    if (input.key === 'F11') {
+      toggleWorkspace()
+      event.preventDefault()
+    }
+  })
+  // Closing the face keeps Nori available from the Windows notification area.
+  // Use the tray menu's Quit item to stop her services intentionally.
+  window.on('close', (event) => {
+    if (isQuitting) return
+    event.preventDefault()
+    window.hide()
+  })
+  window.on('closed', () => { window = null })
+  void window.loadURL(`${FACE_ORIGIN}${manageInstallation.pending() ? '?manage-installation=1' : ''}`).catch(error => {
+    if (!isQuitting) desktopSession.fail('renderer-load-failed')
+    reportProbeFailure(PROBE_SESSION, error)
+    app.quit()
+  })
+}
+
+function loadIconFrames() {
+  const directory = join(ROOT, 'public', 'icons', 'nori-spin-minute')
+  if (!existsSync(directory)) return
+  iconFrames = readdirSync(directory)
+    .filter((file) => file.endsWith('.png'))
+    .sort()
+    .map((file) => nativeImage.createFromPath(join(directory, file)))
+    .filter((image) => !image.isEmpty())
+}
+
+function currentIcon() {
+  return iconFrames[iconFrame] || (existsSync(ICON) ? ICON : undefined)
+}
+
+function startIconMotion() {
+  if (iconFrames.length < 2 || iconTimer) return
+  iconTimer = setInterval(() => {
+    iconFrame = (iconFrame + 1) % iconFrames.length
+    const image = currentIcon()
+    if (window && !window.isDestroyed()) window.setIcon(image)
+    if (tray && !tray.isDestroyed()) tray.setImage(image)
+  // 120 source frames at 500 ms each = one complete, calm 60-second orbit.
+  }, 500)
+}
+
+function showNori() {
+  if (!window) createWindow()
+  if (window.isMinimized()) window.restore()
+  window.show()
+  window.focus()
+}
+
+function createTray() {
+  if (tray || !existsSync(ICON)) return
+  tray = new Tray(currentIcon())
+  tray.setToolTip('N.O.R.I. — Neural Operations & Responsive Intelligence')
+  tray.setContextMenu(Menu.buildFromTemplate([
+    { label: 'Show N.O.R.I.', click: showNori },
+    { label: 'Hide N.O.R.I.', click: () => window?.hide() },
+    { type: 'separator' },
+    { label: 'Quit N.O.R.I.', click: () => app.quit() },
+  ]))
+  tray.on('click', showNori)
+}
+
+async function boot() {
+  if (CONSOLIDATED_STATE) {
+    // Revalidate prepared state rather than recreating a disappeared directory
+    // after the pre-ready selector accepted its permissions.
+    desktopStateSelection({suiteRoot:SUITE_ROOT,appRoot:ROOT,packaged:app.isPackaged,
+      executable:process.execPath,probeLayoutRoot:PROBE_SESSION?.layoutRoot,stateLayout:'consolidated-v1'})
+    desktopStateOwner.assertHeld(); browserStateOwner.assertHeld()
+  } else {
+    mkdirSync(USER_DATA_ROOT, { recursive: true })
+    desktopStateOwner = acquireStateOwner(USER_DATA_ROOT, { purpose: 'desktop' })
+  }
+  configurePermissions()
+  configureWorkspace()
+  configureModelManager()
+  // Installed N.O.R.I. keeps mutable runtime data outside app.asar and uses
+  // private ports so this transferable suite does not borrow a dev checkout.
+  if (app.isPackaged) {
+    if (!CONSOLIDATED_STATE) mkdirSync(USER_DATA_ROOT, { recursive: true })
+    process.env.NORI_ROOT = SUITE_ROOT
+    process.env.NORI_DATA_ROOT = join(USER_DATA_ROOT, 'nori-data')
+    process.env.NORI_API_TOKEN_FILE = join(USER_DATA_ROOT, 'secrets', 'council-token')
+    process.env.NORI_OLLAMA_URL = OLLAMA_URL
+    process.env.NORI_COUNCIL_URL = COUNCIL_URL
+    process.env.NORI_COMFY_URL = `http://127.0.0.1:${COMFY_PORT}`
+    process.env.NORI_BRIDGE_PORT = String(BRIDGE_PORT)
+    if (RUNTIME_MODE === 'ollama-rollback') {
+      prepareSuiteRuntime()
+      await startOllama()
+      if (isQuitting) return
+      await startCouncil()
+      if (isQuitting) return
+    }
+  }
+  if (RUNTIME_MODE === 'norllama') {
+    nativeService = await startNativeStack({ root: SUITE_ROOT, signal: desktopStartupOwner.signal,
+      ...(CONSOLIDATED_STATE ? { dataRoot: CONSOLIDATED_STATE.core, requirePreparedState: true } : PROBE_SESSION ? { dataRoot: join(USER_DATA_ROOT, 'core') } : {}) })
+    // Attach even if quit arrived during startup: a previously observed loss
+    // must remain failed after its asynchronous sibling cleanup completes.
+    nativeExitObservation = nativeService.exited.then(result => {
+      if (result.cleanupFailed) desktopSession.fail('native-cleanup-failed')
+      if (result.unexpected || !isQuitting) {
+        desktopSession.fail('native-service-exited')
+        console.error('[nori-desktop] Own native Core/runtime stopped;no fallback used'); app.quit()
+      }
+    }, () => { desktopSession.fail('native-exit-observation-failed'); app.quit() })
+    if (isQuitting) return
+    Object.assign(process.env, nativeService.environment)
+  }
+  await startFace()
+  if (isQuitting) return
+  if (!app.isPackaged && !PROBE_SESSION) {
+    await startLegacyBus()
+    if (isQuitting) return
+    await startHandInput()
+    if (isQuitting) return
+    await startComfy()
+    if (isQuitting) return
+  } else if (!PROBE_SESSION) {
+    await startLegacyBus()
+    if (isQuitting) return
+    await startHandInput()
+    if (isQuitting) return
+  }
+  await startBridge()
+  if (isQuitting) return
+  if ((!PROBE_SESSION || process.argv.includes('--monitor-check')) && !isQuitting) {
+    try {
+      projectMonitor = await startProjectMonitor({ root: SUITE_ROOT, port: PROBE_SESSION ? 0 : 8790, signal: projectMonitorOwner.signal })
+      console.log('[nori-desktop] Owned read-only project monitor ready')
+    } catch (error) {
+      // An existing monitor belongs to its current owner, never this instance.
+      console.error('[nori-desktop] Project monitor unavailable:', error.code || error.message)
+    }
+  }
+  if (isQuitting) return
+  loadIconFrames()
+  createTray()
+  createWindow()
+  startIconMotion()
+  desktopSession.bootCompleted()
+  if (app.isPackaged && !PROBE_SESSION) void startComfy().catch((error) => console.warn('[nori-comfy]', error.message))
+}
+
+if (PROBE_SESSION) {
+  // Windows GUI Electron can report stdin EOF even while its launcher is live.
+  // A private loopback owner heartbeat also closes the app on launcher death.
+  let checkingOwner = false
+  const ownerTimer = setInterval(async () => {
+    if (checkingOwner || isQuitting) return
+    checkingOwner = true
+    try {
+      const response = await fetch(PROBE_SESSION.ownerUrl, {headers:{authorization:`Bearer ${PROBE_SESSION.ownerKey}`},signal:AbortSignal.timeout(1000),redirect:'error'})
+      if (!response.ok) app.quit()
+    } catch { app.quit() }
+    finally { checkingOwner = false }
+  }, 800)
+  app.once('will-quit', () => clearInterval(ownerTimer))
+}
+
+app.whenReady().then(() => {
+  if (ownsDesktopInstance && !isQuitting) {
+    desktopBootPending = boot()
+    return desktopBootPending
+  }
+}).catch((error) => {
+  if (error.code === 'NORI_OWNED_CLEANUP_FAILED') {
+    desktopStartupCleanupFailed = true; desktopSession.fail('startup-cleanup-failed')
+  } else if (!isQuitting) desktopSession.fail('startup-failed')
+  console.error('[nori-desktop]', error)
+  reportProbeFailure(PROBE_SESSION,error)
+  app.quit()
+})
+app.on('activate', () => { if (ownsDesktopInstance && !isQuitting) showNori() })
+const shutdownDesktop = onceDesktopShutdown(async () => {
+  // Startup can still be awaiting a service when quit arrives. Wait until it
+  // stops assigning owned children before taking the drain snapshot.
+  let startupTimer
+  try {
+    await Promise.race([
+      desktopBootPending?.catch(error => {
+        if (error.code === 'NORI_OWNED_CLEANUP_FAILED') desktopStartupCleanupFailed = true
+      }),
+      new Promise((_, reject) => { startupTimer = setTimeout(() => reject(Error('Desktop startup did not stop')), 30000) }),
+    ])
+  } finally { clearTimeout(startupTimer) }
+  const results = await Promise.allSettled([nativeService?.stop(), projectMonitor?.stop(),
+    drainDesktopWriters([bridge, council, ollama, legacyBus, comfy, handInput])])
+  // A completed physical stop is not the session verdict. Join its original
+  // exit observer before snapshotting health, but never await a failed drain.
+  if (nativeExitObservation && results[0].status === 'fulfilled') await nativeExitObservation
+  desktopCleanupVerified = !desktopStartupCleanupFailed && results.every(result => result.status === 'fulfilled')
+  desktopSession.cleanupCompleted(desktopCleanupVerified)
+  if (!desktopCleanupVerified) console.error('[nori-desktop] Owned shutdown failed')
+  nativeCleanupDone = true
+  app.quit()
+})
+app.on('before-quit', (event) => {
+  desktopSession.beginQuit()
+  isQuitting = true
+  desktopStartupOwner.abort()
+  projectMonitorOwner.abort()
+  if (iconTimer) clearInterval(iconTimer)
+  if (bridge && !bridge.killed) bridge.kill()
+  if (council && !council.killed) council.kill()
+  if (ollama && !ollama.killed) ollama.kill()
+  if (legacyBus && !legacyBus.killed) legacyBus.kill()
+  if (comfy && !comfy.killed) comfy.kill()
+  if (handInput && !handInput.killed) handInput.kill()
+  if (face) face.close()
+  if ((nativeService || projectMonitor || desktopStateOwner) && !nativeCleanupDone) {
+    event.preventDefault()
+    void shutdownDesktop().catch(() => {
+      // Synchronous stop failures also preserve the ownership record.
+      desktopCleanupVerified = false
+      desktopSession.cleanupCompleted(false)
+      nativeCleanupDone = true
+      console.error('[nori-desktop] Owned shutdown failed')
+      app.quit()
+    })
+  }
+})
+app.on('will-quit', (event) => {
+  if (desktopCleanupVerified) {
+    let ownershipReleased = true
+    for (const owner of [browserStateOwner,desktopStateOwner]) {
+      try { owner?.release() }
+      catch { ownershipReleased = false; console.error('[nori-desktop] Profile ownership changed; record preserved') }
+    }
+    desktopSession.ownershipCompleted(ownershipReleased)
+  }
+  const outcome = desktopSession.snapshot()
+  if (PROBE_SESSION) {
+    // Bounded synthetic diagnostics through this ORIGINAL GUI's pipe only.
+    // No profile write, credential, authenticated guardian proof or disk adoption.
+    try { writeSync(process.stdout.fd, JSON.stringify({ desktop_session_outcome: outcome, rootPid: process.pid }) + '\n') } catch {}
+  }
+  if (ownsDesktopInstance && outcome.recommendedExitCode !== 0) {
+    // All ordinary cleanup/release work above has run. Exit failure rather
+    // than allowing Electron's default app.quit() code0 to hide session faults.
+    event.preventDefault()
+    app.exit(outcome.recommendedExitCode)
+  }
+})

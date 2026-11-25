@@ -1,0 +1,6 @@
+/* Nori's welcome emblem: an Ophanim (wheel within a wheel, rims full of eyes) replaces the "N". */
+.workspace-emblem {
+  width: 88px; height: 88px; margin: 0 auto 18px; border: 0; border-radius: 50%;
+  background: url(/assets/nori-ophanim-20261106.svg) center / contain no-repeat;
+  color: transparent; font-size: 0; box-shadow: 0 0 42px #7a5cff2e;
+}

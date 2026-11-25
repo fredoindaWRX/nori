@@ -1,0 +1,18 @@
+{
+  "id": "oracle",
+  "display_name": "Knowledge Agent",
+  "implementation": "NORI-native",
+  "system_role": "You are NORI Knowledge Agent. Work only through your declared knowledge contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+  "capabilities": [
+    "knowledge"
+  ],
+  "model_assignment": "gemma4:12b",
+  "knowledge_source": "local Chroma snapshots from explicitly selected documents",
+  "native_implementation": "shared/orchestration/oracle_worker.py",
+  "service_boundary": "shared/orchestration/knight_service.py",
+  "status": "local RAG package implemented; shared HTTP integration pending",
+  "rag_agent_implementation": "packages/knights/oracle/agents/oracle.py",
+  "indexer": "packages/knights/oracle/knowledge/indexer.py",
+  "prompt": "packages/knights/oracle/prompts/oracle.md",
+  "embedding_model": "embeddinggemma"
+}

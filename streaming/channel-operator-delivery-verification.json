@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "archive": "C:\\Nori\\streaming\\channel-operator-2026-09-30.zip",
+  "archive_bytes": 673700684,
+  "files": 1544,
+  "calendar_public": 12,
+  "additional_fred_revisions_public": 4,
+  "additional_human_skits_public": 1,
+  "additional_moving_presenter_public": 0,
+  "moving_presenter_publication_records_retained": 1,
+  "total_public": 17,
+  "total_historically_published": 18,
+  "total_unlisted": 1,
+  "human_short_and_publication_proofs_included": true,
+  "moving_presenter_publication_and_motion_proofs_included": true,
+  "moving_final_sha256": "8c2d23b69192c796278f0542378ef28677e9c5d61871294d20b544b2330b2fea",
+  "moving_presenter_body_gestures_generated": false,
+  "all_revision_links_proofs_and_final_mp4s_included": true,
+  "local_answer_workflow_included": true,
+  "latest_analytics_evidence_included": true,
+  "whole_goal_complete": false
+}

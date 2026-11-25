@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nori</title>
+<style>
+  :root { --mood: rgb(255, 170, 48); }
+  html, body { margin: 0; width: 100%; height: 100%; background: transparent; overflow: hidden; user-select: none; }
+  body { font-family: "Segoe UI", system-ui, sans-serif; }
+  /* On the desktop she is her form with a box to type in under it. Her reply and the typed line open
+     below the bar. The rest of the window is empty and lets clicks through. */
+  #form { position: absolute; left: 70px; top: 0; width: 420px; height: 420px; pointer-events: none; }
+  #form canvas { display: block; }
+  #dock { position: absolute; left: 30px; top: 0; width: 500px; height: 295px; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none; }
+  #dock.down { top: 418px; height: 368px; justify-content: flex-start; }
+  #box {
+    display: flex; flex-direction: column; max-height: 295px; overflow: hidden; pointer-events: auto; cursor: grab;
+    color: #dcebff; background: rgba(7, 13, 26, .94); border-radius: 16px; border: 1px solid rgba(120, 170, 255, .26); box-shadow: 0 8px 28px rgba(0, 0, 0, .45);
+  }
+  #caption {
+    display: none; flex: 0 1 auto; min-height: 0; max-height: 190px; padding: 9px 13px; box-sizing: border-box;
+    overflow-y: auto; overscroll-behavior: contain; user-select: text; cursor: text;
+    font-size: 14px; line-height: 1.42; scrollbar-width: thin; scrollbar-color: var(--mood) transparent;
+  }
+  #caption.show { display: block; }
+  #line {
+    display: none; flex: 0 0 auto; max-height: 84px; padding: 6px 13px 8px; overflow: hidden;
+    font-size: 15px; line-height: 21px; white-space: pre-wrap; overflow-wrap: anywhere;
+  }
+  #line.show { display: block; }
+  #caption.show ~ #line { border-top: 1px solid rgba(255, 241, 220, .13); }
+  body.active #line::after { content: '▌'; animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  #bar {
+    flex: 0 0 40px; display: flex; align-items: center; gap: 10px; padding: 0 16px; white-space: nowrap;
+    font-size: 13px;
+  }
+  #dock.down #bar { order: -1; }
+  #name { opacity: .92; }
+  #name::before { content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--mood); }
+  #tag { opacity: .58; overflow: hidden; text-overflow: ellipsis; }
+  #hint { margin-left: auto; opacity: .45; font-size: 12px; }
+  #input { position: absolute; left: -9999px; top: 0; width: 200px; height: 30px; }
+  /* As the desktop: the page fills a whole screen, her form behind everything, the type box near the bottom. */
+  html:has(body.os), body.os { background: #000 !important; }  /* Nori OS: she is the desktop, nothing shows through */
+  html:has(body.desktop), body.desktop { background: transparent; }  /* no box round her (2026-11-21) */
+  body.desktop #form { left: 0; top: 0; width: 100vw; height: 100vh; pointer-events: auto; }  /* drag to spin her (2026-11-21) */
+  body.desktop #dock, body.desktop #dock.down { left: 50%; transform: translateX(-50%); width: min(760px, 72vw); top: auto; bottom: 9vh; height: auto; max-height: 56vh; justify-content: flex-end; }
+  body.desktop #box { max-height: 56vh; cursor: text; }
+  /* Inside her memory city the type box is hidden (2026-11-23). */
+  #dock { transition: opacity .35s ease; }
+  body.inside #dock { opacity: 0; pointer-events: none; }
+  body.inside #dock * { pointer-events: none; }
+  /* Exit from inside her memory city (2026-11-23). */
+  #exit { position: fixed; right: 22px; top: 18px; z-index: 30; display: none; padding: 9px 16px; font: 600 15px "Segoe UI", system-ui, sans-serif; color: #dff6ff; background: rgba(6, 16, 28, .86); border: 1px solid rgba(120, 220, 255, .65); border-radius: 12px; box-shadow: 0 0 14px rgba(60, 200, 255, .35); cursor: pointer; pointer-events: auto; }
+  #exit:hover { background: rgba(20, 60, 90, .95); }
+  body.inside #exit { display: block; }
+  body.desktop #caption { max-height: 40vh; font-size: 16px; padding: 14px 18px; }
+  body.desktop #line { font-size: 17px; line-height: 24px; padding: 10px 18px 12px; }
+  body.desktop #bar { flex-basis: 50px; padding: 0 18px; font-size: 15px; }
+  body.desktop #hint { font-size: 13px; }
+  /* The same composer as in the app (owner, 2026-11-16): the text on top, then + and SKILL ZIP on the left and the
+     microphone and send on the right. The buttons hand their action to the app window. */
+  #tools { display: none; }
+  body.desktop #box { border-radius: 22px; }
+  body.desktop #line { display: block; min-height: 30px; order: 2; border-top: 0 !important; }
+  body.desktop #line:empty::before { content: 'Ask Nori to make, explore, or do something…'; color: #5f7fb0; }
+  body.desktop #caption { order: 1; }
+  body.desktop #bar { display: none; }
+  body.desktop #tools { order: 3; display: flex; align-items: center; gap: 10px; padding: 4px 14px 12px; }
+  #tools button { flex: none; height: 40px; min-width: 40px; padding: 0 12px; border-radius: 12px; border: 1px solid rgba(120, 170, 255, .28); background: rgba(90, 162, 255, .06);
+    color: #b9d6ff; font: 600 12px "Segoe UI", system-ui, sans-serif; letter-spacing: .06em; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+  #tools button:hover { background: rgba(90, 162, 255, .16); }
+  #tools #t-plus { font-size: 20px; font-weight: 400; padding: 0; }
+  #tools #t-state { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #7f97c2; font-size: 12px; display: flex; align-items: center; gap: 8px; }
+  #tools #t-state::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--mood); }
+  #tools #t-mic { width: 46px; height: 46px; border-radius: 50%; padding: 0; }
+  #tools #t-mic svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+  #tools #t-send { border: 0; background: none; font-size: 22px; padding: 0; color: #9cc6ff; }
+</style>
+</head>
+<body>
+  <div id="form"></div>
+  <button id="exit" type="button" title="Leave her memory (Esc)">&#x2715; Exit &middot; Esc</button>
+<div id="dock" class="down">
+    <div id="box">
+      <div id="caption"></div>
+      <div id="line"></div>
+      <div id="bar"><span id="name">Nori</span><span id="tag"></span><span id="hint"></span></div>
+      <div id="tools"><button id="t-plus" type="button" title="Attach an image or text file" aria-label="Attach an image or text file">+</button><button id="t-zip" type="button" title="Install a skill from a ZIP">SKILL ZIP</button><span id="t-state"></span><button id="t-mic" type="button" title="Voice input on or off" aria-label="Voice input on or off"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4"/></svg></button><button id="t-send" type="button" title="Send" aria-label="Send message">↑</button></div>
+    </div>
+  </div>
+  <textarea id="input" aria-label="Message Nori" spellcheck="false"></textarea>
+  <input id="file" type="file" hidden aria-label="Choose an image or text file for Nori">
+  <script type="module" src="/assets/nori-orb-float-20261108.js"></script>
+</body>
+</html>

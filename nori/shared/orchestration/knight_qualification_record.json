@@ -1,0 +1,1542 @@
+{
+  "edition": "home",
+  "evaluated_at": "2026-10-02T02:58:56.286913+00:00",
+  "knights": {
+    "apoc": {
+      "blockers": [
+        "no successful navigation evidence; browser execution denied",
+        "cancellation_or_timeout: no cancellation/timeout evidence for apoc"
+      ],
+      "edition": "home",
+      "evaluated_at": "2026-10-02T02:58:56.286913+00:00",
+      "gates": {
+        "audit_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "knight-audit-rows",
+              "notes": "",
+              "receipt_hash": "3a8bcb25a2e12ad5b0f646c07537b40943cb34e2c707dece590c886e89964f7e",
+              "recorded_at": "2026-10-02T02:58:56.284354+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\apoc\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "audit rows verified"
+        },
+        "cancellation_or_timeout": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no cancellation/timeout evidence for apoc"
+        },
+        "dependency_failure_recovery": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs"
+        },
+        "edition_boot_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "home edition boot recorded"
+        },
+        "package_install_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)"
+        },
+        "permission_denial_no_side_effect": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "permission-denial-no-side-effect",
+              "notes": "denial rows [('apoc_browser', 'denied')]",
+              "receipt_hash": "3a8bcb25a2e12ad5b0f646c07537b40943cb34e2c707dece590c886e89964f7e",
+              "recorded_at": "2026-10-02T02:58:56.284354+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\apoc\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "denial recorded with no side effect"
+        },
+        "real_capability_task": {
+          "evidence": [],
+          "passed": false,
+          "reason": "blocked: no successful navigation evidence; browser execution denied"
+        },
+        "registry_configuration": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "registry validated; boot identity recorded"
+        }
+      },
+      "knight_id": "apoc",
+      "qualified": false,
+      "source_revision": "838244d"
+    },
+    "architect": {
+      "blockers": [
+        "permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence",
+        "cancellation_or_timeout: no cancellation/timeout evidence for architect"
+      ],
+      "edition": "home",
+      "evaluated_at": "2026-10-02T02:58:56.286913+00:00",
+      "gates": {
+        "audit_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "knight-audit-rows",
+              "notes": "",
+              "receipt_hash": "bd29c3c48a5f50609b1b256c9ba66e36edbd784c4cd09267217e803ce9bbb44b",
+              "recorded_at": "2026-10-02T02:58:56.284863+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\architect\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "audit rows verified"
+        },
+        "cancellation_or_timeout": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no cancellation/timeout evidence for architect"
+        },
+        "dependency_failure_recovery": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs"
+        },
+        "edition_boot_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "home edition boot recorded"
+        },
+        "package_install_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)"
+        },
+        "permission_denial_no_side_effect": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no per-knight denial-with-no-side-effect evidence"
+        },
+        "real_capability_task": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "real-capability-task",
+              "notes": "audit rows [('architect_graph', 'completed')]",
+              "receipt_hash": "bd29c3c48a5f50609b1b256c9ba66e36edbd784c4cd09267217e803ce9bbb44b",
+              "recorded_at": "2026-10-02T02:58:56.284863+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\architect\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "real task evidence verified"
+        },
+        "registry_configuration": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "registry validated; boot identity recorded"
+        }
+      },
+      "knight_id": "architect",
+      "qualified": false,
+      "source_revision": "838244d"
+    },
+    "keymaker": {
+      "blockers": [
+        "permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence",
+        "cancellation_or_timeout: no cancellation/timeout evidence for keymaker"
+      ],
+      "edition": "home",
+      "evaluated_at": "2026-10-02T02:58:56.286913+00:00",
+      "gates": {
+        "audit_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "knight-audit-rows",
+              "notes": "",
+              "receipt_hash": "a484017bb5a0a24ec9fbb4f02b2cce7f6d75295f7b40395aaa56eb9678155821",
+              "recorded_at": "2026-10-02T02:58:56.284863+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\keymaker\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "audit rows verified"
+        },
+        "cancellation_or_timeout": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no cancellation/timeout evidence for keymaker"
+        },
+        "dependency_failure_recovery": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs"
+        },
+        "edition_boot_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "home edition boot recorded"
+        },
+        "package_install_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)"
+        },
+        "permission_denial_no_side_effect": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no per-knight denial-with-no-side-effect evidence"
+        },
+        "real_capability_task": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "real-capability-task",
+              "notes": "audit rows [('keymaker_report', 'completed')]",
+              "receipt_hash": "a484017bb5a0a24ec9fbb4f02b2cce7f6d75295f7b40395aaa56eb9678155821",
+              "recorded_at": "2026-10-02T02:58:56.284863+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\keymaker\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "real task evidence verified"
+        },
+        "registry_configuration": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "registry validated; boot identity recorded"
+        }
+      },
+      "knight_id": "keymaker",
+      "qualified": false,
+      "source_revision": "838244d"
+    },
+    "machine": {
+      "blockers": [
+        "permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence"
+      ],
+      "edition": "home",
+      "evaluated_at": "2026-10-02T02:58:56.286913+00:00",
+      "gates": {
+        "audit_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "knight-audit-rows",
+              "notes": "",
+              "receipt_hash": "25d811dac302eca25a2bbb12351df0630394222d9b8c793037b643cecfe2dc36",
+              "recorded_at": "2026-10-02T02:58:56.285375+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\machine\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "audit rows verified"
+        },
+        "cancellation_or_timeout": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "active-cancel-receipt",
+              "notes": "",
+              "receipt_hash": "caf83682a3e1286af8d811e55475ad118882e3f70e984a4108f0940e3f19bb48",
+              "recorded_at": "2026-10-02T02:58:56.283843+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-active-cancel-CfRMrR\\active-cancel-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "cancellation or timeout recorded"
+        },
+        "dependency_failure_recovery": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs"
+        },
+        "edition_boot_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "home edition boot recorded"
+        },
+        "package_install_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)"
+        },
+        "permission_denial_no_side_effect": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no per-knight denial-with-no-side-effect evidence"
+        },
+        "real_capability_task": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "real-capability-task",
+              "notes": "audit rows [('machine_runtime', 'completed')]",
+              "receipt_hash": "25d811dac302eca25a2bbb12351df0630394222d9b8c793037b643cecfe2dc36",
+              "recorded_at": "2026-10-02T02:58:56.285375+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\machine\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "real task evidence verified"
+        },
+        "registry_configuration": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "registry validated; boot identity recorded"
+        }
+      },
+      "knight_id": "machine",
+      "qualified": false,
+      "source_revision": "838244d"
+    },
+    "merovingian": {
+      "blockers": [
+        "permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence",
+        "cancellation_or_timeout: no cancellation/timeout evidence for merovingian"
+      ],
+      "edition": "home",
+      "evaluated_at": "2026-10-02T02:58:56.286913+00:00",
+      "gates": {
+        "audit_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "knight-audit-rows",
+              "notes": "",
+              "receipt_hash": "10a1973b73ba577e99b748e6d2088c017cd1b1c3ee192070b6e644c2164b7dc3",
+              "recorded_at": "2026-10-02T02:58:56.285375+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\merovingian\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "audit rows verified"
+        },
+        "cancellation_or_timeout": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no cancellation/timeout evidence for merovingian"
+        },
+        "dependency_failure_recovery": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs"
+        },
+        "edition_boot_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "home edition boot recorded"
+        },
+        "package_install_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)"
+        },
+        "permission_denial_no_side_effect": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no per-knight denial-with-no-side-effect evidence"
+        },
+        "real_capability_task": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "real-capability-task",
+              "notes": "audit rows [('memory_write', 'completed'), ('memory_export', 'completed')]",
+              "receipt_hash": "10a1973b73ba577e99b748e6d2088c017cd1b1c3ee192070b6e644c2164b7dc3",
+              "recorded_at": "2026-10-02T02:58:56.285375+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\merovingian\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "real task evidence verified"
+        },
+        "registry_configuration": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "registry validated; boot identity recorded"
+        }
+      },
+      "knight_id": "merovingian",
+      "qualified": false,
+      "source_revision": "838244d"
+    },
+    "morpheus": {
+      "blockers": [
+        "permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence",
+        "cancellation_or_timeout: no cancellation/timeout evidence for morpheus"
+      ],
+      "edition": "home",
+      "evaluated_at": "2026-10-02T02:58:56.286913+00:00",
+      "gates": {
+        "audit_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "knight-audit-rows",
+              "notes": "",
+              "receipt_hash": "5303fe45cbbe93228fb625e50064ba9f8d356a858d25447ab6b4df6b6288df6b",
+              "recorded_at": "2026-10-02T02:58:56.285887+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\morpheus\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "audit rows verified"
+        },
+        "cancellation_or_timeout": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no cancellation/timeout evidence for morpheus"
+        },
+        "dependency_failure_recovery": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs"
+        },
+        "edition_boot_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "home edition boot recorded"
+        },
+        "package_install_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)"
+        },
+        "permission_denial_no_side_effect": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no per-knight denial-with-no-side-effect evidence"
+        },
+        "real_capability_task": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "real-capability-task",
+              "notes": "audit rows [('morpheus_ide', 'completed')]",
+              "receipt_hash": "5303fe45cbbe93228fb625e50064ba9f8d356a858d25447ab6b4df6b6288df6b",
+              "recorded_at": "2026-10-02T02:58:56.285887+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\morpheus\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "real task evidence verified"
+        },
+        "registry_configuration": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "registry validated; boot identity recorded"
+        }
+      },
+      "knight_id": "morpheus",
+      "qualified": false,
+      "source_revision": "838244d"
+    },
+    "neo": {
+      "blockers": [
+        "permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence",
+        "cancellation_or_timeout: no cancellation/timeout evidence for neo"
+      ],
+      "edition": "home",
+      "evaluated_at": "2026-10-02T02:58:56.286913+00:00",
+      "gates": {
+        "audit_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "knight-audit-rows",
+              "notes": "",
+              "receipt_hash": "7ed0f3fbbf8c92db3c907de58a20da017803e710c71c0e13c661f24ef01e1e18",
+              "recorded_at": "2026-10-02T02:58:56.285887+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\neo\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "audit rows verified"
+        },
+        "cancellation_or_timeout": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no cancellation/timeout evidence for neo"
+        },
+        "dependency_failure_recovery": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs"
+        },
+        "edition_boot_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "home edition boot recorded"
+        },
+        "package_install_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)"
+        },
+        "permission_denial_no_side_effect": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no per-knight denial-with-no-side-effect evidence"
+        },
+        "real_capability_task": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "real-capability-task",
+              "notes": "audit rows [('neo_workspace', 'completed')]",
+              "receipt_hash": "7ed0f3fbbf8c92db3c907de58a20da017803e710c71c0e13c661f24ef01e1e18",
+              "recorded_at": "2026-10-02T02:58:56.285887+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\neo\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "real task evidence verified"
+        },
+        "registry_configuration": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "registry validated; boot identity recorded"
+        }
+      },
+      "knight_id": "neo",
+      "qualified": false,
+      "source_revision": "838244d"
+    },
+    "oracle": {
+      "blockers": [
+        "permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence",
+        "cancellation_or_timeout: no cancellation/timeout evidence for oracle"
+      ],
+      "edition": "home",
+      "evaluated_at": "2026-10-02T02:58:56.286913+00:00",
+      "gates": {
+        "audit_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "knight-audit-rows",
+              "notes": "",
+              "receipt_hash": "7629da2d40cc0b2cfaf32005e6207e7a4ac7bd61bc66abedc32f2d5ac5ee0b64",
+              "recorded_at": "2026-10-02T02:58:56.286399+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\oracle\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "audit rows verified"
+        },
+        "cancellation_or_timeout": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no cancellation/timeout evidence for oracle"
+        },
+        "dependency_failure_recovery": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs"
+        },
+        "edition_boot_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "home edition boot recorded"
+        },
+        "package_install_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)"
+        },
+        "permission_denial_no_side_effect": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no per-knight denial-with-no-side-effect evidence"
+        },
+        "real_capability_task": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "real-capability-task",
+              "notes": "audit rows [('oracle_knowledge', 'completed'), ('oracle_knowledge', 'indexed')]",
+              "receipt_hash": "7629da2d40cc0b2cfaf32005e6207e7a4ac7bd61bc66abedc32f2d5ac5ee0b64",
+              "recorded_at": "2026-10-02T02:58:56.286399+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\oracle\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "real task evidence verified"
+        },
+        "registry_configuration": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "registry validated; boot identity recorded"
+        }
+      },
+      "knight_id": "oracle",
+      "qualified": false,
+      "source_revision": "838244d"
+    },
+    "sentinel": {
+      "blockers": [
+        "permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence"
+      ],
+      "edition": "home",
+      "evaluated_at": "2026-10-02T02:58:56.286913+00:00",
+      "gates": {
+        "audit_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "knight-audit-rows",
+              "notes": "",
+              "receipt_hash": "bd751cfc6141ab4f9ca2f4a04ae90e9355e8483f8551c37224e4d1149ac38b98",
+              "recorded_at": "2026-10-02T02:58:56.286399+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\sentinel\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "audit rows verified"
+        },
+        "cancellation_or_timeout": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "cancellation-or-timeout",
+              "notes": "cancel rows [('sentinel_event', 'cancelled')]",
+              "receipt_hash": "bd751cfc6141ab4f9ca2f4a04ae90e9355e8483f8551c37224e4d1149ac38b98",
+              "recorded_at": "2026-10-02T02:58:56.286399+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\sentinel\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "cancellation or timeout recorded"
+        },
+        "dependency_failure_recovery": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs"
+        },
+        "edition_boot_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "home edition boot recorded"
+        },
+        "package_install_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)"
+        },
+        "permission_denial_no_side_effect": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no per-knight denial-with-no-side-effect evidence"
+        },
+        "real_capability_task": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "real-capability-task",
+              "notes": "audit rows [('sentinel_event', 'delivered')]",
+              "receipt_hash": "bd751cfc6141ab4f9ca2f4a04ae90e9355e8483f8551c37224e4d1149ac38b98",
+              "recorded_at": "2026-10-02T02:58:56.286399+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\sentinel\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "real task evidence verified"
+        },
+        "registry_configuration": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "registry validated; boot identity recorded"
+        }
+      },
+      "knight_id": "sentinel",
+      "qualified": false,
+      "source_revision": "838244d"
+    },
+    "smith": {
+      "blockers": [
+        "no isolated runner configured; ready_verified is false",
+        "permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence",
+        "cancellation_or_timeout: no cancellation/timeout evidence for smith"
+      ],
+      "edition": "home",
+      "evaluated_at": "2026-10-02T02:58:56.286913+00:00",
+      "gates": {
+        "audit_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "knight-audit-rows",
+              "notes": "",
+              "receipt_hash": "d6bfe257f9f90950487e0c6a773add949f3bb0ab7c2d60da652bda6bd633b939",
+              "recorded_at": "2026-10-02T02:58:56.286913+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\smith\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "audit rows verified"
+        },
+        "cancellation_or_timeout": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no cancellation/timeout evidence for smith"
+        },
+        "dependency_failure_recovery": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs"
+        },
+        "edition_boot_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "home edition boot recorded"
+        },
+        "package_install_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)"
+        },
+        "permission_denial_no_side_effect": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no per-knight denial-with-no-side-effect evidence"
+        },
+        "real_capability_task": {
+          "evidence": [],
+          "passed": false,
+          "reason": "blocked: no isolated runner configured; ready_verified is false"
+        },
+        "registry_configuration": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "registry validated; boot identity recorded"
+        }
+      },
+      "knight_id": "smith",
+      "qualified": false,
+      "source_revision": "838244d"
+    },
+    "tank": {
+      "blockers": [
+        "permission_denial_no_side_effect: no per-knight denial-with-no-side-effect evidence",
+        "cancellation_or_timeout: no cancellation/timeout evidence for tank"
+      ],
+      "edition": "home",
+      "evaluated_at": "2026-10-02T02:58:56.286913+00:00",
+      "gates": {
+        "audit_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "knight-audit-rows",
+              "notes": "",
+              "receipt_hash": "001e9c4c76428abd0a0c384d20c997ea3d4b6a026f03a730c1a7d121775a3429",
+              "recorded_at": "2026-10-02T02:58:56.286913+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\tank\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "audit rows verified"
+        },
+        "cancellation_or_timeout": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no cancellation/timeout evidence for tank"
+        },
+        "dependency_failure_recovery": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs"
+        },
+        "edition_boot_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "home edition boot recorded"
+        },
+        "package_install_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)"
+        },
+        "permission_denial_no_side_effect": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no per-knight denial-with-no-side-effect evidence"
+        },
+        "real_capability_task": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "real-capability-task",
+              "notes": "audit rows [('tank_hardware', 'completed')]",
+              "receipt_hash": "001e9c4c76428abd0a0c384d20c997ea3d4b6a026f03a730c1a7d121775a3429",
+              "recorded_at": "2026-10-02T02:58:56.286913+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\tank\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "real task evidence verified"
+        },
+        "registry_configuration": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "registry validated; boot identity recorded"
+        }
+      },
+      "knight_id": "tank",
+      "qualified": false,
+      "source_revision": "838244d"
+    },
+    "trinity": {
+      "blockers": [
+        "real_capability_task: no run-verified real task evidence",
+        "cancellation_or_timeout: no cancellation/timeout evidence for trinity"
+      ],
+      "edition": "home",
+      "evaluated_at": "2026-10-02T02:58:56.286913+00:00",
+      "gates": {
+        "audit_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "knight-audit-rows",
+              "notes": "",
+              "receipt_hash": "3e60d58cd47b78ce9456f2241e4a0ebb0e805e981db1ce22b53045e9a781b494",
+              "recorded_at": "2026-10-02T02:58:56.286913+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\trinity\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "audit rows verified"
+        },
+        "cancellation_or_timeout": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no cancellation/timeout evidence for trinity"
+        },
+        "dependency_failure_recovery": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "stale failure-recovery evidence: source changed since run: apps/desktop/desktop/native-stack.cjs; source changed since run: apps/desktop/desktop/native-core.cjs; source changed since run: apps/desktop/desktop/native-service.cjs; source changed since run: runtime/norllama/norllama.py; source changed since run: apps/desktop/tests/native-stack-failure-real.test.cjs"
+        },
+        "edition_boot_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "home edition boot recorded"
+        },
+        "package_install_verification": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "failure-recovery-receipt",
+              "notes": "",
+              "receipt_hash": "7178f61729a4a4480328f0be6e54670f62b0ce4f7a7442a5e0241bb69750b041",
+              "recorded_at": "2026-10-02T02:58:56.283333+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-worker-loss-real-1m87BK\\failure-recovery-receipt.json",
+              "stale": true
+            }
+          ],
+          "passed": false,
+          "reason": "package/install acceptance not recorded (receipts declare installedAcceptanceVerified:false)"
+        },
+        "permission_denial_no_side_effect": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "permission-denial-no-side-effect",
+              "notes": "denial rows [('trinity_plugin', 'denied')]",
+              "receipt_hash": "3e60d58cd47b78ce9456f2241e4a0ebb0e805e981db1ce22b53045e9a781b494",
+              "recorded_at": "2026-10-02T02:58:56.286913+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\state\\private\\core\\trinity\\audit.jsonl",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "denial recorded with no side effect"
+        },
+        "real_capability_task": {
+          "evidence": [],
+          "passed": false,
+          "reason": "no run-verified real task evidence"
+        },
+        "registry_configuration": {
+          "evidence": [
+            {
+              "edition": "home",
+              "evidence_type": "restart-receipt",
+              "notes": "",
+              "receipt_hash": "724a426a5d148790f9715e2eea7932197a788bd7c70ff79356581aa2747236b8",
+              "recorded_at": "2026-10-02T02:58:56.282821+00:00",
+              "result": "pass",
+              "run_verified": true,
+              "source_path": "C:\\Nori\\verification\\.native-state-restart-CfOwJo\\restart-receipt.json",
+              "stale": false
+            }
+          ],
+          "passed": true,
+          "reason": "registry validated; boot identity recorded"
+        }
+      },
+      "knight_id": "trinity",
+      "qualified": false,
+      "source_revision": "838244d"
+    }
+  },
+  "schema": "nori.knight-qualification.v1",
+  "source_revision": "838244d",
+  "summary": {
+    "edition": "home",
+    "expected": "NOT QUALIFIED with today's evidence",
+    "home_edition_qualified": false,
+    "qualified_knights": 0,
+    "total_knights": 12
+  },
+  "systemic": {
+    "bus_denial_contract": [
+      {
+        "edition": "home",
+        "evidence_type": "systemic-bus-denial-contract",
+        "notes": "bus audit holds authenticated+denied+completed rows; Council admission evidence only, never a Knight gate",
+        "receipt_hash": "8f1752d0b57a62c47e0048c76ae5cbfadc5ccfe9147f1d4d4d5e17bbd8736dd9",
+        "recorded_at": "2026-10-02T02:58:56.286913+00:00",
+        "result": "pass",
+        "run_verified": true,
+        "source_path": "C:\\Nori\\verification\\.native-workers-probe-roo168qn\\native-bus-audit.sqlite3",
+        "stale": false
+      }
+    ],
+    "collection_problems": []
+  }
+}

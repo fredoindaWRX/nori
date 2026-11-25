@@ -1,0 +1,9 @@
+FredoIndaWRX banner refresh
+Tool: built-in image generation.
+Direction: stronger 3D industrial metal identity with the existing Nori N emblem, chrome title, cyan rim lighting and restrained violet accents.
+Exact title: FredoIndaWRX
+Exact tagline: Games, projects, and whatever comes next
+Channel emphasis: projects and Building Nori first, gaming on the side.
+
+Final editing prompt:
+Edit the generated banner for YouTube device-safe layout. Preserve the industrial metal aesthetic, logo shape and exact title and tagline. Use a 16:9 canvas at 2560x1440 or 3840x2160. Keep every essential logo and letter inside the middle 60% of width and middle 26% of height. Scale the complete central composition to fit; extend dark graphite industrial architecture above and below with decorative cyan/violet lines and no extra text. Preserve dimension, texture, impact and legibility.

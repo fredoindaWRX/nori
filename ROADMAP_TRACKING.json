@@ -1,0 +1,876 @@
+{
+  "schema_version": 1,
+  "root": "C:\\Nori",
+  "goal": "Complete the original Nori roadmap end to end with fully functional integrated parts; keep all active Nori components under the main Nori folder.",
+  "release_state": "NOT_VERIFIED",
+  "native_desktop_session_outcome_followup_2026_10_01": {
+    "evidence": "verification/native-desktop-session-outcome-2026-10-01.txt",
+    "session_receipts": [
+      "verification/.native-browser-migration-session-outcome-RKWeM0/state/private/desktop/desktop-session-outcome-receipt.json",
+      "verification/.native-browser-migration-session-outcome-5AENjZ/state/private/desktop/desktop-session-outcome-receipt.json",
+      "verification/.native-browser-migration-session-outcome-SfJhui/state/private/desktop/desktop-session-outcome-receipt.json"
+    ],
+    "guarded_restart_receipt": "verification/.native-browser-migration-job-wya3tt/guarded-restarts-receipt.json",
+    "verified_scope": "Sticky bounded desktop health separate from cleanup; original native observer joined before final snapshot; original child exit status preserves loss before same-turn quit. Actual fresh protected source Windows GUI normal0/clean, startup-failure1/failed and post-ready native-exit1/failed pass, with ordinary cleanup/ownership true, no force,12 selected source hashes and ACL before/after. Updated synthetic same-state seed/check/check guarded restart passes:30 accounted processes each,root0/active0/unforced,three guards held beyond ordinary release,29 selected source hashes,real cookie/localStorage/IndexedDB continuity. Ordinary443 tests:429 pass,0 fail,14 existing skips;lint0errors/10old warnings;build exit0.",
+    "limitations": "GUI health diagnostic pipe is not authenticated guardian release authority or exact descendant drain. Source synthetic Job restart proof remains separate. No current package of new source,earliest production controller/bootstrap,installed/cold-PC or personal-state cutover/physical sensors/all39 qualification. Imported models and task gates unchanged. Earlier packaged candidate is historical relative to new source;source hashes are selected scope not whole tree.",
+    "production_guardian_verified": false,
+    "whole_release_verified": false
+  },
+  "native_packaged_consolidated_launch_followup_2026_10_01": {
+    "evidence": "verification/native-packaged-consolidated-launch-2026-10-01.txt",
+    "candidate": "apps/desktop/release/native-desktop-2026-10-01-consolidated-launch-2",
+    "candidate_receipt_sha256": "44461F33CD7E35C065F5ADC8F5C415004C7EC9DBFC22E69D87E228DC224E0D63",
+    "packaged_probe_receipt": "apps/desktop/release/native-desktop-2026-10-01-consolidated-launch-2/win-unpacked/resources/NoriSuite/verification/.native-browser-migration-packaged-jB9jYu/state/private/desktop/packaged-consolidated-probe-receipt.json",
+    "current_source_restart_receipt": "verification/.native-browser-migration-job-utOnZG/guarded-restarts-receipt.json",
+    "current_source_fault_receipts": [
+      "verification/.native-browser-migration-job-jKAGTX/guarded-restart-failure-receipt.json",
+      "verification/.native-browser-migration-job-hj9XRN/guarded-restart-failure-receipt.json"
+    ],
+    "verified_scope": "Physical packaged permission-check closure fixed without changing default state selection. Fresh 3929453701-byte native candidate passes actual shipped Nori.exe prepared synthetic consolidated renderer/Core/NorLlama/norama-independent readiness,12 unique named Core ports,2-display layout,authenticated heartbeat,original GUI exit0,ordinary ownership release and strict private/bounded browser ACL before/after. Post-GUI shipped portable verifier passes desktop96/native11211 artifact hashes from unrelated cwd with restricted OS search path. Current synthetic source seed/check/check and loss/control faults pass with28 measured sources. Ordinary desktop389 tests:375 pass,0 fail,14 existing skips;lint0errors/10old warnings.",
+    "limitations": "Prepared synthetic packaged launch is not production retained-Job bootstrap or exact descendant drain,installed Program Files install/uninstall/modify,actual personal-state migration/cutover,cold-PC/all-functions acceptance or full39 verification. Initial candidate provisioning failed safely and is preserved. Imported weights remain labeled;task/sensor/tool gates unchanged. Candidate roadmap is the measured NOT_VERIFIED staging snapshot;changed source requires fresh staging for future builds. Unsigned receipts detect corruption,not publisher tampering.",
+    "production_guardian_verified": false,
+    "whole_release_verified": false
+  },
+  "native_guarded_desktop_restart_followup_2026_10_01": {
+    "evidence": "verification/native-guarded-desktop-restarts-2026-10-01.txt",
+    "positive_receipt": "verification/.native-browser-migration-job-nzH6Dy/guarded-restarts-receipt.json",
+    "storage_loss_receipt": "verification/.native-browser-migration-job-S9tJ7n/guarded-restart-failure-receipt.json",
+    "control_interruption_receipt": "verification/.native-browser-migration-job-A5pOln/guarded-restart-failure-receipt.json",
+    "verified_scope": "Actual source Electron/Core/NorLlama/Norama uses same fresh fixed protected desktop/browser/Core state for seed/check/check cycles. Real cookie/localStorage/IndexedDB, stable owned loopback origin, synthetic native setting/markers,27 enumerated source hashes and ACL checks pass;30 processes account and fully drain unforced per cycle before all3 guard releases. Real missing localStorage and control interruption poison same-process capability, preserve recorded guardian/readiness/failure artifacts and refuse retry before launch. Current ordinary desktop378 tests:364 pass,0 fail,14 existing skips.",
+    "limitations": "Synthetic source restart acceptance, not actual private-state copying/cutover, installed/packaged production guardian, all UI/Core/browser data semantics, source-independent cold-PC/50-cycle or whole39 qualification. Positive runs do not separately observe retained root exit with descendants. Fault script separately SHA-bound;27 selected runtime files are not whole tree. Failure artifact hashes are not whole failed-state preservation. Imported weights and tool/sensor gates unchanged.",
+    "production_guardian_verified": false,
+    "whole_release_verified": false
+  },
+  "native_consolidated_job_guardian_followup_2026_10_01": {
+    "evidence": "verification/native-windows-job-consolidated-guardian-2026-10-01.txt",
+    "receipt": "verification/.native-job-guardian-KuVe3n/job-guardian-receipt.json",
+    "isolated_regression_receipt": "verification/.native-job-guardian-T2GtPq/job-guardian-receipt.json",
+    "verified_scope": "Actual source Electron/Core/NorLlama/Norama uses fresh fixed prepared consolidated desktop/Core/browser state; all three companion guards exclude migration at readiness and after ordinary owner release. Original Windows Job root exits0, all29 accounted processes drain, no outer force, exact native/browser membership, synthetic markers and23 enumerated source hashes preserved. Strict private and bounded browser permissions rechecked before guard release; all3 later migration acquisitions succeed. Atomic exclusive membership publication and diagnostic-only historical PID presence preserve retained-Job shutdown authority. Current isolated regression also passes with17 accounted processes. Ordinary desktop366 tests:352 pass,0 fail,14 opt-in skips.",
+    "limitations": "Synthetic preparation/launch only, not existing-state copying or durable browser continuity under the Job, production/packaged guardian, actual owner cutover, unmanaged writer exclusion, internal per-component graceful-stop qualification, installed/cold-PC or full39 acceptance. Historical K7UWHG failed safely from an unrelated recycled-parent-PID census; exact-Job-filtered diagnostics now replace ancestry in guarded mode. Whole release stays NOT_VERIFIED.",
+    "production_guardian_verified": false,
+    "whole_release_verified": false
+  },
+  "native_consolidated_state_launch_followup_2026_10_01": {
+    "evidence": "verification/native-consolidated-state-launch-2026-10-01.txt",
+    "verified_scope": "Explicit native-only prepared launch selection validates fixed desktop/Core/browser directories and permissions; ordinary defaults unchanged. No fallback/recreation; early cooperative ownership and best-effort diagnostic reporting. Thirty focused tests pass. Two actual synthetic consolidated GUI restarts retain settings/cookie/localStorage/IndexedDB, permissions and exact observed owned shutdown, with enumerated-source start/end SHA256 equality.",
+    "limitations": "Selection is not complete migration authorization. will-quit lease release/PID snapshots do not qualify every Chromium writer. No actual owner activation, installed/cold-PC or whole release qualification. Latest shared desktop discovery has one Cline dependency-test syntax failure and fourteen ordinary skips; not globally green.",
+    "whole_release_verified": false
+  },
+  "native_browser_sandbox_acl_followup_2026_10_01": {
+    "evidence": "verification/native-browser-sandbox-acl-policy-2026-10-01.txt",
+    "verified_scope": "Read-only browser verifier derives exact Chromium named network capability, scopes observed permissions to Network/Cache/Shared Dictionary, and rejects foreign/widened/out-of-scope grants. Actual synthetic cookie/localStorage/IndexedDB migration and two GUI reopen cycles pass browser policy before/after and strict native-private ACL, retained data and owned shutdown. Ordinary discovery exit0; relocated maintenance closure checked.",
+    "limitations": "Chromium capability is shared, not Nori-exclusive/native-private access. Production activation, unmanaged quiescence, installed/cold-PC acceptance and all-browser-data semantics remain unverified.",
+    "whole_release_verified": false
+  },
+  "native_browser_split_migration_followup_2026_10_01": {
+    "evidence": "verification/native-browser-state-split-migration-2026-10-01.txt",
+    "verified_scope": "Durable browser/native split staging with initial protected ACL, cooperative ownership and single-baseline hash verification. Actual synthetic persistent Electron cookie survives split copy and two reopened GUI sessions; private settings/ACL and clean owned shutdown preserved. API linked-root bypass and relocated maintenance packaging closure fixed; ordinary desktop discovery exit0.",
+    "limitations": "No actual localStorage/IndexedDB semantic continuity or production browser ACL policy, live activation, unmanaged quiescence, installed/cold-PC verification. Copying known browser entries alone does not prove all browser behavior preserved.",
+    "whole_release_verified": false
+  },
+  "native_state_layout_contract_followup_2026_10_01": {
+    "evidence": "verification/native-state-layout-contract-2026-10-01.txt",
+    "verified_scope": "Shared immutable consolidated path resolver integrated into actual Core/desktop private-state planning and protected staging; existing/dangling linked ancestors and files refused. Fourteen current focused tests pass; updated staging passes two real synthetic desktop launches with private ACL retained.",
+    "limitations": "Contract is not activation. Production Core/AppData paths remain unchanged pending explicit migration; state/browser permissions policy and installed/cold-PC qualification still required.",
+    "whole_release_verified": false
+  },
+  "native_desktop_session_separation_followup_2026_10_01": {
+    "evidence": "verification/native-desktop-session-separation-2026-10-01.txt",
+    "verified_scope": "Explicit isolated probe separates Electron sessionData from Nori private userData. Actual protected staged synthetic profile opens twice with strict native private ACL preserved before/after; durable marker and clean owned shutdown verified. Three focused tests and ordinary desktop discovery pass.",
+    "limitations": "Probe-only wiring. Production state paths/migration and browser session ACL policy are not qualified; original failed whole-profile evidence remains historical. No installer or owner activation.",
+    "whole_release_verified": false
+  },
+  "native_staged_desktop_profile_followup_2026_10_01": {
+    "evidence": "verification/native-staged-desktop-profile-restart-2026-10-01.txt",
+    "verified_scope": "Protected staged synthetic desktop profile opens twice with actual Electron/Core/GPU stack, retains durable fixture, and drains owned processes normally. Five focused probe/staging checks pass.",
+    "acceptance_gap": "Strict whole-profile recursive private ACL fails after Chromium generates sandbox-capability grants in browser data. Settings/Core retain expected principals. Keep verifier strict and sandbox enabled; separate Nori private state from explicitly governed browser session data before production activation.",
+    "production_activation_verified": false,
+    "whole_release_verified": false
+  },
+  "native_memory_config_alignment_followup_2026_10_01": {
+    "evidence": "verification/native-memory-config-alignment-2026-10-01.txt",
+    "runtime_tests_passed": 234,
+    "real_tests_passed": 2,
+    "verified_scope": "Native suite explicitly declares nori-sqlite without misleading Letta requirement metadata; bundled Core config validation and actual synthetic protected-state restart/rollback/cancellation pass after change.",
+    "limitations": "No owner migration or complete external-dependency removal. Previous staged/packaged config hashes are historical; fresh build needed. Whole release unverified.",
+    "whole_release_verified": false
+  },
+  "native_protected_state_live_restart_followup_2026_10_01": {
+    "evidence": "verification/native-protected-state-live-restart-2026-10-01.txt",
+    "real_tests_passed": 2,
+    "verified_scope": "Current actual native Core/runtime boots from protected staged synthetic state, restores memory/documents/research/learning and graph routing, drains with normal exits, and rolls back to retained original synthetic state. Owner cancellation test passes without skips.",
+    "limitations": "No actual private-data activation, staged desktop-profile boot, installed/cold-PC acceptance or qualification of all native tools and roadmap features.",
+    "whole_release_verified": false
+  },
+  "native_desktop_wide_regression_followup_2026_10_01": {
+    "evidence": "verification/native-desktop-wide-regression-2026-10-01.txt",
+    "verified_scope": "Full ordinary desktop Node test discovery completed exit0 after strengthening stale monitor shutdown-wiring assertion; focused monitor tests 5 passed with zero skips.",
+    "limitations": "Dot reporter does not supply totals. Opt-in real hardware/package/lifecycle acceptance tests retain skips; no installed or full-release proof.",
+    "whole_release_verified": false
+  },
+  "native_private_destination_ownership_followup_2026_10_01": {
+    "evidence": "verification/native-private-destination-ownership-2026-10-01.txt",
+    "source_tests_passed": 17,
+    "verified_scope": "Protected staging holds source and destination migration ownership during copy/verification. Exact held destination lease permits its temporary record only; foreign/wrong-root/released ownership refused. Windows synthetic Core/desktop staging and corruption regressions pass.",
+    "limitations": "Cooperative exclusion, not unmanaged quiescence. No live migration, activation, installed path alignment or full-release proof.",
+    "whole_release_verified": false
+  },
+  "native_desktop_private_staging_followup_2026_10_01": {
+    "evidence": "verification/native-desktop-private-staging-2026-10-01.txt",
+    "source_tests_passed": 11,
+    "verified_scope": "Shared protected desktop/Core staging library; actual synthetic Windows desktop ACL/content preservation, competing-writer refusal, caches/models retained at source and no activation. Core regressions and corruption detection pass.",
+    "limitations": "No actual owner migration/path cutover, unmanaged/Chromium quiescence, packaged rebuild or installed acceptance. Full consolidation and release remain unverified.",
+    "whole_release_verified": false
+  },
+  "native_desktop_startup_interruption_followup_2026_10_01": {
+    "evidence": "verification/native-desktop-startup-interruption-2026-10-01.txt",
+    "source_tests_passed": 45,
+    "verified_scope": "Real source Electron interrupted before readiness with native runtime and inference worker observed; seven sampled descendants gone, profile ownership released. Normal two-display native startup/shutdown regression passed. Explicit startup cleanup-failure propagation tested.",
+    "limitations": "Sampled process ancestry and one boot phase only; no exhaustive PID identity/orphan coverage or GUI cleanup-failure injection, installed acceptance, migration or full-release claim. Packaged candidate predates changes.",
+    "whole_release_verified": false
+  },
+  "native_desktop_profile_ownership_followup_2026_10_01": {
+    "evidence": "verification/native-desktop-profile-ownership-2026-10-01.txt",
+    "source_tests_passed": 24,
+    "verified_scope": "Synthetic profile exclusive desktop/migration ownership, exact direct-child drain and one-shot quit cleanup tests; actual source Electron two-display readiness and successful ownership release with owned Core/runtime/worker gone.",
+    "limitations": "Cooperative ownership only; no early-startup GUI quit injection, unmanaged/Chromium full-lifetime quiescence, real private-state migration or installed package acceptance. Current packaged candidate predates source edits; existing AppData and Core path mismatch not activated or migrated.",
+    "whole_release_verified": false
+  },
+  "native_install_state_permissions_followup_2026_10_01": {
+    "evidence": "verification/native-install-state-permissions-2026-10-01.txt",
+    "source_tests_passed": 2,
+    "verified_scope": "Actual non-elevated Windows token writes protected synthetic Core/desktop state while synthetic executable/model writes are denied; private ACLs verified and generated fixture removed.",
+    "limitations": "Permission contract only, not Program Files installation. Core default state/core differs from staged state/private/core; packaged desktop still defaults to AppData. Owner-aware provisioning, verified migration and explicit activation remain pending; no silent path switch.",
+    "whole_release_verified": false
+  },
+  "native_windows_installer_check_followup_2026_10_01": {
+    "evidence": "verification/native-windows-installer-check-2026-10-01.txt",
+    "source_tests_passed": 20,
+    "verified_scope": "Actual copied Windows PowerShell checker succeeds with empty PATH using .NET hashing; detects synthetic EXE/BIN corruption, truncation, missing/extra files, malformed receipts and linked roots. Future installer builder includes three hash-covered checker files.",
+    "limitations": "No real compiler/archive/extraction/install/Modify/uninstall or separate clean-PC acceptance; unsigned receipt is not authentication, host execution policy respected, existing USB untouched.",
+    "whole_release_verified": false
+  },
+  "native_installer_slice_integrity_followup_2026_10_01": {
+    "evidence": "verification/native-installer-slice-integrity-2026-10-01.txt",
+    "source_tests_passed": 15,
+    "verified_scope": "Future build runner verifies exact setup EXE/BIN set and copies hash-covered read-only verifier modules; synthetic corruption, truncation, missing/extra pieces and standalone copied-tool tests pass.",
+    "limitations": "No real compiler or installer run. Checker requires Node/compatible runtime; clean-Windows check pending. Unsigned hashes do not authenticate publisher or prove extraction/install/uninstall. Existing USB recovery untouched.",
+    "whole_release_verified": false
+  },
+  "native_crash_recovery_package_followup_2026_10_01": {
+    "evidence": "verification/native-crash-recovery-package-2026-10-01.txt",
+    "candidate": "apps/desktop/release/native-desktop-2026-10-01-crash-recovery",
+    "total_bytes": 4368226275,
+    "packaged_payload_tests_passed": 8,
+    "verified_scope": "Source/stage/package hashes, SDK policy, actual two-display GUI startup and owned shutdown, source-independent distribution verification with bundled executable/tools, packaged Core/runtime protected-state restart and crash/cancellation recovery using source launch helpers.",
+    "limitations": "Portable candidate only; source helpers used for payload crash tests, not GUI crash injection. No current full regression or post-fix 50-cycle soak, installer/installed acceptance, frozen Core/runtime, physical devices or owner private-state migration. Model remains imported.",
+    "whole_release_verified": false
+  },
+  "native_active_generation_followup_2026_10_01": {
+    "evidence": "verification/native-active-generation-recovery-2026-10-01.txt",
+    "real_process_tests_passed": 6,
+    "client_tests_passed": 12,
+    "verified_scope": "Actual active token/request confirmed before worker crash; stream errors without false DONE, owned stack drains, explicit restart restores synthetic memory and generation. Active cancellation releases admission and same worker answers again through the actual desktop bridge. Client rejects malformed or ambiguously typed completion events.",
+    "limitations": "Source-only; packaged app predates fixes. No installed/cold-boot/physical-device acceptance, post-fix 50-cycle soak or model-quality qualification. Existing cancellation error-event semantics retained.",
+    "whole_release_verified": false
+  },
+  "native_worker_loss_followup_2026_10_01": {
+    "evidence": "verification/native-worker-loss-recovery-2026-10-01.txt",
+    "source_runtime_tests_passed": 234,
+    "real_process_tests_passed": 4,
+    "verified_scope": "Normal Core/runtime exit code 0; exact owned Core/runtime/engine worker process termination drains the stack; explicit same-backend restart restores synthetic memory. Worker loss now causes runtime exit code 1 instead of leaving a broken stack running.",
+    "limitations": "Source only; package predates fix. Prior 50-cycle receipt predates watcher revision. No post-fix soak, active-generation crash, cold boot, physical device or installed whole-system qualification.",
+    "whole_release_verified": false
+  },
+  "native_lifecycle_soak_followup_2026_10_01": {
+    "evidence": "verification/native-lifecycle-soak-2026-10-01.txt",
+    "receipt": "verification/.native-lifecycle-soak-7lHOsM/lifecycle-receipt.json",
+    "completed_source_stack_cycles": 50,
+    "verified_scope": "Real source Core/runtime startup, 12-role readiness, synthetic SQLite memory restoration, unauthenticated request refusal, owned process drainage and state-owner release across 50 cycles; seven covered source hashes unchanged.",
+    "limitations": "Not installed whole-system acceptance; no cold boots, physical voice/sensors, failure injection, response-latency qualification or graceful-exit-code assertions. Broader M14 remains unverified.",
+    "whole_release_verified": false
+  },
+  "daily_review_reconciliation_2026_10_01": {
+    "source": "Owner-supplied NORI DAILY REVIEW, October 1, 2026",
+    "authority": "C:\\Nori remains canonical; historical C:\\Cortana documents provide lineage, not filesystem authority.",
+    "status": "unverified",
+    "migration_classifications": ["REUSED", "MIGRATED", "REPLACED", "NEW IN V2", "LEGACY ONLY", "CORTANA DEPENDENCY", "DEFERRED", "UNKNOWN"],
+    "evidence_rules": [
+      "Keep historical candidates, current source tests, packaged candidate tests, installed acceptance and current-live health distinct.",
+      "An inventory or reference count describes its searched scope only; it does not prove complete migration or absence of legacy dependencies.",
+      "Synthetic checks must not probe personal memory, activate sensors or operate real devices merely to report status.",
+      "No subsystem is promoted because it was omitted from a daily review or because its source exists."
+    ],
+    "historical_acceptance_gates": [
+      {"id": "M9_memory", "maps_to": ["memory_learning"], "status": "unverified", "required": "Person scope, confidence, sensitivity, lifecycle, audit, correction, deduplication, migration, explained retrieval and governed export; qualify actual V2 integration separately from historical Memory V3 evidence."},
+      {"id": "M10_perception", "maps_to": ["vision"], "status": "unverified", "required": "Explicit revocable permission leases, quiet modes, relevance scoring, duplicate suppression, trusted-node routing and privacy-aware metadata; no automatic raw-content capture."},
+      {"id": "M11_orchestration", "maps_to": ["native_knights", "development_autopilot"], "status": "unverified", "required": "Durable task ledgers, retries, timeouts, bounded attempts, evidence-backed completion, interruption recovery, overnight diagnostics and morning reports."},
+      {"id": "M12_device_hal", "maps_to": ["device_pairing", "robotics_drive"], "status": "unverified", "required": "Core to Device HAL to authorized device registry to capability router to adapters; exact-device binding, revocable permissions and safe home/portable/vehicle boundaries. Network visibility is not authorization."},
+      {"id": "M13_recovery", "maps_to": ["release_trust", "consolidation"], "status": "unverified", "required": "Authority inventory, structured health, telemetry, transactional updates, rollback, archive verification, duplicate quarantine and safe migration with current integration evidence."},
+      {"id": "M14_whole_system", "maps_to": ["integration_acceptance", "speech", "runtime_management"], "status": "unverified", "minimum_lifecycle_cycles": 50, "required": "Actual start/stop cycles, cold boots, network loss/recovery, microphone and speaker reconnect, model crash/recovery, device loss/recovery, failed update/rollback, emergency stop, single-instance enforcement, wake recovery and measured latency/reliability. Unit or synthetic successes are not whole-system acceptance."}
+    ],
+    "additional_scope": [
+      {"id": "graph_scanner", "maps_to": ["development_autopilot"], "status": "unverified", "required": "Nori Graph Scanner maps canonical imports, calls, dependencies, subsystems, workers, services, configs, tests and legacy references. Runtime overlays, impact analysis and 3D visualization remain future work; preserve the separate recovery lane."},
+      {"id": "home_spatial_model", "maps_to": ["device_pairing", "robotics_drive"], "status": "unverified", "required": "Authorized presence fusion with room/location confidence and supporting evidence; motion-only, robot-only and full-fusion diagnostics, false-guess tracking and confidence calibration."},
+      {"id": "home_automation", "maps_to": ["device_pairing"], "status": "unverified", "required": "Paired exact-device capabilities, explicit permissions and low-risk authorized actions; historical Hue/Home Assistant concepts do not prove a live connection."},
+      {"id": "robot_safety", "maps_to": ["robotics_drive"], "status": "unverified", "required": "Cognition and navigation planning feed a safety controller and deterministic motor layer. The language model must not directly pulse motors."},
+      {"id": "ugc_factory", "maps_to": ["media_generation"], "status": "deferred", "required": "Offer/audience interview, consistent creator identity, scene planning, keyframes, video generation, assembly, provenance, retries and cost/status tracking; not current priority."},
+      {"id": "income_automation", "maps_to": ["business_launch"], "status": "deferred", "required": "Governed research/creative/operations workers with account-specific permissions, spending limits, approval-bound publishing/purchases, audit and revenue/cost tracking; no hidden financial activity."},
+      {"id": "hand_tracking", "maps_to": ["workspace"], "status": "deferred", "required": "Retain normalized gesture-event integration as future scope. Do not undertake hand-tracking work now."},
+      {"id": "os_family", "maps_to": ["home_os", "server_appliance", "robotics_drive"], "status": "unverified", "required": "Nori OS, Server OS and Robotics OS remain long-term products; owner/private Nori is the reference implementation, and public editions require mature security-reviewed capabilities."}
+    ],
+    "preservation_boundaries": ["No wholesale Cortana deletion", "Keep Ollama rollback until replacement capability is proven", "No broad unpaired network-device control", "No production claim from unit tests", "No new major features stacked on an unqualified Core"],
+    "whole_release_verified": false
+  },
+  "native_owned_core_followup_2026_10_01": {
+    "evidence": ["verification/native-owned-construction-2026-10-01.txt", "verification/native-pending-journal-integrity-2026-10-01.txt", "verification/native-document-concurrency-2026-10-01.txt"],
+    "verified_scope": [
+      "Managed Core constructs 12 owned role helpers rather than 144 before shared graph admission",
+      "Pending memory rejects malformed entries and conflicting identity records without mutation",
+      "Scoped SQLite cross-process capacity and interrupted uncommitted writer recovery pass",
+      "Source runtime: 220 tests pass; real source Core restart and cancellation pass"
+    ],
+    "limitations": [
+      "Fresh owned-Core package qualification pending",
+      "Standalone frozen Core/runtime require an approved isolated build tool and relocation qualification",
+      "No power-loss, comprehensive primary-memory multi-writer or full original release qualification"
+    ],
+    "whole_release_verified": false
+  },
+  "native_worker_followup_2026_10_01": {
+    "evidence": "verification/native-worker-coverage-2026-10-01.txt",
+    "packaged_evidence": "verification/native-worker-core-package-2026-10-01.txt",
+    "packaged_candidate": "apps/desktop/release/native-desktop-2026-10-01-worker-core",
+    "verified_scope": [
+      "Actual source Core graphs share role-owned memory, knowledge, code, learning, events and model inspection",
+      "Source runtime: 212 tests pass; scoped actual Core operations survive protected synthetic-state restart",
+      "Native resident-only preflight, bounded event lifecycle and permission-first plugin metadata admission",
+      "Worker-Core portable candidate: 4643692565 bytes; 228 desktop tests pass with zero skips",
+      "Actual packaged Core protected-state restart and cancellation tests pass; two-display startup and owned shutdown pass"
+    ],
+    "limitations": [
+      "Post-build backup phase-reporting change is source-only; timing stability remains unresolved",
+      "NoriBuild is registered but virtual disk is missing; Smith execution is unqualified",
+      "Trinity plugin execution and Apoc approved browser transport remain unavailable",
+      "All 12 health routes do not establish full worker qualification; full original release remains NOT_VERIFIED"
+    ],
+    "whole_release_verified": false
+  },
+  "native_learning_followup_2026_10_01": {
+    "evidence": "verification/native-learning-integrity-2026-10-01.txt",
+    "verified_scope": [
+      "Source runtime: 205 tests pass including real separate-process writer exclusion",
+      "Real Core learning endpoint authentication, shared Architect status and protected synthetic-state restart pass",
+      "Non-opted-in sample excluded from training export; malformed records and invalid metrics refused"
+    ],
+    "limitations": [
+      "Fresh packaged learning candidate qualification pending",
+      "Automatic collection, real training, checkpoint promotion and archival remain unqualified",
+      "Full original release, installed suite and physical hardware remain NOT_VERIFIED"
+    ],
+    "whole_release_verified": false
+  },
+  "native_memory_followup_2026_10_01": {
+    "evidence": "verification/native-document-memory-2026-10-01.txt",
+    "packaged_candidate": "apps/desktop/release/native-desktop-2026-10-01-native-memory",
+    "verified_scope": [
+      "Managed native Core selects Nori SQLite memory without Letta fallback",
+      "Packaged native-memory candidate: 4643667600 bytes; 228 desktop tests pass with zero skips",
+      "Source runtime: 184 tests pass; real Core HTTP memory and document persistence survives protected-copy restart",
+      "Source logical forgetting survives recall, export, pending replay, recovery and restart",
+      "Denied deletion and failed marker writes preserve visible memory; marker-store outage fails closed"
+    ],
+    "limitations": [
+      "Packaged candidate predates logical-forgetting changes; fresh packaged forgetting verification pending",
+      "Logical forgetting preserves historical bytes and is not physical erasure",
+      "Actual owner memory migration and multi-writer qualification remain outstanding",
+      "Full installer, physical hardware and original roadmap qualification remain outstanding"
+    ],
+    "whole_release_verified": false
+  },
+  "native_core_plan_followup_2026_10_01": {
+    "evidence": "verification/native-core-plan-package-2026-10-01.txt",
+    "packaged_candidate": "apps/desktop/release/native-desktop-2026-10-01-core-plan",
+    "verified_scope": [
+      "Source, staged and packaged payload hashes match; complete portable candidate 4643656418 bytes",
+      "228 desktop regression tests pass with zero skips against the new candidate",
+      "171 source runtime tests pass; actual packaged Core client prepares bound proposal and validates synthetic review",
+      "Packaged desktop startup and owned monitor/Core/GPU cleanup pass",
+      "Packaged synthetic local TTS to STT, wake-name examples and silence pass"
+    ],
+    "limitations": [
+      "Synthetic review protocol acceptance does not qualify model judgment or authorize tools",
+      "Real focused reviewer result 1 of 2 passed; failed wording experiment reverted",
+      "Own 265218-parameter scratch instruction trial scored 8 of 53 legacy held-out tasks; not assistant qualified",
+      "Program Files install/uninstall/Modify and physical hardware qualification remain outstanding",
+      "Intermittent backup timing root cause remains unresolved"
+    ],
+    "whole_release_verified": false
+  },
+  "project_monitor_lifecycle_followup_2026_10_01": {
+    "evidence": "verification/project-monitor-desktop-lifecycle-2026-10-01.txt",
+    "verified_scope": [
+      "Real source Electron starts owned readonly monitor on temporary loopback port with Core and native GPU runtime",
+      "Desktop owner departure closes monitor and all owned native processes; cleanup PASS",
+      "Exact Git-root check refuses parent checkout discovery; eight monitor tests pass"
+    ],
+    "limitations": [
+      "Installed Program Files startup and shutdown remain unverified",
+      "Existing live phone monitor is preserved and has not been cut over",
+      "Physical phone and private network availability are separate from loopback lifecycle evidence"
+    ],
+    "whole_release_verified": false
+  },
+  "native_workflow_followup_2026_10_01": {
+    "evidence": "verification/native-workflow-regression-2026-10-01.txt",
+    "packaged_candidate": "apps/desktop/release/native-desktop-2026-10-01-voice-lifecycle",
+    "verified_scope": [
+      "Native staging, portable packaging and installer runner command wiring",
+      "219 of 220 sequential acceptance tests pass against latest candidate",
+      "Timed-out backup launcher passes unchanged targeted rerun in 25.8 seconds"
+    ],
+    "limitations": [
+      "Intermittent backup-launcher timeout root cause remains unresolved",
+      "No full-green 220-test run or real installer build",
+      "Original hardware, model, consolidation and release requirements remain outstanding"
+    ],
+    "whole_release_verified": false
+  },
+  "voice_lifecycle_followup_2026_10_01": {
+    "evidence": "verification/native-voice-delivery-2026-10-01.txt",
+    "verified_scope": [
+      "212 sequential desktop acceptance tests PASS with real stack and Earth candidate checks enabled",
+      "Source voice request cancellation and late-result mode checks",
+      "Simulated microphone permission retry, shared opening and mute preservation",
+      "Strict guard policy and callback wiring; renderer build PASS"
+    ],
+    "limitations": [
+      "Source voice fixes are not in packaged Earth candidate",
+      "No physical microphone, speaker or room-noise qualification",
+      "Strict speech signal includes generation and echo tail; not exact playback timing"
+    ],
+    "whole_release_verified": false
+  },
+  "earth_candidate_followup_2026_10_01": {
+    "candidate": "apps/desktop/release/native-desktop-2026-10-01-earth",
+    "total_bytes": 4881273200,
+    "evidence": "verification/native-earth-package-2026-10-01.txt",
+    "verified_scope": [
+      "Build source, stage and packaged payload hashes match",
+      "Actual packaged two-monitor native startup and clean managed shutdown",
+      "Rendered coordinate navigation, close camera zoom and return to orbit",
+      "203 sequential source acceptance tests pass with real stack and prior wake package checks"
+    ],
+    "limitations": [
+      "Camera altitude and canvas size do not prove 8K ground imagery or Street View",
+      "No installed Windows suite qualification or live private-state activation",
+      "Full original roadmap remains unverified"
+    ],
+    "whole_release_verified": false
+  },
+  "modify_candidate_followup_2026_10_01": {
+    "candidate": "apps/desktop/release/native-desktop-2026-10-01-modify",
+    "total_bytes": 4881267689,
+    "evidence": "verification/native-modify-ui-2026-10-01.txt",
+    "verified_scope": [
+      "Build source/stage/payload match and bundled full integrity check",
+      "Actual packaged maintenance dialog shows loaded native model and disables unsupported 20B installation",
+      "Actual two-monitor startup and clean managed-process shutdown",
+      "196 current source tests PASS, no skips, with real stack and previous wake package checks enabled"
+    ],
+    "limitations": [
+      "No Windows installed Modify/install/uninstall qualification",
+      "Other application launched a separate system Ollama service; it was preserved",
+      "Complete original roadmap and live private-state activation remain unverified"
+    ],
+    "whole_release_verified": false
+  },
+  "wake_candidate_followup_2026_10_01": {
+    "candidate": "apps/desktop/release/native-desktop-2026-10-01-wake",
+    "total_bytes": 4881266049,
+    "evidence": "verification/native-wake-stage-2026-10-01.txt",
+    "verified_scope": [
+      "Fresh payload and package integrity; bundled backup checker PASS",
+      "Actual isolated packaged desktop/Core/runtime startup and clean shutdown",
+      "Three generated Hey Nori speech samples preserve wake name",
+      "Generated non-wake sentence introduces no name; digital silence stays empty",
+      "Packaged protected synthetic state maintenance PASS",
+      "194 desktop tests PASS without skips, real stack and packaged checks enabled"
+    ],
+    "limitations": [
+      "Generated speech is not physical microphone or room-noise qualification",
+      "No Windows installation/uninstall/Modify acceptance",
+      "No live private-state activation, real GPS, physical hand/screen/camera qualification",
+      "Native durable task execution and complete original roadmap remain unverified"
+    ],
+    "whole_release_verified": false
+  },
+  "components_candidate_followup_2026_10_01": {
+    "candidate": "apps/desktop/release/native-desktop-2026-10-01-components",
+    "total_bytes": 4881265401,
+    "evidence": "verification/native-components-build-2026-10-01.txt",
+    "verified_scope": [
+      "Build source/stage/payload match and bundled full backup integrity check",
+      "Actual isolated packaged two-monitor startup and clean shutdown",
+      "Bundled maintenance protected synthetic state staging",
+      "Local generated-audio speech synthesis/transcription and silence rejection",
+      "Synthetic packaged phone receiver/reader without system Node",
+      "Integrity-covered twelve-part component catalog"
+    ],
+    "limitations": [
+      "No Windows install/uninstall/Modify acceptance",
+      "No live private-state activation or real phone GPS acceptance",
+      "No physical microphone/playback/wake, hand control, or screen/camera qualification",
+      "Native durable task execution remains unqualified",
+      "Maintenance UI correction compiled but not visually exercised"
+    ],
+    "whole_release_verified": false
+  },
+  "maintenance_candidate_followup_2026_10_01": {
+    "candidate": "apps/desktop/release/native-desktop-2026-10-01-maintenance",
+    "total_bytes": 4881261611,
+    "evidence": "verification/native-maintenance-candidate-2026-10-01.txt",
+    "verified_scope": [
+      "Actual packaged two-monitor startup and clean managed-process shutdown",
+      "Bundled backup checker verified actual candidate integrity",
+      "Bundled maintenance staged protected synthetic Core state without source tools"
+    ],
+    "later_source_evidence": "verification/native-state-owner-bounded-read-2026-10-01.txt",
+    "limitations": [
+      "No installer/install/uninstall/Modify qualification",
+      "No live private-state activation or complete original roadmap qualification",
+      "Candidate predates later bounded ownership-read source fix"
+    ],
+    "whole_release_verified": false
+  },
+  "packaged_candidate_followup_2026_10_01": {
+    "candidate": "apps/desktop/release/native-desktop-2026-10-01-portable",
+    "evidence": "verification/native-portable-candidate-2026-10-01.txt",
+    "total_bytes": 4881226132,
+    "verified_scope": [
+      "Source/stage/payload integrity and portable receipt verification",
+      "Actual packaged isolated desktop/Core/NorLlama/Norama startup and owned-process cleanup",
+      "Two-monitor workspace geometry with one entity scene; capture and writes disabled",
+      "Packaged local generated-audio TTS/STT and silence rejection without USB runtime",
+      "Packaged paused location receiver and native reader using synthetic credentials",
+      "Relocated verifier through packaged Nori.exe without system Node; actual candidate verified in about 39 seconds"
+    ],
+    "limitations": [
+      "No complete Windows installation/uninstall/Modify acceptance",
+      "No live private-state migration or rollback acceptance",
+      "No physical microphone/playback, acoustic wake or real iPhone GPS acceptance",
+      "No native task-execution qualification or live screen/camera acceptance",
+      "No actual USB-copy trial or signed publisher authentication",
+      "Candidate predates bundled backup-tools and latest verifier optimization; relocated verifier was tested separately"
+    ],
+    "whole_release_verified": false,
+    "original_requirement_scope_preserved": true
+  },
+  "naming": {
+    "runtime": "NorLlama",
+    "engine": "Norama.cpp",
+    "note": "Latest owner naming overrides historical Seth/Matrix/Forge runtime proposals. Third-party model names, provenance and licenses must not be rewritten."
+  },
+  "preservation": [
+    "F:\\ recovery master remains read-only and is a backup exception, not an active runtime location.",
+    "Preserve existing data/nori/task_intake_status.json changes.",
+    "No deletion or replacement of working installs until consolidated replacement is tested.",
+    "No public exposure, financial transfers, live trading, actuator operation or destructive worker actions without separate scoped authority."
+  ],
+  "sources": [
+    "C:\\Nori\\NORI_ARCHITECTURE.txt",
+    "C:\\Nori\\nori\\PRODUCT-LAUNCH-PLAN.md",
+    "C:\\Nori\\nori\\shared\\model-service\\ROADMAP.md",
+    "C:\\Nori\\nori\\ROADMAP-MARKET-INTELLIGENCE.md",
+    "C:\\Nori\\nori\\ROADMAP-NORI-LEDGER.md",
+    "Owner requests in this conversation: desktop/visuals/location/learning/runtime/install/consolidation."
+  ],
+  "components": [
+    {
+      "id": "own_nori_model",
+      "instruction_native_service_followup": "New265218parameter instruction checkpoint8actualCPU/CUDA testsPASS and10actualresidentservice testsPASS. Test probe supports explicit owned development checkpoint/config,exact shape/count assertions replace old25k assumptions;no tolerance loosened. Separate experimental instruction config,no default changes. See verification/own-nori-instruction-native-parity-current-2026-09-30.json and own-nori-instruction-service-2026-09-30.json. Prior instruction_trial_followup native-pending text is superseded. Assistant qualification remains false.",
+      "instruction_trial_followup": "Bounded own random-initialized128width/3layer265218parameter CPU instruction trial completed128steps;exact checkpoint reload. Authored deterministic heldout53tasks score10:arithmetic3/28,copy0/18,permission7/7 (all refusal fixtures). Not assistant qualified/not controlled comparison/not default;new checkpoint native parity pending. Detailed verification/own-nori-instruction-trial-2026-09-30.txt;weights and receipt under models/nori-development/dualtrace-instructions-4nbseb8_. No external weights/private corpus/downloads.",
+      "scaled_engine_followup": "Development graph bounds expanded to width512/layers8 (8677634 parameters),64MiB checkpoint cap. Actual7model tests,8expanded CPU/CUDA parity tests and10real resident-service tests PASS. Fresh receipts verification/own-nori-scaled-native-parity-2026-09-30.json and own-nori-scaled-service-2026-09-30.json bind current sources/binaries. This supersedes earlier64width/2layer bounds and binary hashes,not assistant quality. Existing25k checkpoint and production default unchanged. Authored instruction fixture splits being developed;no broader qualification claimed.",
+      "target": "training\\nori_foundation",
+      "status": "scratch_training_own_cpu_cuda_graph_and_experimental_resident_service_tested_not_assistant_qualified",
+      "service_followup": "Own DualTrace weights now served by same NorLlama policy through separate resident CUDA worker and explicit experimental route/launch flag. Real10case service probePASS:stream/nonstream/reuse/reset/cancel/crash refusal/auth/provenance/handshake/owner-EOF/HTTPshutdown. Found and fixed shared Windows Python shutdown crash with cancellable joined pipe watcher.147runtime fixtures/128desktop tests/8own native parity testsPASS;existing real default desktop/Core/GPU/speech regressionPASS. Ownmodel remains tiny/repetitive/unqualified,not desktop/default/Knights replacement. See verification/own-nori-service-2026-09-30.txt and current receipt. Productionworker/config/checkpoint unchanged.",
+      "native_followup": "Own25346parameter scratch-trained checkpoint now exports to bounded data-only .ndt and executes independent CPU/CUDA DualTrace graph on actual RTX4080 SUPER.6training+8native testsPASS;177762scores per device compare training implementation,maxerrors1.43e-6CPU/2.86e-6CUDA;greedy/reset/512token/min-maxgraph/corruption/bounds PASS. Separate diagnostic binary5920CFEE;production worker55678CDE unchanged. No training-library/Ollama/llama.cpp inference dependency on this diagnostic path. Unqualified tiny repetitive generator,NorLlama persistent-service integration/scaled permitted training/semantic qualification pending. See verification/own-nori-native-engine-2026-09-30.txt and final JSON receipt.",
+      "evidence": "Own experimental DualTrace v0 byte/recurrent topology,random weights,data-only checkpoint,6testsPASS.64offline CPU steps/25346parameters produce103639byte own checkpoint under models/nori-development;synthetic train/held-out loss lower,reload exact,generation repetitive. Existing PyTorch2.9.1+cpu used,no external weights/download/private training corpus. Bootstrap report's native-graph-pending statement is historical;native CPU/CUDA diagnostic now tested as detailed above. Still not useful assistant;GPU training/larger licensed data/evaluation/NorLlama service pending. Current default remains identifiable imported3B;native task gates closed. See verification/own-nori-model-bootstrap-2026-09-30.txt."
+    },
+    {
+      "id": "core",
+      "target": "nori",
+      "review_followup": "Fresh-context advisory reviews retain task/contract/candidate binding and no execution authority. Compact prompt teaches dependency and literal-data semantics; decoder schema unchanged.124 Python fixtures pass; supplied accepted-review/permission HTTP fields refused before admission. Expanded real default3B review2/8 on decision/issues,only1/8 after regrading fabricated newline reason; no semantic qualification or general speed claim. Default/config/binary unchanged; native task gate closed. Current evidence verification/native-review-reliability-2026-09-30.txt and SHA256 companion. Earlier116Python/112desktop/server-order and8B experiments historical,not whole-suite proof.",
+      "admission_followup": "Native executable work now refuses at authenticated Core admission before creating a task, and resume/internal recovery cannot enter legacy planning. HTTP503 native_task_execution_unqualified with task_started=false; native status explicitly false. Real owned Core/runtime regression and GPU chat pass;83 Python and112 desktop tests pass. Typed model planning still1/3,overall rejected. See verification/native-typed-plan-2026-09-30.txt and current source hashes. Installed/full-suite acceptance remains pending.",
+      "status": "desktop_owned_native_core_and_runtime_lifecycle_tested_installed_acceptance_pending",
+      "evidence": "Actual main.py process boot, twelve authenticated HTTP routes, Architect/Sentinel chat through the owned NorLlama/Norama.cpp GPU runtime, parent-pipe EOF orderly exit and closure of all twelve listeners PASS with isolated configuration/state and zero sensors/tools. Source launchers now own both Core and runtime; exact shared launcher proves Core exit also shuts down its owned runtime. No Ollama scheduler is constructed in configured native mode. Fifty-eight runtime/client/lifecycle/memory/qualification tests pass. See verification/native-managed-stack-2026-09-30.txt and native-core-cancellation-2026-09-30.txt. Structured work/review and tool execution remain gated; live memory/sensing, physical Electron launch and installed acceptance remain unverified."
+    },
+    {
+      "id": "independent_engine",
+      "target": "engine\\norama",
+      "cache_tokenizer_followup": "New257token nonzero2layer synthetic graph matches full CPU at128/256/257chunk seams. Actual3B340token all128256logits exactly match across different partitions,mature cache cancellation/reuse and reset. Not complete340CPU or external golden parity. Separate bounded GGUF metadata reader and vocabulary-rank BPE plus existing Python regex matches24/24token-ID cases,common vocabulary/limited corpus remains.139Python/35compiled groupsPASS. Production worker55678CDE/tokenizer3CD51C3C/config unchanged,no context expansion,gates closed,task semantics unqualified. See verification/native-cache-and-tokenizer-2026-09-30.txt plus receipts/hash manifest. Release39groups NOT_VERIFIED.",
+      "numerical_followup": "New bounded all-logit diagnostic compares own double CPU reference to compressed GPU/stateless/cached/reset paths. Real default3B three-token prefix and complete11-token Hello chat pass across28layers/128256logits;max error1.76e-5/7.63e-6. Shared importer/rotary assumptions and long-review contexts not certified.16executable/33compiled Node/126Python fixtures pass. Ordinary decoding reproduces exactly the same three guarded semantic failures,0/3;guard not their cause,no broad model correctness claim. Production worker/default/gates unchanged. See verification/native-numerical-and-decode-isolation-2026-09-30.txt/current hash companion.",
+      "performance_followup": "CUDA hardware half conversion exactly matches all63488finite binary16 patterns.130Python/112desktop/16executable/33compiled checks pass. Rebuilt main worker55678CDE fixed350token prompt mean6.96s vs old9DF9.62s (~28% lower latency);two samples,not general speed qualification. Main11token all-logit CPU/GPU/cached/reset max7.63e-6 preserved. Real contract cancellation/budget/reuse,managed12route Core/auth/task-refusal/cleanup and desktop3profiles/adapter/reuse pass. Old worker archived under main root. Config/default/taskgates unchanged;semantic quality still unqualified,NOT_VERIFIED all39groups. See verification/native-half-performance-2026-09-30.txt and receipts/hash manifest. Older binary identities are historical.",
+      "contract_decode_followup": "Own bounded NGM2 byte-grammar compiler/interpreter now restricts explicit direct worker kind5 to a closed JSON contract subset, exact constants, sorted fields, bounded arrays and Unicode-scalar string lengths.94 Python/112 desktop and31 compiled Node tests pass; final real budget/cancel/reuse and managed Core/runtime/desktop regression pass. Typed quality improves to2/3 but conflicting-task understanding still fails; no execution qualification/HTTP schema exposure. Current worker9DF13E3C...; verification/native-contract-guard-2026-09-30.txt and SHA256 companion supersede earlier binary/probe fingerprints. Release39groups still NOT_VERIFIED.",
+      "typed_plan_followup": "Own typed proposal layer preserves action arguments with server-bound contracts and DAG validation;15 fixture tests pass. Real3B dependency plan preserves both filenames, but single-step root and disallowed-write cases fail;1/3PASS,exit2,tools0. No execution authority/dispatcher introduced,HTTP formatting still closed. See verification/native-typed-plan-2026-09-30.txt; task qualification remains unverified.",
+      "status": "independent_text_engine_persistent_worker_and_native_chat_path_tested_not_installed",
+      "syntax_followup": "Own incremental token-level JSON-object syntax guard now tested in explicit direct native worker mode. Fourteen executable checks and31 compiled tests pass;59 Python/112 desktop tests pass. Real syntax generation, incomplete-budget refusal, cancellation/reuse and default managed desktop regression pass. Schema/semantic argument preservation remains unqualified: plan still drops filename, qualification exit2, tools0. HTTP formatting and Core task-dispatch gates remain closed. Current binary evidence: verification/native-json-guard-2026-09-30.txt and SHA256 companion.",
+      "candidate_followup": "Large-layer import corrected without weakening CPU decoded or compressed GPU bounds. Real existing Llama3.1-8B candidate runs read-only on RTX4080 SUPER, but argument-preserving planning fails (2/3 cases pass, overall rejected). Unchanged3B default managed Core/runtime/desktop regression passes after rebuild. See verification/native-large-layer-import-2026-09-30.txt and SHA256 companion for current binary evidence. No model switch, download, consolidation or task qualification claim.",
+      "previous": "C:\\NoriLabs\\norama-cpp-001",
+      "archive": "C:\\Nori\\archive\\norama-cpp-001",
+      "evidence": "Independent tokenizer, imported graph, compressed GPU residency, incremental isolated KV sessions and persistent binary-protocol worker are implemented under the main folder. Thirteen CPU/GPU test programs and28 compiled reader/import/tokenizer/CLI tests pass,plus8 real Unicode round-trips. Own authenticated NorLlama service and desktop native chat/turn adapter pass real-model tests; all3 response-style budgets,active cancellation,reuse and graceful shutdown tested. See verification/native-persistent-runtime-2026-09-30.txt for candidate hashes and scope. No Ollama/llama.cpp inference backend on this path; no Nori-trained weights,installed-app switch,native Knight integration or whole-release certification yet. Release NOT_VERIFIED."
+    },
+    {
+      "id": "norllama",
+      "target": "runtime\\norllama",
+      "own_model_followup": "Explicit own DualTrace profile/NDT0 handshake and experimental route preserve provenance/qualification gates. Real resident ownmodel serving10testsPASS. Shared supervised watcher no longer blocks Python buffered stdin at HTTPshutdown;polls bounded Windows pipe and joins.147fixtures and real existing managed Core/runtime/desktop/speech regression pass. No ownmodel production-default switch or installed packaging certification. Current evidence verification/own-nori-service-2026-09-30.txt.",
+      "status": "own_service_managed_source_startup_and_crash_cleanup_tested_not_installed",
+      "previous": "C:\\nori-runtime",
+      "note": "Fresh runtime/norllama source uses our engine/norama worker. Managed source desktop startup now defaults to NorLlama with private per-launch credentials and an ephemeral loopback port. Real desktop WebSocket chat and all three profiles pass. Owner exit and runtime crash both stop the owned GPU worker. See verification/native-startup-followup-2026-09-30.txt. Installed Electron qualification, native Core/Knights migration, multi-model support, vision/tools, broader recovery and packaging remain pending. Previous C:\\nori-runtime is preserved reference rollback."
+    },
+    {
+      "id": "desktop",
+      "target": "apps\\desktop",
+      "physical_desktop_followup": "Actual owned source Electron/Core/NorLlama/GPU session proves standby metadata,real imported3B model choices,response styles,negative-origin mixed-DPI2display viewport/two toolbars/one scene,F11 window switch and normal-window synthetic pointer drag.128desktop tests/types/lint/buildPASS;owned cleanupPASS. Electron44.4.5 dependency hash-verified and consolidated under runtime/electron. Final App lint-only dependency correction compiled but GUI session used prior bundle. Not installed/cross-monitor-hand/native-vision/unplug certification. See verification/native-desktop-standby-and-screens-2026-09-30.txt and isolated readiness receipt. Older physical-desktop-pending claims below are historical;release39groups NOT_VERIFIED.",
+      "workspace_followup": "Six new production-geometry fixtures cover occupied-area union, clearer-display selection/dwell, compact-mode hysteresis, unplug survival, monitor rearrangement/identity reset and negative-origin viewport clipping. Shared React placement now uses this tested helper and retains presence across workspace updates. Windows read-only display enumeration sees two2560x1440 monitors,secondary atx=-2560,workareas1392high;not Electron DPI or physical desktop acceptance.123desktop tests/lint/TypeScript pass;Vite build succeeds with large-chunk warning. Actual installed dual-monitor/hand-drag/native-window management and native vision still pending. See verification/native-local-speech-and-workspace-2026-09-30.txt.",
+      "status": "source_consolidated_preview_rendered_not_live_release",
+      "previous": "C:\\NoriLabs\\nori-ui-reconstruction-003",
+      "archive": "C:\\Nori\\archive\\nori-ui-reconstruction-003",
+      "evidence": "691 source/assets files hash-matched before archive; dependencies moved. Current112 desktop tests and lint pass, including no-dispatch gate when native Core is ready but tool planning unqualified. Production build is checked separately in the persistent-runtime evidence. Source desktop/dev launch now uses a shared owned Core/runtime launcher, tested on real native processes with isolated state. Model choices identify the actual imported checkpoint and refuse unavailable legacy selections. Preview screenshot verification/desktop-relocated-2026-09-30.jpg is historical visual evidence, not acceptance of current launch. Main bridge is not running; physical Electron/installed launch, voice/vision/tools and whole-system integration remain unverified."
+    },
+    {
+      "id": "location",
+      "target": "integrations\\location",
+      "status": "source_consolidated_and_fixture_integration_tested_live_cutover_pending",
+      "previous": "C:\\NoriLabs\\location-companion-001",
+      "note": "Ten source/test files SHA256 matched into integrations/location before fixing stale imports. Eight tests pass including fixture phone publish, native Nori response, stale status, pause clearing and read-only verification with missing credentials. Live receiver remains outside the root; saved owner credential receives401, so its current sharing state and intended pairing must be resolved before cutover. Keys unchanged. Real iPhone GPS and private-state consolidation remain pending."
+    },
+    {
+      "id": "project_monitor",
+      "target": "integrations\\project-monitor",
+      "status": "source_consolidated_readonly_monitor_live_private_https_verified_phone_test_pending",
+      "previous": "C:\\NoriLabs\\phone-monitor",
+      "evidence": "verification/project-monitor-consolidation-2026-10-01.txt"
+    },
+    {
+      "id": "dev_autopilot",
+      "target": "dev\\worktrees\\autopilot-safety",
+      "status": "git_worktree_relocated_clean_unit_tests_pass_real_dispatch_unverified",
+      "previous": "C:\\NoriLabs\\autopilot-safety",
+      "note": "Git-managed lane relocated under Nori without source edits; same commit 140400e, clean; 32 tests OK with one pre-existing browser/CDP skip. No worker dispatch or main merge. Future Cline sessions must use the new path.",
+      "evidence": "verification/CLINE_COORDINATOR_RELOCATION_2026-10-01.txt"
+    },
+    {
+      "id": "voice_models",
+      "target": "models\\voice",
+      "status": "kokoro_weights_hash_verified_under_main_root_other_voice_models_pending",
+      "previous": "F:\\release\\suite-payload\\NoriSuite\\data\\voice-models",
+      "note": "Kokoro ONNX325505369bytes and voices28214398bytes SHA256-pinned and copied with original provenance under models/voice/kokoro-v1. USB unchanged. Direct persistent-worker and actual managed bridge HTTP synthesis both generate non-silent24000Hz monoPCM;no physical playback/STT/wake qualification. Receipt verification/voice-probes/tts-copy-2d67e47c-5fa5-455d-b817-425386cbe180.json."
+    },
+    {
+      "id": "voice_runtime",
+      "stt_followup": "STT dependencies recovered read-only from USB into runtime/stt/packages (3323files/269462255bytes,SHA256-copy checked); bundledPython311 isolated importsPASS. Pinned Systran Whisper base.en public model and original MIT license now models/voice/whisper-base.en. Native offline launcher wired to bridge without implicit systemPython search. Actual two bridge start/transcribe/stop cyclesPASS; actual HTTP TTS-to-STT round trip200/200,no microphone/playback/USB runtime. Name recognition imperfect: Nori omitted or spelled Norrie. Shared Nori-only wake matcher replaces legacy Jarvis/Travis aliases; text fixtures/buildPASS,not acoustic wake acceptance. See verification/native-stt-real-transcription-2026-09-30.txt and native-speech-http-receipt.json. Installed speech,physical microphone,noise guard,visemes,and wake-on-closed-app remain unverified.",
+      "target": "runtime\\voice",
+      "status": "local_tts_stt_bridge_tested_physical_wake_and_installed_acceptance_pending",
+      "note": "Bundled Python310 and Kokoro/ONNX packages copied under main root without venv Scripts or executable .pth hooks. Own isolated -I -B launcher verifies canonical paths and pinned model hashes before inference,offline flags set,no USB at runtime.6915files/558313315bytes total consolidation includes weights. Actual native Core/runtime/desktop bridge HTTP speech passes2utterances+3invalid inputs,same worker reused and owned speech/Core/runtime/GPU processes closed.142Python fixtures,123desktop tests/lint/types pass. Third-party speech dependencies retain attribution;not own trained speech engine. Source launcher/packaging installed migration and STT/wake/camera/visemes pending. See verification/native-local-speech-and-workspace-2026-09-30.txt."
+    },
+    {
+      "id": "language_models",
+      "target": "models\\language",
+      "status": "one_validation_checkpoint_consolidated_other_models_pending",
+      "previous": "C:\\Users\\Studio\\.ollama\\models",
+      "note": "Llama3.2-3B validation GGUF now under models/language/llama3.2-3b-instruct,with manifest/config/template/parameters/both licenses SHA256 verified. Original store unchanged; no bulk model duplication. This is imported validation data,not own trained Nori weights or the final everyday/optional model suite."
+    },
+    {
+      "id": "private_state",
+      "migration_followup_2026_10_01": "Planner preserves empty durable directories and refuses source/destination overlap. SHA256 source/copy/source verification and recursive Windows protected ACL verification tested with synthetic same-account DPAPI data. Actual isolated Core restarted from a protected staged copy, rolled back to original test state, and cleaned up managed processes. Cooperative Core/migration ownership excludes managed competing writers; record reads are bounded and foreign records preserved. Packaged maintenance closure stages synthetic state without source tools. Evidence: verification/private-state-migration-trial-2026-10-01.txt, native-maintenance-candidate-2026-10-01.txt, native-state-owner-bounded-read-2026-10-01.txt. No live credentials or state moved; unmanaged writer quiescence, live startup activation and Program Files write-policy acceptance remain pending. Integrity/ACL checks never authorize source removal or activation.",
+      "target": "state\\private",
+      "status": "migration_pending",
+      "previous": "C:\\Users\\Studio\\AppData\\Local\\Nori",
+      "note": "Do not reset pairing, overwrite secrets or destroy memory. Enforce private ACLs and supported install write permissions."
+    }
+  ],
+  "requirements": [
+    {
+      "id": "home_vertical_slice",
+      "requirement": "Install on supported Windows PC; polished desktop; voice/text question; fast local spoken/text reply with animated avatar; one-time-code Server pairing; Server inference while Home responsive; history/memory/device/audit UI.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "installer",
+      "native_candidate_followup_2026_10_01": "Fresh phone-enabled native stage: 27329files/3274465069bytes, verified source/stage/package hashes. Fixed builder inheritance that merged two resource sources into one destination; resolved-config regression test verifies one source. Corrected named desktop build exit0, isolated startup READY with both monitors, all12Core ports and independent native runtime; cleanup exit0/no owned processes remaining. Self-contained packaged phone receiver/query probe passed synthetic paused authenticated reads without history callbacks. Evidence verification/location-package-runtime-2026-10-01.txt. Native installer source and read-only preflight exist, three tests passed; compiler not found in checked locations, no compile/install/Modify/uninstall proof. Existing state and earlier outputs preserved. No requirement promoted; release remains NOT_VERIFIED.",
+      "native_packaging_followup": "Guarded native-desktop-current build completed with exit0: current source, staging and packaged payload hashes match all27308files/3274377497bytes, including Core parent-pipe fix. Actual packaged sensor-denied startup READY with two-monitor span/live model+style+noise metadata/all12Core routes; shutdown exit0/no owned processes remaining. Evidence verification/native-packaged-candidate-2026-09-30.txt and isolated readiness receipt inside exercised candidate. Not installed/cold-PC proof; ordinary private state still unmigrated, tools/sensors unqualified, installer/Modify/uninstall/optional20B/signing/notices pending. Release NOT_VERIFIED. No publish or install run.",
+      "packaged_module_requirement": "Owner clarified installed product must contain built executable/library/packaged modules rather than scattered development scripts. Keep editable source separately for GitHub/recovery. One application/suite installer,defined Core/runtime/engine/voice/vision/memory/learning/workspace interfaces,versioned component manifest and integrity checks. Models/assets/databases may remain organized files;do not claim packing Python/JavaScript makes native machine code. Each installed component requires source-independent launch/update/recovery qualification before release.",
+      "requirement": "Complete suite under128GB; chosen default4-8GB-VRAM everyday model; optional20B model through setup/modify; Program Files installation; Settings uninstall; clean setup/no legacy layout; USB integrity; checksums; version/build; first-run/recovery; privacy/log export/opt-in diagnostics; license/notices/support/known issues.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "independent_foundation",
+      "requirement": "Own system architecture, NorLlama runtime and independently implemented Norama.cpp engine, not renamed Ollama/llama.cpp; existing licensed model weights may be transitional; eventual custom Nori model architecture, training and evaluations. Removal of permanent Ollama dependency must be proven.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "runtime_management",
+      "requirement": "Catalog/provenance/download, load/unload, health/crash recovery, GPU/resource accounting, workload scheduling, cancellation, concurrent jobs, visible status, reproducible standalone packaging.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "quality_qualification",
+      "requirement": "Publish model/quantization/context, latency/task quality/memory, sustained thermals/power, concurrency/recovery; distinguish server versus edge claims; no unsupported speed or8K claim.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "native_knights",
+      "requirement": "All12 native Knights coordinate via Architect; roles may share resident models; native functionality/audit/packaging/failure recovery/edition startup; external Cline/Aider/Codex develop Nori but do not replace Knights.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "response_controls",
+      "requirement": "Effort/style selector, model selection, typo-tolerant requests, fast everyday route and evaluated stronger-model escalation, no false claim of doing a job.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "memory_learning",
+      "requirement": "Relevant persistent memory with owner controls; autonomous repository/skill learning with provenance and executable validation; candidate gate/review; evaluated improvement over time; eventual trained model rather than memory alone.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "development_autopilot",
+      "requirement": "Isolated branches/worktrees, one writer per component, leases/ownership/quiescence, cold prompts, timeout/cancellation, tests bound to actual revision, independent review, integration branch, audit, stop conditions; no direct main merges initially.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "speech",
+      "requirement": "Wake-on-Hey-Nori, microphone/listening, noise guard, local STT/TTS, audio/visemes/blinking/speaking state, permission/device failures, repeatable installed-path operation.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "vision",
+      "requirement": "Camera and owner-authorized all-screen vision; proactive helpful observations; correct capture identities/completeness; visible capture state, stop/revocation, privacy and no unintended cloud transmission.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "workspace",
+      "requirement": "One entity across extended displays, entity occupies one display and repositions with workspace fullness; content panels on other space; hand-controlled movable panels; correct taskbar/tray icons and lifecycle.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "media_generation",
+      "requirement": "Actually generate requested images; inline conversation result, download, full-screen view and exit; provenance/failure state rather than promises without artifacts.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "entity_intro",
+      "requirement": "Dynamic video-like entity skin/eye with natural blink; galaxy actually belongs in eye, no circular cutout; matched final transition; sharp supplied-quality assets and rendered evidence.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "orb_earth",
+      "requirement": "Shared default/active shiny detailed animated purple orb/rings; brightens thinking/talking; stable navigation; atmosphere transitions to actual1:1 Earth imagery/terrain/civilization detail; real-time day/night; geographic zoom and street-level handoff where coverage permits; resolution verified by source/pixel scale, not universal8K promises.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "phone_remote",
+      "requirement": "Authenticated private phone project monitoring from away from home; OwnTracks iPhone pairing and background-location permissions; latest update/stale status; explicit owner enable/pause/delete; no publicly exposed receiver; preserve pairing and avoid unwanted location history.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "device_pairing",
+      "requirement": "Correct owner/household enrollment, authenticated Home/Server/Nexus pairing, authorization/revocation/ownership transfer, task/context/conversation handoff across devices.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "home_os",
+      "requirement": "Separate Home OS edition proves boot/install/network/graphics/audio/updates/recovery/clean rollback on supported hardware; desktop app is not evidence of a completed replacement OS.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "server_appliance",
+      "requirement": "Approved profile/setup card/power/Ethernet/boot/pairing; backups/health/remote updates/hardware replacement/failed-update recovery; supported-PC evidence before hardware promises.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "robotics_drive",
+      "requirement": "Shared deployment profiles for Home/Server/Robotics; text/voice/vision/retrieval/devices; local controllers under network loss, deterministic stop/recovery, simulator/read-only testing, tested edge/server coordination, signed scoped adapters/supported devices.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "release_trust",
+      "requirement": "One release board and definition of done; repeatable builds, protected signing keys, dependency inventory, vulnerability response, release verification/rollback, capability boundaries and incident reporting.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "business_launch",
+      "requirement": "Name/trademark checks, authorship/ownership and redistribution evidence, professional company/tax/warranty/pilot terms, waitlist/interviews and consented closed pilot. Not automatically authorized to incur fees or publish.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "market_phase0",
+      "requirement": "Deterministic indicators/forecast/paper portfolio/risk policy/calibration ledger, reproducible fixture hash; claims in roadmap must be independently retested.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "market_phase1",
+      "requirement": "Signed historical bundles/bar/order-book adapters/data quality, deterministic replay/missing-corrupt-data tests.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "market_phase2",
+      "requirement": "Walk-forward laboratory, baseline comparison/feature registry/model cards, unseen-period results including fees/spread/slippage/latency/rejected orders/delisted assets/liquidity.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "market_phase3",
+      "requirement": "Architect-controlled regimes/specialists/disagreement/no-trade and multi-strategy portfolio; calibrated shadow runs and exposure/venue/correlation/drawdown/daily-loss limits; Sentinel halt.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "market_phase4",
+      "requirement": "Sandbox/testnet adapters, idempotent order/reconciliation ledger, partial fills/disconnect/retry/emergency-stop tests.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "market_phase5",
+      "requirement": "Separately signed live adapter, owner/account enrollment, explicit strategy/hard limits, independent security/jurisdiction review and staged capital; paper/shadow cannot silently enable live.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "market_phase6",
+      "requirement": "Sports/boxing lawful data adapters, lineage/calibration/probabilities/paper records, age/location checks and operator spending limits; no profit guarantees.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "ledger_invariants",
+      "requirement": "OS access/security/local operation independent of coin; separate wallet/owner keys, restore semantics, scoped signed transaction intent; Knights/admin and market modules cannot transfer value or alter limits implicitly.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "ledger_protocol",
+      "requirement": "Independent Layer1 protocol/genesis/node/P2P/address/transactions/fees/finality/issuance/upgrade rules; wallet format/recovery/CLI/GUI; explorer/faucet/monitoring/reproducible builds.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "ledger_devnet",
+      "requirement": "Deterministic genesis,3 disposable Server validators, valueless test coins, wallet/explorer/audit.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "ledger_adversarial",
+      "requirement": "Double spend/replay/reorg/partition/clock skew/malformed block/key loss/capture/DoS tests.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "ledger_private_testnet",
+      "requirement": "Independent nodes, version negotiation/snapshot sync/observability/incident drills/wallet restore.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "ledger_external_review",
+      "requirement": "Protocol/cryptography/implementation/economics/privacy and professional jurisdiction/financial reviews before public use.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "ledger_public_testnet",
+      "requirement": "Faucet-only valueless coins, published reviewed source/reproducible builds/bug bounty/long-running evidence; public exposure requires specific approval.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "ledger_launch_gate",
+      "requirement": "Necessary decentralized function established and compared with safer ordinary payments/internal ledger; no sale/value/returns promise from this roadmap.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "consolidation",
+      "requirement": "All active Nori sources/components/models/private state/build/release artifacts are rooted under C:\\Nori, with relative-path configuration, safe migration, no stranded service/shortcut/startup references and no orphaned required component.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    },
+    {
+      "id": "integration_acceptance",
+      "requirement": "Cold PC install/start/wake/chat/speech/vision/memory/jobs/device/phone/visuals/stop/restart/crash/recover/uninstall/modify all working together; mock/unit/prototype successes do not qualify the whole system.",
+      "status": "unverified",
+      "completion_evidence": [],
+      "note": "Retained scope, not an assertion of implementation or release."
+    }
+  ],
+  "missing_references": [
+    "C:\\Nori\\nori\\OS\\SERVER-APPLIANCE-PRODUCT.md",
+    "C:\\Nori\\nori\\Documentation\\PRODUCT-LINEAGE.md"
+  ],
+  "acceptance_policy": "A requirement becomes verified only with current revision-specific evidence at the requirement's scope. Released additionally requires installed/cold-run proof. Missing evidence or old roadmap status claims remain unverified."
+}

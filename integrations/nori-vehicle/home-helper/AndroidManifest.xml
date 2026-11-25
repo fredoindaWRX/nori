@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nori Home Helper (Wil, 2026-11-25). The Foxwell app opens itself about 16 s after every boot.
+     This app waits 30 s after boot and presses Home once, so the tablet ends on the Android home.
+     It can also set the wallpaper packed inside it when told to over adb.
+     It has no screen, no internet permission and touches nothing in Foxwell. Uninstall to undo. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="systems.nori.homehelper">
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <application android:label="Nori Home Helper" android:allowBackup="false">
+        <!-- No launcher icon. Started once by hand (adb) so Android lets it receive the boot broadcast. -->
+        <activity android:name=".MainActivity" android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay" android:excludeFromRecents="true" />
+        <receiver android:name=".BootReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

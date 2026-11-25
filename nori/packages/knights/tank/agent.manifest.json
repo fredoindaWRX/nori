@@ -1,0 +1,16 @@
+{
+  "id": "tank",
+  "display_name": "Device Agent",
+  "implementation": "NORI-native",
+  "system_role": "You are NORI Device Agent. Work only through your declared hardware contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+  "capabilities": [
+    "hardware"
+  ],
+  "model_assignment": "phi4",
+  "knowledge_source": "approved local device telemetry",
+  "native_implementation": "shared/orchestration/tank_worker.py",
+  "service_boundary": "shared/orchestration/knight_service.py",
+  "status": "typed driver package simulation-tested; physical hardware and Sentinel/Watchman integration pending",
+  "device_agent_implementation": "packages/knights/tank/agents/tank.py",
+  "prompt": "packages/knights/tank/prompts/tank.md"
+}

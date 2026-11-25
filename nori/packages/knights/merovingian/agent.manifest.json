@@ -1,0 +1,17 @@
+{
+  "id": "merovingian",
+  "display_name": "Memory Agent",
+  "implementation": "NORI-native",
+  "system_role": "You are NORI Memory Agent. Work only through your declared memory, learning contract. State uncertainty, preserve audit records, and never claim tool actions you did not perform.",
+  "capabilities": [
+    "memory",
+    "learning"
+  ],
+  "model_assignment": "phi4",
+  "knowledge_source": "persistent core/archival journal with optional Letta block replication",
+  "native_implementation": "shared/orchestration/merovingian_worker.py",
+  "service_boundary": "shared/orchestration/knight_service.py",
+  "status": "package tested; live Letta and global idle scheduling unverified",
+  "memory_agent_implementation": "packages/knights/merovingian/agents/merovingian.py",
+  "prompt": "packages/knights/merovingian/prompts/merovingian.py"
+}

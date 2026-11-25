@@ -1,0 +1,37 @@
+const test=require('node:test')
+const assert=require('node:assert/strict')
+const {mkdtempSync,mkdirSync,rmSync,symlinkSync,writeFileSync,existsSync}=require('node:fs')
+const {join}=require('node:path')
+const {tmpdir}=require('node:os')
+const {nativeStateLayout}=require('../desktop/native-state-layout.cjs')
+test('consolidated layout separates browser/native private state and never creates directories',()=>{
+  const root=mkdtempSync(join(tmpdir(),'nori-layout-'))
+  try{
+    const plan=nativeStateLayout(root)
+    assert.equal(plan.core,join(root,'state/private/core'))
+    assert.equal(plan.desktop,join(root,'state/private/desktop'))
+    assert.equal(plan.browser,join(root,'state/browser'))
+    assert.equal(plan.models,join(root,'models'))
+    assert.equal(plan.activationAuthorized,false)
+    assert.equal(plan.permissionsVerified,false)
+    assert.equal(Object.isFrozen(plan),true)
+    assert.equal(existsSync(join(root,'state')),false)
+    assert.throws(()=>nativeStateLayout('relative'),/absolute/)
+  }finally{rmSync(root,{recursive:true,force:true})}
+})
+test('consolidated layout refuses linked roots, internal redirects, dangling links and file ancestors',()=>{
+  const fixture=mkdtempSync(join(tmpdir(),'nori-layout-reject-')),root=join(fixture,'root')
+  mkdirSync(root);mkdirSync(join(fixture,'other'))
+  try{
+    symlinkSync(root,join(fixture,'alias'),'junction')
+    assert.throws(()=>nativeStateLayout(join(fixture,'alias')),/Linked/)
+    symlinkSync(join(fixture,'other'),join(root,'state'),'junction')
+    assert.throws(()=>nativeStateLayout(root),/Linked/)
+    rmSync(join(root,'state'))
+    symlinkSync(join(fixture,'missing'),join(root,'state'),'junction')
+    assert.throws(()=>nativeStateLayout(root),/Linked/)
+    rmSync(join(root,'state'))
+    writeFileSync(join(root,'state'),'synthetic non-directory')
+    assert.throws(()=>nativeStateLayout(root),/non-directory/)
+  }finally{rmSync(fixture,{recursive:true,force:true})}
+})

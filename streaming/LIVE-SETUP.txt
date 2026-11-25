@@ -1,0 +1,43 @@
+NORI / OBS READY-TO-REHEARSE SETUP
+Active collection: Nori Animated Monitors.
+
+USE THE MONITOR SCENES
+Coding — Monitor 1 / Coding — Monitor 2 show the full corresponding screen.
+Nori Demo — Monitor 1 / Nori Demo — Monitor 2 use the same capture with Demo labels.
+Starting Soon / Discord Community / Break / Ending show the animated graphics.
+The original plain Coding and Nori Demo layouts are retained for future specific
+window capture; no window has been bound to those two layouts.
+
+When capturing Monitor 1, put OBS, the producer panel and private windows on
+Monitor 2. When capturing Monitor 2, move them to Monitor 1. Capturing the screen
+that contains OBS makes a repeated mirror effect. Full-screen capture includes
+notifications and everything visible on that monitor: clear it before going live.
+Avoid opening password/key files, private messages or phone-location windows
+on the captured screen. No Discord visual capture was added.
+
+AUDIO
+MIC — SteelSeries Sonar is set to the actual Sonar microphone endpoint.
+GUESTS — Discord is a separate application audio capture targeting Discord.exe.
+Both are muted. Unmute only after a local sound check; no default desktop audio
+is present in this new collection. Discord was not running at setup, so open it
+and check GUESTS Properties selects the intended Discord window if needed.
+If routing is silent, inspect the Discord source match rather than adding full
+desktop audio. Mic is assigned mix tracks 1+2; guests 1+3. Recording output track
+selection still follows the existing OBS profile and has not been changed.
+Starting Soon, Break and Ending omit microphone/guests entirely, so those scenes
+do not transmit them. Shared source mute state persists across the live scenes.
+
+MUSIC / CAMERA
+No music file or camera has been added. Choose local tracks covered for both
+live and VOD use using music/LICENSE-NOTES.txt before loading a looping source.
+
+STATUS
+OBS collection imported, selected, graphics rendered, both monitors inspected.
+Microphone signal observed while muted. Guest audio still requires a test.
+OBS left on Starting Soon. No recording or stream has been started.
+YouTube control-panel web dock is asking for sign-in. Existing stream service
+connection was preserved; dock sign-in must be handled by the user if needed.
+
+Next rehearsal: open Discord, check its audio source, unmute mic/guest, record a
+short local sample, test both monitor scenes and Break, then review the sample.
+Use headphones. Keep the camera optional and music below speech.

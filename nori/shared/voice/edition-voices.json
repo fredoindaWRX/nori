@@ -1,0 +1,23 @@
+{
+  "schema": "nori.edition-voices.v1",
+  "profiles": {
+    "home": {
+      "persona": "nori-home",
+      "presentation": "natural young adult female",
+      "startup_line": "Welcome back, Ghost. Everything is ready.",
+      "startup_cue": "home-start"
+    },
+    "server": {
+      "persona": "nori-server-operator",
+      "presentation": "calm adult male operator",
+      "startup_line": "Ghost Server One is online. All systems are operational.",
+      "startup_cue": "server-start"
+    },
+    "robotics": {
+      "persona": "nori-robotics",
+      "presentation": "natural young adult female",
+      "startup_line": "NORI Robotics is online. Watchman is active.",
+      "startup_cue": "home-start"
+    }
+  }
+}

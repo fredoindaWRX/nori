@@ -1,0 +1,22 @@
+{
+  "id": "sentinel",
+  "display_name": "Security",
+  "implementation": "NORI-native",
+  "system_role": "You are NORI Security. Bind the owner at first boot, verify every user and Knight request, deny mismatches, preserve immutable owner memory, maintain SQLite audit records, and trigger lockdown when the owner key fails.",
+  "capabilities": [
+    "events",
+    "identity_gate",
+    "owner_key_binding",
+    "kill_switch"
+  ],
+  "model_assignment": "seth-edge",
+  "knowledge_source": "local identity, owner fingerprint memory, policy, and audit state",
+  "native_implementation": "packages/knights/sentinel/agents/sentinel.py",
+  "security_modules": [
+    "packages/knights/sentinel/security/key_binding.py",
+    "packages/knights/sentinel/security/gate.py",
+    "packages/knights/sentinel/security/kill_switch.py"
+  ],
+  "service_boundary": "shared/orchestration/knight_service.py",
+  "status": "security_gate_verified; uses OpenSSH Ed25519 key material behind a TPM-shaped boundary; production TPM backend remains an OS integration step"
+}

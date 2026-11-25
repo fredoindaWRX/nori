@@ -1,0 +1,102 @@
+SUPERSEDED: Use LIVE-SETUP.txt for the active animated Monitor 1/Monitor 2 setup.
+The text below documents the earlier window-capture proposal.
+
+NORI / YOUTUBE STREAM WORKSPACE
+Created September 30, 2026. Dedicated to stream production.
+OBS Studio 32.2.2 is installed. No existing user OBS configuration was found.
+Branding: Nori (no version). Restrained workshop/computer visual direction.
+Audio plan: SteelSeries Sonar - Microphone + Discord guests + local music.
+User confirms OBS already has their YouTube account connected. Preserve it.
+
+START HERE
+Open preview.html to review all six scenes. Everything runs locally, without
+remote fonts, analytics, accounts or chat feeds. Use 1920 x 1080 in OBS.
+The Coding and Demo preview placeholders are transparent in their OBS files.
+
+OBS IMPORT
+In OBS: Scene Collection > Import > select obs/Nori-Stream.json.
+Choose the imported Nori Stream collection. The collection contains graphics
+only; devices, windows, accounts and audio must be selected explicitly.
+Its JSON has been structurally checked; an actual OBS import is not yet tested.
+If importing fails, create the six scenes manually and add one Browser Source
+per scene: Local file enabled, corresponding scenes/*.html file, width 1920,
+height 1080, custom frame rate 30. Shutdown when not visible enabled.
+Fade duration: 350 ms. Avoid heavy stinger animations for this coding setup.
+
+SCENES
+Starting Soon: full screen ambient opening graphic; add licensed music.
+Coding: selected coding window behind the transparent graphic.
+Nori Demo: selected demo window behind the transparent graphic.
+Discord Community: full screen community graphic. Invite is pending.
+Break: full screen break graphic; mute mic and guest audio before switching.
+Ending: full screen closing graphic; mute mic and guests before switching.
+Scene switching does not automatically mute a shared audio source.
+
+SPECIFIC WINDOW CAPTURE
+For Coding and Demo, add Window Capture for a dedicated public window. Put the
+capture BELOW Graphics in Sources. Fit into x=48, y=136, width=1824, height=840.
+Keep the original aspect ratio; letterbox rather than stretching text.
+Add a black Color Source below the capture if letterboxing leaves blank space.
+Use the strictest window-title matching option available; disable cursor capture
+unless needed. Verify behavior if the target window closes or is renamed.
+Keep OBS on monitor 2 and the public coding/demo window on monitor 1.
+Use a separate browser profile with no saved accounts for public demos.
+Selected-window capture can still reveal secrets INSIDE that window. Use safe
+example data; close .env files, password managers, private tabs and messages.
+Keep phone mirroring/location windows closed. Do not capture a full display.
+Do not add a Discord visual capture or chat widget without a deliberate public
+channel and permission to show the conversation.
+
+SEPARATE AUDIO CONTROLS
+In Settings > Audio, explicitly disable global Desktop Audio and global Mic/Aux
+devices. This prevents default device capture and duplicate audio on first use.
+Create an Audio scene with three separately named sources:
+  MIC: Audio Input Capture, select SteelSeries Sonar - Microphone explicitly.
+  GUESTS: Application Audio Capture, select Discord; audio only, no visual source.
+  MUSIC: VLC Video Source playlist if OBS offers it; loop the local licensed files.
+If VLC source is unavailable, use Media Source with a single licensed local
+file and Loop enabled. A playlist requires VLC support; do not install it yet.
+Reference the same Audio scene in each production scene to share mixer controls.
+Keep all three sources muted initially. Set all audio monitoring to Monitor Off
+unless a specific headphone monitoring route is intentionally configured.
+Wear headphones. Ask guests to join a dedicated voice channel with agreed audio
+broadcasting. Discord application audio can include notifications and other
+Discord calls; suppress notifications and verify the selected session.
+Do not route both Sonar Chat and Discord application capture to the stream.
+
+RECORDING AUDIO TRACKS
+Track 1: audience mix (mic + guests + licensed music), selected for streaming.
+Track 2: microphone only. Track 3: Discord guests only. Track 4: music only.
+Enable tracks 1-4 for local MKV recordings in advanced output settings.
+YouTube VODs use the transmitted audience mix; local isolated tracks do not
+remove music or conversations from a YouTube replay.
+Mic target while speaking: approximately -18 to -9 dBFS, with peaks below -6.
+Bring guests to a comparable level; keep background music quieter than speech.
+Use a limiter only after confirming normal microphone gain. Start music around
+-30 to -24 dBFS and adjust by listening to a local recording.
+
+OPTIONAL CAMERA
+Add a Video Capture Device only after deciding to use the camera. Keep it hidden
+initially. Suggested camera placement within the capture area: x=1496, y=730,
+width=352, height=198. The camera will cover part of the captured window; keep
+important editor content away from that region. Check the background first.
+
+LOCAL VERIFICATION BEFORE CONNECTING YOUTUBE
+1. Import/recreate scenes and set the canvas to 1920 x 1080 at 30 fps initially.
+2. Select the intended windows and devices; verify no global desktop audio.
+3. Record a short LOCAL MKV sample, speak, and test a consenting guest.
+4. Switch through every scene; confirm overlays, source selection and levels.
+5. Inspect the recorded image and listen for duplicate sound/echo/notifications.
+6. Test mic and guest mute controls on Break and Ending. Review the window's
+   actual contents for secrets, messages and location data.
+7. Choose output encoder/bitrate after checking hardware and upload capacity.
+YouTube is already connected according to the user. An unlisted live test and
+public broadcasting remain pending
+explicit user approval. This workspace does not start OBS or broadcasting.
+
+OFFICIAL REFERENCES
+Browser graphics: https://obsproject.com/kb/browser-source
+Window capture: https://obsproject.com/kb/window-capture-sources
+Separate application audio: https://obsproject.com/kb/application-audio-capture-guide
+
+

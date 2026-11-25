@@ -1,0 +1,26 @@
+const test=require('node:test')
+const assert=require('node:assert/strict')
+const {createWakeResidentController}=require('../desktop/wake-resident-controller.cjs')
+test('pause joins owned stop before resume can start a new listener',async()=>{
+  let starts=0,stops=0
+  const control=createWakeResidentController({runSupervisor:({signal,onState})=>new Promise(resolve=>{
+    starts++;onState('arming')
+    signal.addEventListener('abort',()=>{stops++;resolve({stopped:true})},{once:true})
+  })})
+  assert.equal(await control.resume(),true)
+  assert.equal(await control.resume(),false)
+  assert.equal(await control.pause(),true)
+  assert.equal(starts,1);assert.equal(stops,1)
+  assert.deepEqual(control.status(),{state:'paused',failed:false})
+  assert.equal(await control.resume(),true)
+  assert.equal(await control.pause(),true)
+  assert.equal(starts,2);assert.equal(stops,2)
+})
+test('cleanup failure is visible and cannot be resumed blindly',async()=>{
+  const control=createWakeResidentController({runSupervisor:async()=>{throw Error('owned helper exit unknown')}})
+  await control.resume()
+  await new Promise(resolve=>setImmediate(resolve))
+  assert.deepEqual(control.status(),{state:'failed',failed:true})
+  await assert.rejects(control.pause(),/owned helper exit unknown/)
+  await assert.rejects(control.resume(),/requires diagnosis/)
+})

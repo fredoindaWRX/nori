@@ -1,0 +1,233 @@
+NORAMA.CPP INDEPENDENT ENGINE — 2026-09-30
+
+CURRENT CANDIDATE: own persistent worker + fresh NorLlama API + desktop native
+chat/turn adapter tested. See the final PERSISTENT WORKER follow-up and
+verification/native-persistent-runtime-2026-09-30.txt. Earlier sections below
+are retained development snapshots;their historical "not yet" statements are
+superseded only within the explicitly verified scope of later follow-ups.
+
+Active source/build location: C:\Nori\engine\norama.
+25 source/test/build/status files hash-matched during consolidation; full rebuild,
+CPU/GPU/parser tests and real-checkpoint probe passed from this new location.
+Previous prototype was preserved intact under C:\Nori\archive\norama-cpp-001.
+Do not develop in the archive or recreate the former C:\NoriLabs engine directory.
+
+Owner target
+Nori runs on our own runtime and independently implemented inference engine.
+Existing model weights may be temporary inputs; eventually Nori should have its own
+trained model. Do not rename Ollama/llama.cpp and claim this target is achieved.
+
+Implementation boundary
+All source in this isolated prototype was independently implemented. CUDA and
+Windows/MSVC are platform dependencies, not our intellectual property. Standard
+attention, grouped-query attention, rotary positions and gated feed-forward math
+come from published research. This reference decoder is NOT a claim of novel model
+architecture, a trained Nori model, or a replacement installed in the live app.
+
+Verified execution
+- F32 row-major matrix multiplication, weighted RMS normalization.
+- Stable causal grouped-query attention, including MHA/MQA/GQA fixtures.
+- Split-half rotary positions and stable SiLU-gated feed-forward execution.
+- Pre-normalized attention/feed-forward blocks with both residual paths.
+- Token-ID embedding lookup, configurable block stack, final normalization,
+  tied/untied output projection, deterministic greedy next-token selection.
+- Shapes, nonfinite inputs, position overflow, context/vocabulary validation.
+- GPU allocation ownership and cleanup, launch checks, finite output checks.
+
+Actual build/test evidence
+Existing VS2022 MSVC14.44 and NVIDIA CUDA13.3, sm_89. No dependencies installed.
+Run powershell.exe -NoProfile -File build-and-test.ps1 to rebuild all tested source.
+Latest full invocation exited 0; ten CPU/GPU test executables and twenty compiled
+GGUF parser/range/weight/import API tests passed before tokenizer work. Latest full
+rebuild passes ten CPU/GPU executables and26 compiled reader/import/tokenizer/CLI
+tests,plus8 actual-checkpoint byte-exact Unicode/control round-trips. RTX4080SUPER.
+After immutable reader views were added, all three affected binaries were rebuilt;
+the fourteen reader tests and actual-checkpoint GPU probe passed again.
+Two composed blocks GPU/CPU maximum absolute difference: 2.38419e-7.
+Three-layer graph, three appended next-token steps maximum difference: 1.43051e-6.
+The three-layer test uses deterministic SYNTHETIC weights, not a learned language model.
+Analytic CPU checks cover residual identity, attention output, feed-forward formula,
+rotary rotation, tied/untied output projection, and deterministic ties.
+Causal prefix GPU check: later inputs do not affect earlier block outputs.
+dumpbin /dependents norama-cuda-model-test.exe lists KERNEL32.dll only. CUDA still
+requires the NVIDIA driver at runtime; import listing is not deployment proof.
+
+Known limits / next required work
+Current execution is a synchronous F32 correctness prototype. Projection/norm/
+attention run on GPU; orchestration, rotation, activation and residual additions
+run on CPU. Weights copy each call. No speed or production-memory claim.
+The reusable GGUF-v3 little-endian reader now validates complete tensor byte extents,
+overlap, duplicate names/keys, storage-block completeness, bounded cumulative
+directory/value counts, nesting, and immutable descriptor views. Storage-size
+support: F32/F16/BF16/Q4_K/Q6_K; unknown layouts are rejected, not guessed.
+Metadata values/arrays are retained for the future architecture/tokenizer loader.
+Bounded tensor-range reads and own F32/F16/BF16/Q4_K/Q6_K decoding are implemented;
+finite weights checked. read_weights supports tensor rows with an expanded64 MiB
+limit, not just a compressed-byte limit. Analytic fixtures check512 Q4_K and512
+Q6_K values, packed scale high bits, signed scales, half subnormals, multiple blocks,
+nonfinite scales, unsupported layouts and oversized expanded allocations.
+Compatibility layout reference: https://github.com/ggml-org/ggml/blob/master/src/ggml-common.h
+Implementation is our byte-indexed decoder, not copied/linked ggml inference code.
+Actual existing Llama3.2-3B checkpoint (2,019,377,376 bytes): all255 tensor extents
+validated, data_start7837664. blk.0.attn_norm.weight: 3072 real F32 weights loaded
+and used by our CUDA normalization, max CPU difference1.19209e-7.
+Checkpoint was read directly from its existing .ollama storage path; no Ollama
+inference API, borrowed Ollama CUDA DLL or llama.cpp library was used in this probe.
+This validates one real operation, NOT full model inference or weight-file hashes.
+Additional real checkpoint operation: blk.0.attn_q.weight, Q4_K type12,
+3072-by-3072 matrix (9,437,184 decoded weights) used by our GPU projection;
+maximum absolute CPU-reference error9.05991e-6. Decoding correctness has analytic
+fixture evidence; this GPU/CPU comparison alone is not an independent checkpoint
+compatibility oracle or proof of useful generated language.
+Reproduce: build-and-test.ps1 -CheckpointPath MODEL -ProjectionTensor blk.0.attn_q.weight
+Complete imported checkpoint-to-logits execution now exists in checkpoint_graph.hpp.
+It validates all required tensor shapes and execution metadata before running;
+unsupported architecture,extra/missing tensors and unknown scaling fail explicitly.
+Layer-at-a-time loading (decoded512 MiB layer cap),bounded row reads and tiled
+output projection avoid holding a complete multi-gigabyte expanded model in RAM.
+Activation budget64 MiB applies to the initial hidden matrix,not total process RAM.
+Explicit interleaved and split-half rotary layouts,positive frequency factors,
+cooperative cancellation between reads/layers/head tiles and post-cancel reuse tested.
+Nonzero synthetic import agrees with a separately assembled reference graph;
+analytic residual fixture,context/token/config rejection tests pass.
+The actual28-layer Llama3.2-3B checkpoint completed on our own CUDA engine:
+tokens[128000] -> greedy791(raw entry The),128256 logits,20.8619 seconds;
+tokens[128000,791] -> greedy220(raw entry U+0120),25.3986 seconds after final rebuild.
+Raw vocabulary entries are NOT detokenized text. No chat/tokenizer validation yet.
+Real predictions have no independently certified reference-logit oracle yet.
+This is a slow correctness prototype,not production latency or language quality proof.
+The imported model and source licenses/config/template/parameters are now hash-verified
+under C:\Nori\models\language\llama3.2-3b-instruct; original store unchanged.
+Model SHA256 DDE5AA3FC5FFC17176B5E8BDC82F587B24B2678C6C66101BF7DA77AF9F7CCDFF.
+Text tokenization/detokenization and bounded standalone chat generation now exist.
+src/tokenizer.hpp owns byte-alphabet decoding,ranked BPE neighbor queue,vocabulary
+validation,ordinary versus control-token separation and explicit chat-role framing.
+The Llama3 published pre-tokenization expression is a compatibility contract;
+Unicode regex/conversion uses Windows built-in ICU C APIs,not another AI tokenizer.
+UTF8 inputs/outputs validated; arbitrary user special-marker text stays ordinary.
+Unicode/emoji/combining-mark/CRLF/whitespace and competing merge-rank fixtures pass.
+Windows stdout must be binary for byte-exact decoding; tests caught/fixed added CR.
+src/generate.cu provides norama-generate.exe MODEL MAX_NEW_TOKENS TEXT [--plain].
+User chat framing -> owned tokenization -> full own-GPU graph -> owned decoding.
+Bounds:1..16 new tokens,correctness-CLI prompt128 tokens,maxtext256KiB,BPEpiece16KiB.
+Actual Say hello. -> Hello(one token),73.5845 seconds before final full rebuild.
+Final rebuilt candidate repeated the same prompt/output successfully in73.0225 seconds.
+This is slow correctness evidence,not a fast assistant or broad chat quality eval.
+Observed ASCII/chat IDs and real-model round-trips are regression checks,not an
+independent trusted tokenizer oracle. Full published tokenizer conformance remains
+unproven across all Unicode versions; unsupported imported tokenizer types fail.
+This adapter supports the explicitly tested Llama import schema,not all GGUF
+architectures or a claimed Nori-trained model. No external AI tokenizer dependency.
+Quantized GPU kernels and persistent compressed GPU weights now exist in the
+opt-in resident CLI path; see the dated residency evidence below. Still no
+trained Nori weights, training/backpropagation, evaluation corpus, runtime server,safe
+multi-request scheduling/server cancellation,vision or live Nori integration yet.
+Broad external-model compatibility,chat quality and final custom-model architecture are unproven.
+Synthetic tests must never be presented as conversational capability.
+
+Preservation
+F:\ recovery material and the existing C:\nori-runtime were not changed by this
+work. The owner now requires all active components in C:\Nori: the engine is
+consolidated there, and ROADMAP_TRACKING.json records remaining migration work.
+The pre-existing data/nori/task_intake_status.json edit remains preserved.
+Existing Ollama-backed operation is still rollback, not the final target.
+Do not remove it or publish an installer until independent replacement is proven.
+The Nori-owned system architecture contract is C:\Nori\NORI_ARCHITECTURE.txt.
+Windows1903+ ICU DLL is an additional OS platform dependency for text APIs;
+generator static imports are icu.dll and KERNEL32.dll. CUDA still requires driver.
+
+GPU RESIDENCY / BATCHED PREFILL FOLLOW-UP — 2026-09-30
+src/resident_matrix.cu owns move-only device allocations,bounded uploads,full finite
+weight validation,F32/F16/BF16/Q4_K/Q6_K device decoding,cooperative row reductions,
+batched prompt projection/normalization and resident embedding lookup. No imported
+inference library or borrowed Ollama DLL. GGUF serialized fields remain third-party
+model compatibility,not a claim of a new learned model architecture.
+src/resident_graph.hpp reuses CheckpointGraph metadata/shape preflight,retains all
+compressed matrices and decoded norms for one synchronous owner. Constructor failure
+or cancellation frees admitted allocations; whole-model budget8GiB and512MiB GPU
+reserve checked. Per-upload reads64MiB,batch/context128,activation64MiB per individual
+buffer. These limits are not a total host/GPU memory guarantee under concurrency.
+Attention remains the original own CUDA implementation; rotary,SiLU/residual
+orchestration still CPU. The original stateless logits() path recomputes full
+context; the later cached-session follow-up below supersedes that limitation for
+opt-in resident CLI generation. No device-only graph or concurrent service yet.
+norama-generate MODEL LIMIT TEXT --resident opts into this new path. Default
+correctness/reference CLI path is retained; installed Nori was not switched.
+Latest complete build:11 CPU/GPU executables +27 compiled reader/import/tokenizer/
+CLI tests pass,0 skips/failures,plus8 actual Unicode/control round-trips. Resident
+format tests expose every fixture weight with exact basis-vector projections;
+batched aggregate dot maximum absolute error0.000488281 vs CPU reference.
+Synthetic complete resident graph matches CPU for zero/nonzero fixtures; bounds,
+cancel-mid-load/cancel-between-layers,reuse and partial allocation cleanup tested.
+Final real model timings/hashes are in verification/native-gpu-residency-2026-09-30.txt.
+No broad quality,throughput,power,thermal,model-suite or live-runtime claim.
+
+INCREMENTAL DEVICE CACHE FOLLOW-UP — 2026-09-30
+GpuKVCache owns move-only F32 key/value device buffers per session/layer. Attention
+uses an explicitly validated query suffix with committed prefix history. No full
+prefix keys/values transfer on each decode. Absolute rotary positions preserved.
+ResidentGraph::create_session/append/reset admit bounded aggregate cache memory,
+enforce model identity and context capacity,roll back every layer's staged length
+on failure/cancellation,and wipe device buffers on explicit reset. Partial reset
+failure poisons the session. Sessions are isolated but APIs remain synchronous;
+there is no concurrent scheduler or authenticated service yet.
+Chunk128 new tokens per operation;session context bounded by model plan8192 and
+aggregate cache budget256MiB default/512MiB maximum. GPU free512MiB reserve.
+Model admission and session admission are separate;total multi-session service
+budgets/concurrency still need runtime enforcement. Not a context-length claim
+for all imported models. CLI prompt128/output1..16 remains a bounded prototype.
+--resident now uses incremental sessions;stateless graph.logits() remains the
+regression reference. Reset truncation and partial rollback are not GPU forensic
+secure-erasure claims. Explicit reset zeroes both allocated key/value buffers.
+Final full build12 CPU/GPU test executables +28 compiled reader/import/tokenizer/
+CLI tests pass,0 failures/skips;8 actual Unicode/control round-trips pass.
+GPU cache suffix attention matches independent double CPU reference over MHA/MQA/
+GQA,odd/wide heads and257-token contexts,error1.19209e-7. Complete synthetic
+cached prefixes match CPU/stateless outputs;cancel-mid-append,capacity,budgets,
+moves,foreign model identity,interleaved independent histories,chunked prefill,
+reset and failed cache-admission cleanup tested.
+Real model final cached append steps0.0368142/0.0433415/0.0432271 seconds versus
+stateless0.405227/0.496686/0.498207;maximum logit difference0,greedy agrees.
+Final cached Hello! stops on128009;inference0.440982s/load1.29978s,combined1.74075s.
+Sixteen-token GPU-explanation sample also completes within its deliberate bound:
+inference1.07886s/load1.32444s,combined2.4033s. Not broad model-quality certification.
+Timers exclude initial metadata/tokenizer initialization. No installed app switch.
+Hashes/commands/limits: verification/native-incremental-cache-2026-09-30.txt.
+Next: persistent owned NorLlama worker/service with bounded admission,authenticated
+loopback API,streaming,cancellation and desktop/native Knight integration.
+
+PERSISTENT WORKER / OWN NORLLAMA FOLLOW-UP — 2026-09-30
+Own src/worker_protocol.hpp and worker.cu provide a bounded binary pipe contract
+and persistent GPU-resident model. Fresh runtime/norllama/norllama.py is the own
+standard-library serving implementation,NOT the previous llama.cpp-backed runtime.
+Authenticated loopback HTTP,SSE,one active/two waiting admission,request-isolated
+KV,cancel/drain,health and graceful owned-worker shutdown are implemented.
+Prompt1024/output1..2048 bounds;aggregate session-cache maximum is now1GiB,
+superseding the earlier512MiB maximum;default graph API remains256MiB. Worker
+cache reserve512MiB,chunk128,queue wait5s,inference deadline120s,HTTP handlers8.
+Framing/UTF8/metrics/ownership checks and invalid-worker failures are fail-closed.
+Final build13 CPU/GPU test programs +28 compiled tests pass;8 actual Unicode
+round-trips pass. Sixteen runtime protocol/client/HTTP tests pass using fixtures.
+Real RTX4080SUPER/imported Llama3.2-3B worker,HTTP,desktop client,all3 response
+styles and Nori turn adapter pass;active abort/cancel/reuse and CLI shutdown pass.
+Final real run startup1.63318s,short Hello! HTTP0.478156s,cancel0.0038215s;
+resident matrix bytes2010839040. Earlier run1.69851s/0.456823s retained in report.
+These are specific short-prompt timings,not a throughput or broad quality claim.
+Native model UI identifies the imported checkpoint and refuses Qwen/GPT-OSS
+substitution. Source opt-in only;the installed app/default launcher is not switched.
+No linked inference backend on this own path. Old C:\nori-runtime remains a
+transitional reference/rollback. No new dependency installs or F:\ changes.
+Native Knights,voice,vision,tools,managed startup/model catalog/crash recovery,
+long-load qualification,installer and own trained Nori model are NOT completed.
+All39 roadmap requirement groups retained;releaseNOT_VERIFIED. Exact candidate
+hashes and reproduction commands in native-persistent-runtime-2026-09-30.txt.
+
+NUMERICAL/DECODER DIAGNOSTICS FOLLOW-UP -- 2026-09-30
+New all-logit probe compares own CPU reference to resident/cached/reset GPU.
+Real3B28-layer prefix/full11-token Hello agree across128256logits,max1.76e-5/
+7.63e-6. Short contexts only,shared importer/rotary helpers,NOT external golden
+parity or semantic quality proof.16 executable/33compiled Node/126Python checks
+PASS. Ordinary decoding duplicates3guarded reviewer failures exactly,0/3.
+Guard not cause of those outputs;native task gate stays. Production worker9DF...
+unchanged. See verification/native-numerical-and-decode-isolation-2026-09-30.txt
+and companion for actual source/binary/receipt hashes and scope.

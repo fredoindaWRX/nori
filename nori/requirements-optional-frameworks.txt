@@ -1,0 +1,30 @@
+# OPTIONAL legacy framework adapters. Not needed by the native Core.
+#
+# Nothing in the native runtime imports these. They exist only so that two
+# preserved, opt-in compatibility paths keep working for anyone who was using
+# them before Nori-owned implementations existed. Installing this file pulls in
+# a third-party agent framework, so it is deliberately kept out of
+# requirements.txt.
+#
+#   pip install -r requirements-optional-frameworks.txt
+#
+# 1. CrewAI -- used by exactly two opt-in adapters:
+#      packages/knights/neo/agents/neo.py  NeoAgent.build_crewai_agent()
+#        Explicitly caller-supplied. Raises RuntimeError if CrewAI is absent,
+#        telling you to use Neo's native MCP tools instead.
+#      packages/knights/architect/orchestration/task_decomposer.py
+#        The lazy `from crewai import ...` fallback, reached only when no
+#        planner is injected into TaskDecomposer.
+#
+#    Neither is on the native Core path. The live Architect is the Nori-native
+#    shared/orchestration/architect_worker.py. Do not add this back to the
+#    default requirements: an alternative agent framework being installed by
+#    default is a false claim about what Nori is.
+crewai==1.15.21
+
+# 2. Preserved upstream Architect source, vendored read-only under
+#    knights/architect/lib/{crewai,crewai-core,crewai-cli,crewai-files,crewai-tools}
+#    with its upstream MIT licence and README-UPSTREAM.md. This is third-party
+#    code retained for reference, NOT Nori-created, and NOT on the native path.
+#    The Nori-owned Architect is knights/architect/lib/nori-architect.
+#    Nothing to install; listed here so the inventory has one place to look.

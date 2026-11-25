@@ -1,0 +1,24 @@
+{
+  "startup_order": ["sentinel", "architect", "machine", "merovingian", "oracle", "tank", "smith", "neo", "trinity", "morpheus", "apoc", "keymaker"],
+  "sensors": [],
+  "knights": {
+    "sentinel": {"port": 19112, "model": "native-selected", "role": "Watchdog", "tools": ["events"], "grants": ["event_publish"]},
+    "architect": {"port": 19107, "model": "native-selected", "role": "Commander", "tools": ["orchestration"], "grants": ["infer", "plan", "orchestration_dispatch"]},
+    "machine": {"port": 19111, "model": "native-selected", "role": "Inference backbone", "tools": ["inference"], "grants": ["model_inspect", "hardware_read"]},
+    "merovingian": {"port": 19106, "model": "native-selected", "role": "Chronicler", "tools": ["memory"], "grants": ["memory_write", "memory_read", "memory_export", "memory_delete", "learning_record", "learning_export", "model_promote"]},
+    "oracle": {"port": 19105, "model": "native-selected", "role": "Librarian", "tools": ["knowledge"], "grants": ["knowledge_index", "knowledge_read", "research_report"]},
+    "tank": {"port": 19110, "model": "native-selected", "role": "Steward", "tools": ["hardware"], "grants": ["hardware_read", "home_read", "home_control", "tool_bridge_read", "tool_bridge_act"]},
+    "smith": {"port": 19109, "model": "native-selected", "role": "Executor", "tools": ["execution"], "grants": ["execution_run"]},
+    "neo": {"port": 19101, "model": "native-selected", "role": "Code Smith", "tools": ["coding"], "grants": ["workspace_read", "workspace_write", "ide_read"]},
+    "trinity": {"port": 19102, "model": "native-selected", "role": "All-Rounder", "tools": ["plugins"], "grants": ["plugin_execute"]},
+    "morpheus": {"port": 19103, "model": "native-selected", "role": "IDE Warrior", "tools": ["ide"], "grants": ["ide_read"]},
+    "apoc": {"port": 19104, "model": "native-selected", "role": "Scout", "tools": ["browser"], "grants": ["browser_read"]},
+    "keymaker": {"port": 19108, "model": "native-selected", "role": "Scribe", "tools": ["research"], "grants": ["research_report"]}
+  },
+  "bus": {"type": "asyncio", "sentinel_gate": true, "max_concurrent_tasks": 4},
+  "memory": {
+    "backend": "nori-sqlite"
+  },
+  "security": {"tpm_enabled": false, "kill_switch": true},
+  "network": {"offline_mode": true, "tailscale": false}
+}

@@ -1,0 +1,13 @@
+.nori-astral-halo-detailed {
+  inset: 8% 4%;
+  background:
+    radial-gradient(ellipse at 51% 50%, #a3eaff35 0%, #7aa5dc1a 19%, transparent 53%),
+    radial-gradient(ellipse at 38% 47%, #6088bb14 0%, transparent 61%);
+}
+.nori-astral-orbit-detailed {
+  transform-origin: 240px 240px;
+  animation: nori-astral-counterclockwise 140s linear infinite;
+}
+.nori-astral-paused .nori-astral-orbit-detailed { animation-play-state: paused; }
+@keyframes nori-astral-counterclockwise { to { transform: rotate(-360deg); } }
+@media (prefers-reduced-motion: reduce) { .nori-astral-orbit-detailed { animation: none; } }

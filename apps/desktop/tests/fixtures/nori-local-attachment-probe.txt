@@ -1,0 +1,2 @@
+Nori attachment smoke test.
+Expected payload marker: NORI_LOCAL_TEXT_ATTACHMENT_OK

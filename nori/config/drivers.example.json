@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "id": "vehicle-obd-primary",
+  "provider": "pyserial",
+  "protocol": "obd2",
+  "version": "1.0",
+  "capabilities": ["read", "stream"],
+  "platforms": ["Windows", "Linux", "Android"],
+  "match": {
+    "usb_vid": "REPLACE_WITH_DEVICE_VENDOR_ID",
+    "usb_pid": "REPLACE_WITH_DEVICE_PRODUCT_ID"
+  },
+  "config": {
+    "port": "REPLACE_WITH_SERIAL_PORT",
+    "baudrate": 115200
+  },
+  "enabled": false
+}

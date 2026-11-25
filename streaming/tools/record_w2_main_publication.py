@@ -1,0 +1,33 @@
+import csv,json,zipfile
+from datetime import datetime,timezone
+from pathlib import Path
+R=Path('C:/Nori/streaming/channel-operator'); F=R/'02-Calendar/Week-2/W2-MAIN'
+def read(p): return json.loads(p.read_text(encoding='utf-8-sig'))
+def write(p,x): p.write_text(json.dumps(x,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+p=read(F/'publishing-package.json'); qa=read(F/'FINAL-QA.json')
+assert qa['local_export_complete'] and qa['full_decode_passed']
+for name in ['published-confirmation','public-details','public-player']:
+ assert (R/f'06-Archive-Audit/mic-discord-main-{name}.jpg').exists()
+record={'calendar_id':'W2-MAIN','youtube_video_id':'PnOIpsAO8GA','title':p['title'],'url':'https://www.youtube.com/watch?v=PnOIpsAO8GA','visibility':'Public','published_date':'2026-09-30','verified_at_utc':datetime.now(timezone.utc).isoformat(),'duration_seconds':qa['duration_seconds'],'playlist':'Creator Tools','playlist_id':'PLKwzclKlwEk8','native_captions':'146 timed English cues saved; public track processing checked separately','native_end_screen':'Specific video wQCuI-5i0iQ and Subscribe, last 20 seconds, saved','verification':['Native Video published confirmation','Saved Studio details Public, exact title, custom thumbnail, SD/HD complete and disabled Save','Public video loaded and playback advanced; reaction frame checked at 15 seconds','Timed captions retained in native editor and Done saved','Native end screen saved in upload flow'],'voice':'Owner-authorized fred clone, Fish S2.1 Pro Free; calm delivery, 0.9 tempo, clarity EQ and regenerated technical lines','paid_spend':0,'human_voice_likeness_review_claimed':False,'all_source_words_exactly_recognized':False,'original_memes':4,'own_channel_cutaways':2,'live_guest_recording_test_verified':False,'owner_avatar_used':False,'copyright_initial_check':'No issues found','community_guidelines_initial_check':'No issues found','growth_measured':False,'scheduled':False,'details_proof':'06-Archive-Audit/mic-discord-main-public-details.jpg','player_proof':'06-Archive-Audit/mic-discord-main-public-player.jpg'}
+write(F/'publication-record.json',record);write(F/'PUBLICATION.json',record)
+p.update(publication_status='Public; saved details and public playback verified',youtube_video_id=record['youtube_video_id'],youtube_url=record['url'],scheduled=False,native_captions_status='Saved; public availability processing checked separately',native_end_screen_status='Saved');write(F/'publishing-package.json',p)
+qa.update(publication_status='Public',published=True,watch_url=record['url'],native_caption_upload_done=True,native_end_screen_saved=True);write(F/'FINAL-QA.json',qa)
+state=read(F/'PRODUCTION-STATE.json');state.update(status='Final MP4 verified and published Public',publication_status='Public',youtube_url=record['url']);write(F/'PRODUCTION-STATE.json',state)
+plan=read(F/'SHOT-PLAN.json');plan.update(status='Verified final animated long-form MP4 published Public',owner_avatar_used=False,live_guest_recording_test_verified=False);write(F/'SHOT-PLAN.json',plan)
+progress=read(R/'03-Production/LONG-FORM-PROGRESS.json');remaining=['W3-MAIN','W4-MAIN'];progress.update(long_form_final_mp4s=2,long_form_public=2,shorts_public=8,remaining_main_ids=remaining,goal_complete=False);progress['current_work']=dict(id='W2-MAIN',status='Verified final MP4 and Public publication',url=record['url'],duration_seconds=qa['duration_seconds'],local_render_ready=True);write(R/'03-Production/LONG-FORM-PROGRESS.json',progress)
+audit=read(R/'COMPLETION-AUDIT.json');audit['phase3'].update(status='incomplete',calendar_mp4_count=10,illustrated_final_edits_count=10,published_illustrated_short_count=8,published_animated_long_form_count=2,remaining_calendar_ids=remaining,remaining_calendar_videos=2);audit['phase4'].update(status='incomplete',new_calendar_uploads=10,public_calendar_videos=10,scheduled_calendar_videos=0,main_video_final_timestamps='W1 and W2 main have twelve measured chapters each; W3/W4 unfinished');audit['phase4']['published_videos']=[r for r in audit['phase4'].get('published_videos',[]) if r.get('calendar_id')!='W2-MAIN']+[record];audit['last_goal_turn']='Second longer video published with clearer free cloned narration, original comic visuals, captions, native end screen and public playback proof. Ten calendar videos Public; W3/W4 and owner avatar remain incomplete.';write(R/'COMPLETION-AUDIT.json',audit)
+with (R/'calendar.csv').open(encoding='utf-8-sig',newline='') as f: rows=list(csv.DictReader(f)); fields=list(rows[0])
+for row in rows:
+ if row['ID']=='W2-MAIN': row.update(PublishDate='2026-09-30',Time='',Day='Wednesday',Visibility='Public; published and verified',MediaStatus='Verified full-length animated MP4 published; 146 captions and native end screen saved')
+with (R/'calendar.csv').open('w',encoding='utf-8-sig',newline='') as f: w=csv.DictWriter(f,fieldnames=fields,quoting=csv.QUOTE_ALL);w.writeheader();w.writerows(rows)
+queue=read(R/'03-Production/Fish-Ready-Scripts/GENERATION-QUEUE.json')
+for entry in queue:
+ if entry['video_id']=='W2-MAIN': entry.update(status='Final clear-voice animated video verified and publicly published',youtube_url=record['url'],engine='s2.1-pro-free')
+write(R/'03-Production/Fish-Ready-Scripts/GENERATION-QUEUE.json',queue)
+records=[read(q) for q in R.glob('02-Calendar/Week-*/*/publication-record.json')]; public=[r for r in records if r.get('visibility')=='Public'];assert len(public)==10
+status='FREDOINDAWRX CHANNEL — VERIFIED STATUS\n\n10 of 12 calendar videos are rendered, verified and Public: eight Shorts and two longer videos. Zero scheduled. Phases 3 and 4 remain incomplete. Projects and Nori first; gaming on the side.\n\n'
+for r in sorted(public,key=lambda x:x['calendar_id']):status+=r['title']+'\n'+r['url']+'\nPublic — '+r.get('published_date','')+'\n\n'
+status+='W2 uses calmer, slower narration with clarity processing and regenerated device/track lines; 48 motion beats, four original reactions, two own-video cutaways, 146 captions and a saved native end screen. Technical checks do not establish subjective voice likeness. Two longer videos remain; requested owner avatar unconfigured. No paid speech or measured audience growth claimed. Older uploads preserved.\n'
+for q in [R/'START-HERE.txt',R/'PRODUCTION-PROGRESS.txt',R/'03-Production/PRODUCTION-PROGRESS.txt']:q.write_text(status,encoding='utf-8')
+with (R/'06-Archive-Audit/changes-2026-09-30.txt').open('a',encoding='utf-8') as f:f.write('\nVERIFIED PUBLIC W2 MAIN: '+record['url']+'; revised clear narration, captions and end screen saved.\n')
+print(json.dumps({'public_videos':10,'public_shorts':8,'public_long_form':2,'remaining_main_videos':2,'goal_complete':False}))

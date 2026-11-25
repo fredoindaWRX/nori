@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "absolute": {
+    "covenant_immutable": true,
+    "sentinel_immutable": true,
+    "watchman_immutable": true,
+    "owner_fingerprint_immutable": true,
+    "private_key_nonexportable": true,
+    "authentication_required": true
+  },
+  "physical": {
+    "max_actuator_torque_nm": 50.0,
+    "max_linear_speed_m_s": 2.0,
+    "min_obstacle_distance_m": 0.3,
+    "emergency_stop_overrides": true
+  },
+  "system": {
+    "protected_system_deletion": true,
+    "raw_disk_write_blocked": true,
+    "remote_network_requires_tailscale": true,
+    "model_download_requires_owner": true
+  }
+}

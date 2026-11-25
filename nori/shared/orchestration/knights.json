@@ -1,0 +1,258 @@
+{
+  "name": "NORI Knights of the Table",
+  "version": "0.2.0",
+  "knights": [
+    {
+      "id": "neo",
+      "reference_project": "OpenHands",
+      "role": "Code Smith",
+      "capabilities": [
+        "coding"
+      ],
+      "implementation_status": "native",
+      "source_review": "root_license_captured_scope_review_pending",
+      "permissions": [
+        "workspace_read",
+        "workspace_write",
+        "ide_read"
+      ],
+      "upstream": {
+        "repository": "OpenHands/OpenHands",
+        "commit": "2c5ce2fa2dca3aa9c7442ff1c46876c60a794eeb",
+        "root_license": "MIT",
+        "evidence": "upstream-records/neo/LICENSE-ORIGINAL"
+      }
+    },
+    {
+      "id": "trinity",
+      "reference_project": "goose",
+      "role": "All-Rounder",
+      "capabilities": [
+        "plugins"
+      ],
+      "implementation_status": "native",
+      "source_review": "root_license_captured_scope_review_pending",
+      "permissions": [
+        "plugin_execute"
+      ],
+      "upstream": {
+        "repository": "aaif-goose/goose",
+        "commit": "50666ae0b9a51e260b52b7efbab2e4e020346e94",
+        "root_license": "Apache-2.0",
+        "evidence": "upstream-records/trinity/LICENSE-ORIGINAL"
+      }
+    },
+    {
+      "id": "morpheus",
+      "reference_project": "Cline",
+      "role": "IDE Warrior",
+      "capabilities": [
+        "ide"
+      ],
+      "implementation_status": "native",
+      "source_review": "root_license_captured_scope_review_pending",
+      "permissions": [
+        "ide_read"
+      ],
+      "upstream": {
+        "repository": "cline/cline",
+        "commit": "cfe9cadab99617d5013bf89f07b079d105057791",
+        "root_license": "Apache-2.0",
+        "evidence": "upstream-records/morpheus/LICENSE-ORIGINAL"
+      }
+    },
+    {
+      "id": "apoc",
+      "reference_project": "Browser Use",
+      "role": "Scout",
+      "capabilities": [
+        "browser"
+      ],
+      "implementation_status": "native",
+      "source_review": "root_license_captured_scope_review_pending",
+      "permissions": [
+        "browser_read"
+      ],
+      "upstream": {
+        "repository": "browser-use/browser-use",
+        "commit": "50f205533fe10ba35b553d2a3689c77b87bd5d0a",
+        "root_license": "MIT",
+        "evidence": "upstream-records/apoc/LICENSE-ORIGINAL"
+      }
+    },
+    {
+      "id": "oracle",
+      "reference_project": "Khoj",
+      "role": "Librarian",
+      "capabilities": [
+        "knowledge"
+      ],
+      "implementation_status": "native",
+      "source_review": "root_license_captured_scope_review_pending",
+      "permissions": [
+        "knowledge_index",
+        "knowledge_read",
+        "research_report"
+      ],
+      "upstream": {
+        "repository": "khoj-ai/khoj",
+        "commit": "ae229ca894c0b80ad84664afcfdde523b5e87057",
+        "root_license": "AGPL-3.0",
+        "evidence": "upstream-records/oracle/LICENSE-ORIGINAL"
+      }
+    },
+    {
+      "id": "merovingian",
+      "reference_project": "Letta",
+      "role": "Chronicler",
+      "capabilities": [
+        "memory",
+        "learning"
+      ],
+      "implementation_status": "native",
+      "source_review": "root_license_captured_scope_review_pending",
+      "permissions": [
+        "memory_write",
+        "memory_read",
+        "memory_export",
+        "memory_delete",
+        "learning_record",
+        "learning_export",
+        "model_promote"
+      ],
+      "upstream": {
+        "repository": "letta-ai/letta",
+        "commit": "5bcdd177d70fa2b31a754cfcd801e77b2e1ab16a",
+        "root_license": "Apache-2.0",
+        "evidence": "upstream-records/merovingian/LICENSE-ORIGINAL"
+      }
+    },
+    {
+      "id": "architect",
+      "reference_project": "CrewAI",
+      "role": "Commander",
+      "capabilities": [
+        "orchestration"
+      ],
+      "implementation_status": "native",
+      "source_review": "root_license_captured_scope_review_pending",
+      "permissions": [
+        "infer",
+        "plan",
+        "orchestration_dispatch"
+      ],
+      "upstream": {
+        "repository": "crewAIInc/crewAI",
+        "commit": "894898f84c4ac0a89f24bf7bee6c381eb0e67f51",
+        "root_license": "MIT",
+        "evidence": "upstream-records/architect/LICENSE-ORIGINAL"
+      },
+      "native_runtime": {
+        "entry": "knight_runtime.py",
+        "capability": "orchestration",
+        "scope": "validated typed dependency graphs dispatched to edition-active Knights",
+        "upstream_rewrite_status": "NORI-owned Council graph runtime implemented"
+      }
+    },
+    {
+      "id": "keymaker",
+      "reference_project": "GPT Researcher",
+      "role": "Scribe",
+      "capabilities": [
+        "research"
+      ],
+      "implementation_status": "native",
+      "source_review": "root_license_captured_scope_review_pending",
+      "permissions": [
+        "research_report"
+      ],
+      "upstream": {
+        "repository": "assafelovic/gpt-researcher",
+        "commit": "6f998577d547b1e54ec662dac63583aa11e3b84b",
+        "root_license": "Apache-2.0",
+        "evidence": "upstream-records/keymaker/LICENSE-ORIGINAL"
+      }
+    },
+    {
+      "id": "smith",
+      "reference_project": "Open Interpreter",
+      "role": "Executor",
+      "capabilities": [
+        "execution"
+      ],
+      "implementation_status": "native",
+      "source_review": "root_license_captured_scope_review_pending",
+      "permissions": [
+        "execution_run"
+      ],
+      "upstream": {
+        "repository": "openinterpreter/openinterpreter",
+        "commit": "2885d0d8ba0fd8a036695c5abebbb9524dcca015",
+        "root_license": "Apache-2.0",
+        "evidence": "upstream-records/smith/LICENSE-ORIGINAL"
+      }
+    },
+    {
+      "id": "tank",
+      "reference_project": "Agent Zero",
+      "role": "Steward",
+      "capabilities": [
+        "hardware"
+      ],
+      "implementation_status": "native",
+      "source_review": "root_license_captured_scope_review_pending",
+      "permissions": [
+        "hardware_read",
+        "home_read",
+        "home_control",
+        "tool_bridge_read",
+        "tool_bridge_act"
+      ],
+      "upstream": {
+        "repository": "agent0ai/agent-zero",
+        "commit": "b1cbd1f960a1a5c4482b324dcff4742aa67b7a51",
+        "root_license": "MIT",
+        "evidence": "upstream-records/tank/LICENSE-ORIGINAL"
+      }
+    },
+    {
+      "id": "machine",
+      "reference_project": "LocalAI",
+      "role": "Seth backbone",
+      "capabilities": [
+        "inference"
+      ],
+      "implementation_status": "native",
+      "source_review": "root_license_captured_scope_review_pending",
+      "permissions": [
+        "model_inspect",
+        "hardware_read"
+      ],
+      "upstream": {
+        "repository": "mudler/LocalAI",
+        "commit": "64628da9ddb703ca222944d64059c6b5dcdd7072",
+        "root_license": "MIT",
+        "evidence": "upstream-records/machine/LICENSE-ORIGINAL"
+      }
+    },
+    {
+      "id": "sentinel",
+      "reference_project": "OpenClaw",
+      "role": "Watchdog",
+      "capabilities": [
+        "events"
+      ],
+      "implementation_status": "native",
+      "source_review": "root_license_captured_scope_review_pending",
+      "permissions": [
+        "event_publish"
+      ],
+      "upstream": {
+        "repository": "openclaw/openclaw",
+        "commit": "da762af0e80c9fe6a61422dc5591ab24e5c9a3ce",
+        "root_license": "MIT",
+        "evidence": "upstream-records/sentinel/LICENSE-ORIGINAL"
+      }
+    }
+  ]
+}

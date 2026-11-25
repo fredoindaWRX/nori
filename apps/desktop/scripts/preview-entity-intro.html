@@ -1,0 +1,8 @@
+<!doctype html><html><head><meta charset="UTF-8"><style>html,body,#root{margin:0;width:100%;height:100%;background:#01020a}canvas{width:100%;height:100%;display:block}</style></head><body><div id="root"></div><script type="module">
+import React from 'react'
+import { createRoot } from 'react-dom/client'
+import { StartupFilm } from '/src/ui/StartupFilm.tsx'
+const root = createRoot(document.getElementById('root'))
+window.renderIntro = (time) => root.render(React.createElement(StartupFilm, { previewTime: time, onLanding: () => {} }))
+window.renderIntro(0)
+</script></body></html>

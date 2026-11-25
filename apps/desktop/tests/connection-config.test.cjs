@@ -1,0 +1,10 @@
+const test=require('node:test')
+const assert=require('node:assert/strict')
+const {rendererConnection}=require('../desktop/connection-config.cjs')
+test('desktop renderer receives only loopback bridge location,never private runtime credentials',()=>{
+  assert.deepEqual(rendererConnection(18787),{bridgeUrl:'ws://127.0.0.1:18787',handInputUrl:'http://127.0.0.1:9393/input',workspaceProbe:false})
+  assert.deepEqual(rendererConnection(51700,true,19393),{bridgeUrl:'ws://127.0.0.1:51700',handInputUrl:'http://127.0.0.1:19393/input',workspaceProbe:true})
+  assert.equal(Object.isFrozen(rendererConnection(8787)),true)
+  for (const port of [0,65536,-1,NaN,1.5,'8787']) assert.throws(()=>rendererConnection(port),/Invalid/)
+  for (const port of [0,65536,NaN,'19393']) assert.throws(()=>rendererConnection(8787,false,port),/Invalid/)
+})

@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "nori-neuralese-build",
+  "project_root": "C:\\Nori",
+  "build_directory": "C:\\Nori\\experiments\\neuralese\\builds\\phase1-evidence-20261001",
+  "created_at": "2026-10-02T03:08:15.8516609+00:00",
+  "source_hashes": {
+    "engine\\norama\\src\\attention.hpp": "48a40af6640693ce36e2f0741c851648d57ecc8c83b1ed2f2027062b10a4311a",
+    "engine\\norama\\src\\checkpoint_graph.hpp": "bf1efbbea7278874acf121917a1829baed7388e8166b6b5c562030553799a94b",
+    "engine\\norama\\src\\contract_prefix.hpp": "94ada3b6c38c501007f676187b9acb88873b4e0cf1c4bf0e96ce1add79f7c2b7",
+    "engine\\norama\\src\\cuda_attention.cuh": "b3c32b0a7a57609130aeff104308c2693bb0f1b097d7d3d9d759a1d7b1a938b9",
+    "engine\\norama\\src\\cuda_matvec.cuh": "cf74452bc70d2646f09fca9c7ec3fd14aa2cdf622add6c817e867bab566b5911",
+    "engine\\norama\\src\\dualtrace_gpu.cuh": "e1f5a23becb237cbb80029ff69c3a0b85391a00aa40d22639af2a0a90331b082",
+    "engine\\norama\\src\\dualtrace_model.hpp": "36c537406ecad7ccf48506bbcf368ae0b675a92f319c1166a9b402faf5059e3a",
+    "engine\\norama\\src\\gguf_model.hpp": "c4887ef54a38aa6612e69cefb152813200206196c98868eb9d45f20666324644",
+    "engine\\norama\\src\\gpu_engine.cu": "781e8dcf632ac6f2c13f3278d5e04aa28b414a760a7e750b6270c0a11f46984c",
+    "engine\\norama\\src\\gpu_engine.hpp": "b7949443dcb4a58d52cca0e39f6ce988aaff004747eab81ee038cd194f18a0b6",
+    "engine\\norama\\src\\json_decode.hpp": "e54cf137c52e77300956a62fcb5b4414bb9dec3497a238b35063f1a67eac605f",
+    "engine\\norama\\src\\json_prefix.hpp": "5557bdfd4ba5fd652d7b9490f563a5dd2cb50e172fa062a45be96bab9e011286",
+    "engine\\norama\\src\\model_graph.hpp": "896a540849a1c2fca9876ca848ab87d182d7631a5d738285e825d5259c520f80",
+    "engine\\norama\\src\\neuralese_tap.hpp": "77f66718b9def0f576073ff1186243c3318b4e6f4420636007883d04622abe89",
+    "engine\\norama\\src\\resident_graph.hpp": "f63aa8a3e63a473178b06aff37e645232c4b72774a581edd2aa8a7603230e084",
+    "engine\\norama\\src\\resident_matrix.cu": "4f727d419efa58929251f822e1be353d45d66911d6deed71f02d9a9d4ab46c3d",
+    "engine\\norama\\src\\tensor_math.hpp": "c6793061739e4770184f4f03e5a093b07473fcc6148315fef132e0bb14a4e342",
+    "engine\\norama\\src\\tokenizer.hpp": "2b22a1b4922f950d8b32f8cd92bc7b1ef6cb4845bf7fc721f456b1d77801007d",
+    "engine\\norama\\src\\transformer_block.hpp": "fc6a4ccf04b0d7164461f497069a4f4077ab9c79064530636f04007c2e712177",
+    "engine\\norama\\src\\weight_decode.hpp": "b9add687d35ae45962a972bd0d563a62cf355f27be0dca7cda0b06a16c93ef28",
+    "engine\\norama\\src\\worker_protocol.hpp": "1a210e3b9f184c14b6c2aa4f10dfc37a59d960ba728dd1e4f5a613b0d8359be3",
+    "experiments\\neuralese\\baseline.cu": "b84557044f7aa1e686ca0d9b6ace34f95b0989beab070c8d1b17c4110d375cab",
+    "experiments\\neuralese\\build.ps1": "990ef988404148d21336e47f950aa5517155bf873d7adfab38d4a99360a63b89",
+    "experiments\\neuralese\\probe.cu": "b4e0144045338c3a8f610c18cb72443a488e6c7dd1a777fd484df3d8ebc32dae"
+  },
+  "binary_hashes": {
+    "neuralese-baseline.exe": "3e31d313fed9b5acd097991d92747871c65a6e319673f02dcdfea6246dbee734",
+    "neuralese-probe.exe": "fb6eb6c404f8da2d50725029030130c52d6e466e4c4327d9f3a2a5f8f5a2a7d6"
+  },
+  "compiler": {
+    "cuda_path": "C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v13.3\\bin\\nvcc.exe",
+    "cuda_sha256": "92d993c6e7025e1597d0d895e65e8658f5f1d41576a477656647a7eece2cd35f",
+    "setup_path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat",
+    "setup_sha256": "6b516d8fcf543c14b2d861e1f45661e0029230fe0dc48e86ce78522801822209"
+  },
+  "recipes": {
+    "baseline": "\"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v13.3\\bin\\nvcc.exe\" -std=c++17 -Xcompiler=/O2  -arch=sm_89 \"C:\\Nori\\engine\\norama\\src\\gpu_engine.cu\" \"C:\\Nori\\engine\\norama\\src\\resident_matrix.cu\" \"C:\\Nori\\experiments\\neuralese\\baseline.cu\" -o neuralese-baseline.exe -lpsapi",
+    "probe": "\"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v13.3\\bin\\nvcc.exe\" -std=c++17 -Xcompiler=/O2 -DNORI_EXPERIMENTAL_NEURALESE -arch=sm_89 \"C:\\Nori\\engine\\norama\\src\\gpu_engine.cu\" \"C:\\Nori\\engine\\norama\\src\\resident_matrix.cu\" \"C:\\Nori\\experiments\\neuralese\\probe.cu\" -o neuralese-probe.exe -lpsapi"
+  }
+}

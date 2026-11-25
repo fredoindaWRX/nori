@@ -1,0 +1,28 @@
+{
+  "kind": "nori-real-local-bridge-probe",
+  "observedAt": "2026-09-30T05:52:59.920Z",
+  "localOnly": true,
+  "model": "qwen3.5:4b",
+  "effort": "lightning-fast",
+  "streamedResponse": "Two plus two equals four.",
+  "firstTextMs": 289,
+  "turnMs": 339,
+  "warmFollowupResponse": "I answered that two plus two equals four.",
+  "warmFirstTextMs": 70,
+  "warmTurnMs": 137,
+  "contextRetained": true,
+  "balancedConfigAcknowledged": true,
+  "deepConfigAcknowledged": true,
+  "deepFollowupResponse": "4",
+  "deepTurnMs": 133,
+  "contextRetainedAfterStyleChange": true,
+  "totalMs": 1206,
+  "sttReady": false,
+  "ttsReady": false,
+  "initialModel": "nori-auto",
+  "settingsCandidate": "local-bridge-probe-C2P6ai",
+  "passed": true,
+  "limitations": [
+    "Three real local chat turns including deep-profile context retention and balanced/deep acknowledgements; no Council action, image, speech or capture tested."
+  ]
+}

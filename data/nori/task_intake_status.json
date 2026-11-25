@@ -1,0 +1,9 @@
+{
+  "schema": "nori.local_task_intake_status.v1",
+  "checked_at": 1790651874.3510358,
+  "result": "PASS",
+  "staged_task_ids": [],
+  "staged_count": 0,
+  "execution": "not_started",
+  "live_changes_allowed": false
+}

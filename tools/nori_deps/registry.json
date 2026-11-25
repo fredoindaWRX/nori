@@ -1,0 +1,89 @@
+{
+  "schema": "nori.dependency-registry.v1",
+  "generated": "2026-10-01",
+  "note": "Every declared runtime dependency, what imports it, and whether Nori still needs it. 'classification' is the owner's vocabulary: required-standard-foundation, external-data, removable-unused, native-replacement, remaining-trained-model.",
+  "desktop": {
+    "manifest": "apps/desktop/package.json",
+    "sourceRoots": ["src", "bridge", "desktop", "scripts", "tests"],
+    "dependencies": [
+      { "name": "@mediapipe/tasks-vision", "classification": "external-data", "license": "Apache-2.0", "importedBy": ["src/lib/hands.ts"], "note": "Hand/face landmark tracking. Hand tracking is explicitly DEFERRED by owner direction, but this package is genuinely imported today, so it is kept and reported rather than removed." },
+      { "name": "@react-three/drei", "classification": "required-standard-foundation", "license": "MIT", "importedBy": ["src/scene/Core.tsx", "src/scene/Scene.tsx"] },
+      { "name": "@react-three/fiber", "classification": "required-standard-foundation", "license": "MIT", "importedBy": ["src/scene/Core.tsx", "src/scene/DeepSpaceDebris.tsx", "src/scene/GalaxyArrival.tsx", "src/scene/GalaxyFlight.tsx", "src/scene/Orbits.tsx", "src/scene/Particles.tsx", "src/scene/Scene.tsx", "src/scene/SpaceShell.tsx", "src/scene/StreetArrival.tsx", "src/ui/Ignition.tsx"] },
+      { "name": "@react-three/postprocessing", "classification": "required-standard-foundation", "license": "MIT", "importedBy": ["src/scene/Scene.tsx"] },
+      { "name": "cesium", "classification": "external-data", "license": "Apache-2.0", "importedBy": ["src/scene/CesiumSurface.tsx"], "note": "Globe/map renderer. Supplies terrain and imagery tiles as a DATA SOURCE with attribution; it is not a Nori-created renderer." },
+      { "name": "dompurify", "classification": "required-standard-foundation", "license": "(MPL-2.0 OR Apache-2.0)", "importedBy": ["src/ui/sanitise.ts"] },
+      { "name": "framer-motion", "classification": "required-standard-foundation", "license": "MIT", "importedBy": ["src/ui/Blades.tsx", "src/ui/Boot.tsx", "src/ui/GestureGuide.tsx", "src/ui/Hud.tsx", "src/ui/Panels.tsx", "src/ui/Suggestions.tsx"] },
+      { "name": "leaflet", "classification": "external-data", "license": "BSD-2-Clause", "importedBy": ["src/scene/EarthSurface.tsx"], "note": "External map information as a data source, attributed. Not Nori-created cartography." },
+      { "name": "react", "classification": "required-standard-foundation", "license": "MIT", "importedBy": ["src/App.tsx", "src/scene/CesiumSurface.tsx", "src/scene/Core.tsx", "src/scene/DeepSpaceDebris.tsx", "src/scene/EarthSurface.tsx", "src/scene/GalaxyArrival.tsx", "src/scene/GalaxyFlight.tsx", "src/scene/Orbits.tsx", "src/scene/Particles.tsx", "src/scene/Scene.tsx", "src/scene/SpaceShell.tsx", "src/scene/StreetArrival.tsx", "src/ui/Blades.tsx", "src/ui/Boot.tsx", "src/ui/Diagnostics.tsx", "src/ui/Effects.tsx", "src/ui/Hud.tsx", "src/ui/Ignition.tsx", "src/ui/LocalModelManager.tsx", "src/ui/Panels.tsx", "src/ui/Pointer.tsx", "src/ui/StartupFilm.tsx", "src/ui/Suggestions.tsx", "src/workspace/Workspace.tsx"] },
+      { "name": "react-dom", "classification": "required-standard-foundation", "license": "MIT", "importedBy": ["src/main.tsx"] },
+      { "name": "three", "classification": "required-standard-foundation", "license": "MIT", "importedBy": ["src/scene/Core.tsx", "src/scene/DeepSpaceDebris.tsx", "src/scene/GalaxyArrival.tsx", "src/scene/GalaxyFlight.tsx", "src/scene/Orbits.tsx", "src/scene/Particles.tsx", "src/scene/Scene.tsx", "src/scene/SpaceShell.tsx", "src/scene/StreetArrival.tsx", "src/ui/Ignition.tsx", "src/ui/StartupFilm.tsx", "tests/earth-coordinates.test.mjs"] },
+      { "name": "ws", "classification": "required-standard-foundation", "license": "MIT", "importedBy": ["bridge/server.mjs", "scripts/verify-local-bridge.mjs", "tests/native-permissions.test.mjs", "tests/response-profiles.test.mjs"] },
+      { "name": "zod", "classification": "required-standard-foundation", "license": "MIT", "importedBy": ["bridge/chrome.mjs", "bridge/panels.mjs", "bridge/ui.mjs", "bridge/vision.mjs", "bridge/nori-mcp.mjs", "tests/dependency-inventory.test.mjs", "tests/nori-wake-mcp-defects-regression-2026-10-01.test.mjs"], "note": "Used by the Nori-owned MCP descriptor builder to derive JSON Schema." },
+      { "name": "zustand", "classification": "required-standard-foundation", "license": "MIT", "importedBy": ["src/store.ts"], "note": "Renderer state store. Genuinely imported; confirmed present in package.json and package-lock.json together. Retained deliberately." }
+    ],
+    "removed": [
+      {
+        "name": "@anthropic-ai/claude-agent-sdk",
+        "license": "MIT",
+        "formerClassification": "alternative-provider",
+        "reason": "Imported only by four preserved bridge adapters (chrome, panels, ui, vision) that the native build already excludes and that bridge/server.mjs never instantiates. Its only used exports were the MCP-shaped tool/server descriptors, which are a published protocol convention, so Nori implemented them itself in bridge/nori-mcp.mjs.",
+        "replacedBy": "apps/desktop/bridge/nori-mcp.mjs",
+        "evidence": "23 tools across all four adapters build and validate on the Nori implementation."
+      },
+      {
+        "name": "@anthropic-ai/sdk",
+        "license": "MIT",
+        "formerClassification": "alternative-provider",
+        "reason": "Zero import sites in src, bridge, desktop, scripts or tests.",
+        "replacedBy": null
+      },
+      {
+        "name": "@picovoice/porcupine-web",
+        "license": "Apache-2.0",
+        "formerClassification": "alternative-provider",
+        "reason": "Zero import sites. Wake detection is Nori-authored matching in src/lib/wake.ts over local Whisper output; no Picovoice AccessKey was ever present.",
+        "replacedBy": "apps/desktop/src/lib/wake.ts"
+      },
+      {
+        "name": "@picovoice/web-voice-processor",
+        "license": "Apache-2.0",
+        "formerClassification": "alternative-provider",
+        "reason": "Zero import sites. The renderer runs its own WebAudio/VAD pipeline in src/lib/vad.ts.",
+        "replacedBy": "apps/desktop/src/lib/vad.ts",
+        "note": "Also removed the dead `porcupineKey` field from src/config.ts. It was always the empty string: no Picovoice AccessKey was ever present, and with the package gone the field was a claim about a provider Nori does not use."
+      },
+      {
+        "name": "kokoro-js",
+        "license": "Apache-2.0",
+        "formerClassification": "alternative-provider",
+        "reason": "Zero import sites. Speech output is the system localService voice (src/config.ts TTS_ENGINE='system') or the Python kokoro_tts.py bridge.",
+        "replacedBy": "apps/desktop/bridge/kokoro_tts.py"
+      }
+    ]
+  },
+  "python": {
+    "manifest": "nori/requirements.txt",
+    "dependencies": [
+      { "name": "pytest", "classification": "required-standard-foundation", "license": "MIT", "note": "Test runner." },
+      { "name": "PyYAML", "classification": "required-standard-foundation", "license": "MIT", "importedBy": ["nori/tools/config_migration.py", "nori/tools/config_validator.py", "nori/tools/diagnostic_collector.py", "nori/tools/quick_start.py", "nori/tools/security_auditor.py"] },
+      { "name": "PyInstaller", "classification": "required-standard-foundation", "license": "GPL-2.0-with-classwork-exception", "note": "Standard packaging tool for the Core executable." },
+      { "name": "websocket-client", "classification": "required-standard-foundation", "license": "Apache-2.0", "importedBy": ["nori/shared/memory/letta_adapter.py"], "note": "Used only by the preserved legacy Letta adapter, which the native suite does not select." }
+    ],
+    "removed": [
+      {
+        "name": "crewai",
+        "license": "MIT",
+        "formerClassification": "alternative-agent-framework",
+        "reason": "Declared as a DEFAULT install requirement but never on the native Core path. Its only importers are a lazy fallback in packages/knights/architect/orchestration/task_decomposer.py (reached only when no planner is injected) and the explicit caller-supplied NeoAgent.build_crewai_agent adapter. The live architect is the Nori-native shared/orchestration/architect_worker.py.",
+        "replacedBy": "nori/knights/architect/lib/nori-architect (Nori-native Architect)",
+        "note": "Moved to nori/requirements-optional-frameworks.txt. It is NOT deleted: the two legacy adapters still import it if a caller explicitly opts in. Removing the default pin is what stops an alternative agent framework being installed by default."
+      }
+    ]
+  },
+  "modelWeights": [
+    { "path": "models/language/llama3.2-3b-instruct", "identity": "IMPORTED THIRD-PARTY WEIGHTS", "role": "current qualified everyday assistant language model", "note": "Not Nori-created. Executed by the independently implemented engine at engine/norama." },
+    { "path": "models/voice/whisper-base.en", "identity": "IMPORTED THIRD-PARTY WEIGHTS", "role": "local speech-to-text", "note": "OpenAI Whisper via faster-whisper. Not Nori-created and not relabelled." },
+    { "path": "models/voice/kokoro-v1", "identity": "IMPORTED THIRD-PARTY WEIGHTS", "role": "local text-to-speech", "note": "Kokoro ONNX. Not Nori-created and not relabelled." },
+    { "path": "models/nori-development", "identity": "NORI-CREATED EXPERIMENTAL WEIGHTS", "role": "DualTrace v0 experimental model", "note": "Tiny scratch-trained experimental model. NOT assistant-qualified and NOT a replacement for the imported Llama checkpoint." }
+  ]
+}

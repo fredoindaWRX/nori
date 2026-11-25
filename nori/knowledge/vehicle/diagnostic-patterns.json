@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "database_version": "2026.09.18",
+  "origin": "NORI-authored generic OBD diagnostic logic",
+  "scope": "Evidence triage and guided testing. This is not a vehicle service manual or a replacement-parts database.",
+  "aliases": {
+    "engine_speed": ["engine speed", "engine rpm", "rpm"],
+    "desired_idle": ["desired idle speed", "target idle speed"],
+    "loop_status": ["loop status", "fuel system status", "fuel system 1 status"],
+    "ltft_b1": ["long term fuel trim bank 1", "long-term fuel trim bank 1", "ltft bank 1", "ltft b1"],
+    "ltft_b2": ["long term fuel trim bank 2", "long-term fuel trim bank 2", "ltft bank 2", "ltft b2"],
+    "stft_b1": ["short term fuel trim bank 1", "short-term fuel trim bank 1", "stft bank 1", "stft b1"],
+    "stft_b2": ["short term fuel trim bank 2", "short-term fuel trim bank 2", "stft bank 2", "stft b2"],
+    "ignition_1": ["ignition 1 signal", "ignition 1 voltage", "ignition voltage"],
+    "relay_feedback": ["powertrain relay feedback signal", "powertrain relay feedback", "ignition relay feedback", "ec ignition relay feedback signal"],
+    "relay_command": ["powertrain relay command", "ignition relay command", "ec ignition relay command"],
+    "accessory": ["accessory signal", "accessory voltage"],
+    "maf": ["mass air flow sensor", "mass air flow", "maf"],
+    "map": ["map sensor", "manifold absolute pressure", "map"],
+    "injector_pwm_b1": ["injector pwm bank 1", "injector pulse width bank 1"],
+    "injector_pwm_b2": ["injector pwm bank 2", "injector pulse width bank 2"]
+  },
+  "thresholds": {
+    "running_rpm": 300,
+    "stopped_rpm": 40,
+    "large_negative_trim_percent": -20,
+    "bank_trim_difference_percent": 15,
+    "signal_off_volts": 1,
+    "powered_volts": 10,
+    "evidence_window_samples": 220
+  },
+  "guided_tests": {
+    "ignition_feed_under_load": {
+      "title": "Measure the ignition feed directly through the stall",
+      "method": "Back-probe the affected ignition-feed circuit with a meter or scope while the engine runs and stalls. Record voltage, ground drop, RPM, and relay state together.",
+      "pass": "If direct voltage remains stable, treat the scanner zero as asynchronous or channel-specific and continue with cylinder misfire and injector tests.",
+      "fail": "If direct voltage drops with the stall, inspect the feed circuit, ignition switch path, fuse and relay terminals, connectors, grounds, and loaded voltage drop before replacing a component.",
+      "unknown": "Do not condemn a part from the scanner channel alone. Repeat with a direct synchronized measurement."
+    },
+    "bank_imbalance": {
+      "title": "Separate Bank 2 fueling from combustion faults",
+      "method": "Capture cylinder-specific misfire counters and both banks' trims at the same operating point, then perform an injector balance/leak test using the vehicle service procedure.",
+      "pass": "If misfires and injector balance are even, investigate biased sensor data, exhaust leakage, wiring, or bank-specific control inputs.",
+      "fail": "If one cylinder or Bank 2 fails the balance test, follow the evidence to that circuit or cylinder; confirm wiring and mechanical condition before replacing an injector or coil.",
+      "unknown": "Obtain cylinder-specific misfire counts and a controlled injector test; fuel-rail pressure alone cannot exclude an injector fault."
+    },
+    "loop_transition": {
+      "title": "Reproduce the open-to-closed-loop transition",
+      "method": "Record RPM, loop state, both upstream oxygen sensors, short- and long-term trims, MAF, MAP, injector command, and ignition feed from startup through the stall.",
+      "pass": "If the stall does not repeat at the transition, compare the conditions with the failing capture before changing parts.",
+      "fail": "If it repeats, identify which measured input or command changes first. Correlation with closed loop alone does not prove an oxygen sensor fault.",
+      "unknown": "Record a synchronized transition with the exact method used to force open loop documented."
+    },
+    "fuel_quality": {
+      "title": "Verify fuel quality even when rail pressure is steady",
+      "method": "Following fire-safe service procedures, obtain a representative fuel sample in an approved clear container. Inspect after settling for water separation, debris, unusual color or odor, and compare with known-good fuel. If available, use a suitable fuel-composition or contamination test.",
+      "pass": "If the sample is clean and correct, retain the pressure evidence and continue with synchronized ignition, injector balance, and combustion tests.",
+      "fail": "If contamination, water, phase separation, or incorrect fuel is confirmed, follow the manufacturer-approved drain, disposal, flush, refill, and verification procedure. Do not run contaminated fuel through the system to test it.",
+      "unknown": "Normal rail pressure cannot establish fuel quality. Mark fuel quality unconfirmed until a representative sample is inspected or tested."
+    }
+  }
+}
