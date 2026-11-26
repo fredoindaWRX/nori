@@ -158,3 +158,8 @@ Verified surviving both a Tailscale reconnect and a cold reboot.
   (not just those using `foxwell`) gets root. A code pull of the tablet is not a full backup —
   firmware, licenses, databases and vehicle records are separate.
 - Numbers, paths and the password are per-build. Read your own device; don't assume.
+
+For the dashboard to be reachable, the PC bridge (`bridge.py`) has to be running. To start it
+hidden at every logon, run [`autostart/install-autostart.ps1`](autostart/install-autostart.ps1)
+once (no admin). Also battery-exempt Tailscale on the tablet so it stays reachable asleep:
+`adb shell dumpsys deviceidle whitelist +com.tailscale.ipn`.
