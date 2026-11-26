@@ -41,6 +41,7 @@ public class BootReceiver extends BroadcastReceiver {
         String action = intent == null ? null : intent.getAction();
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
             fixTailscale();
+            startHomeButton(context);
             Intent later = new Intent(context, BootReceiver.class).setAction(GO_HOME);
             PendingIntent pending = PendingIntent.getBroadcast(context, 0, later, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -57,9 +58,18 @@ public class BootReceiver extends BroadcastReceiver {
             }
         } else if (GO_HOME.equals(action)) {
             fixTailscale();   // again, in case System UI restarted since boot
+            startHomeButton(context);
             Intent home = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(home);
+        }
+    }
+
+    static void startHomeButton(Context context) {
+        try {
+            context.startService(new Intent(context, FloatingHomeService.class));
+        } catch (Exception error) {
+            Log.w("NoriHomeHelper", "home button not started: " + error);
         }
     }
 

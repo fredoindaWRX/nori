@@ -1,11 +1,15 @@
 # Nori home helper (Foxwell i50 tablet)
 
-A tiny Android app (no screen, no internet permission) for a Foxwell i50 scan tablet
-(Android 9, MediaTek, Runzhuo ROM). It does three things:
+A tiny Android app (no internet permission) for a Foxwell i50 scan tablet
+(Android 9, MediaTek, Runzhuo ROM). It does four things:
 
 1. **Fixes Tailscale** at every boot (details below).
 2. **Goes to the home screen** 30 s after boot, after the Foxwell app has opened itself.
-3. **Sets the wallpaper** packed in `assets/wallpaper.jpg`, when told to over adb.
+3. **Shows an always-on-top Home button** — a small gold button you can tap to jump to the
+   launcher from inside any app (the Foxwell app included), and drag to reposition. It needs the
+   "draw over other apps" permission, granted once over adb:
+   `adb shell appops set systems.nori.homehelper SYSTEM_ALERT_WINDOW allow` (the appop persists).
+4. **Sets the wallpaper** packed in `assets/wallpaper.jpg`, when told to over adb.
 
 ## The Tailscale problem
 
