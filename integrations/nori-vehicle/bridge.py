@@ -205,12 +205,13 @@ header b{font-size:20px}header .v{color:var(--dim);font-size:14px}.dot{width:10p
 .flags{margin-top:8px}.flag{display:inline-block;background:#2a1420;border:1px solid var(--bad);color:var(--bad);border-radius:8px;padding:3px 9px;margin:3px 4px 0 0;font-size:13px}
 .row{display:flex;gap:10px;align-items:center;margin-top:12px}button{background:var(--accent);color:#04121c;border:0;border-radius:9px;padding:9px 14px;font-weight:700;cursor:pointer}
 .muted{color:var(--dim);font-size:13px}
+body.stale .pid,body.stale #diag,body.stale .flags{opacity:.45}body.stale #age{color:var(--warn)}
 </style></head><body>
 <header><span class="dot" id="dot"></span><b>Nori</b><span class="v" id="veh">no vehicle</span>
 <span class="v" id="age" style="margin-left:auto"></span></header>
 <div class="wrap">
-  <div class="card"><h2>Live readings</h2><div class="grid" id="pids"><div class="muted">Waiting for a reader to send live data\u2026</div></div></div>
-  <div class="card"><h2>Nori\u2019s read</h2><div id="diag">Waiting for live data from a reader.</div>
+  <div class="card"><h2 id="h-pids">Live readings</h2><div class="grid" id="pids"><div class="muted">Waiting for a reader to send live data\u2026</div></div></div>
+  <div class="card"><h2 id="h-diag">Nori says</h2><div id="diag">Waiting for live data from a reader.</div>
     <div class="flags" id="flags"></div>
     <div class="row"><button onclick="speak()">\u25b6 Speak it</button><span class="muted" id="rep"></span></div>
   </div>
@@ -220,12 +221,16 @@ header b{font-size:20px}header .v{color:var(--dim);font-size:14px}.dot{width:10p
 const U=(k,v,u)=>`<div class="pid${v.bad?' bad':''}"><div class="l">${k}</div><div class="n">${v.val}${u||''}</div></div>`;
 async function tick(){
  let s; try{ s=await (await fetch('/state',{cache:'no-store'})).json(); }catch(e){ document.getElementById('dot').classList.remove('live'); return; }
- const live = s.at && (Date.now()/1000 - s.at) < 15;
- document.getElementById('dot').classList.toggle('live', !!s.frame_count);
+ const live = s.age != null && s.age < 20;
+ document.getElementById('dot').classList.toggle('live', live);
+ document.body.classList.toggle('stale', !live);
  const cfg = s.config || {};
  const cfgbits = [cfg.decoded, (cfg.o2_present&&cfg.o2_present.length)?cfg.o2_present.length+' O2 present':'', (cfg.modules&&cfg.modules.length)?cfg.modules.length+' modules':''].filter(Boolean).join(' · ');
  document.getElementById('veh').textContent = (s.vehicle || 'no vehicle') + (cfgbits? '  —  '+cfgbits : '');
- document.getElementById('age').textContent = s.at ? ('updated '+Math.max(0,Math.round(Date.now()/1000 - s.at))+'s ago') : '';
+ const ago = a => a<90 ? Math.round(a)+' s' : a<5400 ? Math.round(a/60)+' min' : Math.round(a/3600)+' h';
+ document.getElementById('age').textContent = s.age==null ? '' : live ? 'live' : ('no reader connected - last data '+ago(s.age)+' ago');
+ document.getElementById('h-pids').textContent = (live || s.age==null) ? 'Live readings' : 'Last readings (not live)';
+ document.getElementById('h-diag').textContent = (live || s.age==null) ? 'Nori says' : 'Nori said (not live)';
  const p=document.getElementById('pids');
  if(s.pids && s.pids.length){ p.innerHTML = s.pids.map(x=>U(x.label,{val:x.value,bad:x.bad},x.unit)).join(''); }
  document.getElementById('diag').textContent = s.diagnosis || '';
@@ -261,7 +266,9 @@ class Handler(BaseHTTPRequestHandler):
                         for k, v in frame.items()]
                 return self._send(200, {"vehicle": STATE["vehicle"], "pids": pids, "frame_count": len(frame),
                                         "dtcs": STATE["dtcs"], "diagnosis": STATE["diagnosis"], "flags": STATE["flags"],
-                                        "at": STATE["at"], "latest_report": load_latest_report(),
+                                        "at": STATE["at"],
+                                        # age in seconds by this PC's clock, so a wrong tablet clock cannot fake "live"
+                                        "age": (time.time() - STATE["at"]) if STATE["at"] else None, "latest_report": load_latest_report(),
                                         "config": STATE["config"]})
         if self.path.startswith("/verdict.wav"):
             with LOCK:
