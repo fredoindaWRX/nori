@@ -57,17 +57,17 @@ public class FloatingHomeService extends Service implements View.OnTouchListener
         TextView tv = new TextView(this);
         tv.setText("⌂");                       // house glyph
         tv.setTextColor(Color.parseColor("#0E1420"));
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
         tv.setGravity(Gravity.CENTER);
         GradientDrawable bg = new GradientDrawable();
         bg.setShape(GradientDrawable.OVAL);
         bg.setColor(Color.parseColor("#C9A83E"));   // Nori gold
-        bg.setStroke(dp(2), Color.parseColor("#0E1420"));
+        bg.setStroke(dp(3), Color.parseColor("#0E1420"));
         tv.setBackground(bg);
-        tv.setAlpha(0.9f);
+        tv.setAlpha(0.92f);
         button = tv;
 
-        int size = dp(50);
+        int size = dp(68);
         int type = Build.VERSION.SDK_INT >= 26
                 ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
                 : WindowManager.LayoutParams.TYPE_PHONE;
